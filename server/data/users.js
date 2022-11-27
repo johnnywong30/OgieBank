@@ -2,7 +2,8 @@ const bcrypt = require('bcrypt');
 const saltRounds = 16;
 const validation = require('../validation');
 // firestore db
-const db = require('../config/firebase')
+const dbCollections = require('../config/firebase')
+const db = dbCollections.db
 
 // https://stackoverflow.com/questions/69012256/how-do-you-find-a-document-by-its-id-using-version-9-of-the-firebase-js-sdk
 async function getUser(id) {

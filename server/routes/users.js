@@ -32,14 +32,14 @@ router
     .route('/signup')
     .post(async (req, res) => {
         try {
-            req.body.firstName = validation.checkString(xss(req.body.firstName))
-            req.body.lastName = validation.checkString(xss(req.body.lastName))
+            req.body.firstName = validation.checkString(xss(req.body.firstName), 'first name')
+            req.body.lastName = validation.checkString(xss(req.body.lastName), 'last name')
             req.body.username = validation.checkUsername(xss(req.body.username))
-            if (await userData.getUserByUsername(xss(req.body.username))) throw `Username already exists`
+            await userData.getUserByUsername(xss(req.body.username))
             req.body.password = validation.checkPassword(xss(req.body.password))
-            req.body.confirmPassword = await userData.confirmPassword(xss(req.body.confirmPassword))
+            req.body.confirmPassword = await userData.confirmPassword(xss(req.body.password), xss(req.body.confirmPassword), false);
             req.body.email = validation.checkEmail(xss(req.body.email))
-            if (await userData.getUserByEmail(xss(req.body.email))) throw 'Email is in use.';
+            await userData.getUserByEmail(xss(req.body.email))
             const user = await userData.createUser(
                 xss(req.body.firstName), 
                 xss(req.body.lastName), 
@@ -54,6 +54,7 @@ router
                 return res.status(500).json({error: `Internal Server Error`})
             }
         } catch (e) {
+            console.log(e)
             return res.status(400).json({error: e})
         }
     })

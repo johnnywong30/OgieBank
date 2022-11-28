@@ -17,22 +17,25 @@ async function getUser(id) {
 }
 
 // https://firebase.google.com/docs/firestore/query-data/queries#node.js_1
+// jordan tested
 async function getUserByUsername(username) {
     username = validation.checkUsername(username);
     const users = db.collection('users')
     const user = await users.where('username', '==', username).get()
-    if (user.empty()) throw `Error: No user with given username`
-    if (user) {user._id = user._id.toString();}
-    
+    if (!user.empty) {
+        throw `Error: username already exists`
+    }
     return user;
 }
 
+// jordan tested
 async function getUserByEmail(email) {
     email = validation.checkEmail(email);
     const users = db.collection('users')
     const user = await users.where('email', '==', email).get()
-    if (user.empty()) throw `Error: No user with given email`
-    if (user) {user._id = user._id.toString();}
+    if (!user.empty) {
+        throw `Error: Email is in use.`
+    }
     return user;
 }
 
@@ -56,6 +59,7 @@ async function checkUser(username, password) {
     return {id: user._id};
 }
 
+// jordan tested
 async function confirmPassword(password1, password2, hash) {
     password1 = validation.checkPassword(password1);
     password2 = validation.checkPassword(password2);
@@ -69,6 +73,7 @@ async function confirmPassword(password1, password2, hash) {
     return password2;
 }
 
+// jordan tested
 // https://firebase.google.com/docs/firestore/manage-data/add-data
 async function createUser(firstName, lastName, username, password, email) {
     firstName = validation.checkString(firstName, 'first name');
@@ -76,8 +81,7 @@ async function createUser(firstName, lastName, username, password, email) {
     username = validation.checkUsername(username);
     password = validation.checkPassword(password);
     email = validation.checkEmail(email);
-
-    if (await getUserByUsername(username)) throw 'Error: username is taken';
+    await getUserByUsername(username)
 
     const hash = await bcrypt.hash(password, saltRounds);
     const users = db.collection('users')

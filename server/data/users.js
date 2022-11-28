@@ -5,6 +5,7 @@ const validation = require('../validation');
 const dbCollections = require('../config/firebase')
 const db = dbCollections.db
 
+// did not test
 // https://stackoverflow.com/questions/69012256/how-do-you-find-a-document-by-its-id-using-version-9-of-the-firebase-js-sdk
 async function getUser(id) {
     id = validation.checkId(id);
@@ -33,6 +34,7 @@ async function getUserByEmail(email) {
     return user;
 }
 
+// did not test
 //https://stackoverflow.com/questions/52100103/getting-all-documents-from-one-collection-in-firestore
 async function getAllUsers() {
     const users = db.collection('users')
@@ -128,6 +130,7 @@ async function createUser(firstName, lastName, username, password, email) {
     return {userInserted: true};
 }
 
+// did not test
 // https://firebase.google.com/docs/firestore/manage-data/delete-data
 async function removeUser(id) {
     id = validation.checkId(id);

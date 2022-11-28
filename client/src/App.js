@@ -5,23 +5,14 @@ import Error from './components/Error'
 import rootReducer from './reducers/rootReducer'
 import logger from 'redux-logger'
 import './App.css';
-import { Routes, BrowserRouter as Router, Route } from "react-router-dom";
+import Routes from './routes/index'
 const store = createStore(rootReducer, applyMiddleware(logger))
 
 function App() {
   return (
     <ChakraProvider>
       <Provider store={store}>
-        <Router>
-          <div className="App">
-            <div className="App-body">
-              <Routes>
-                <Route path='/'/>
-                <Route path="*" element={<Error error={'Error 404: Page not found'}/>}/>
-              </Routes>
-            </div>
-          </div>
-        </Router>
+          <Routes/>
       </Provider>
     </ChakraProvider>
   );

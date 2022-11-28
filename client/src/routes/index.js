@@ -1,18 +1,21 @@
 import React, { useEffect } from "react";
-import { Redirect, Route, Switch, Router } from "react-router";
+import { BrowserRouter, Route } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 
+import Auth from './Auth/index'
+
 const Routes = () => {
     const dispatch = useDispatch()
-    const location = useLocation();
     
     return (
         <>
-            <Switch>
-                <Route exact path ="/login"/>
+            <BrowserRouter>
+                <Route exact path ="/login" element={<Auth/>}/>
                 <Route exact path ="/"/>
-            </Switch>
+            </BrowserRouter>
         </>
     )
 }
+
+export default Routes

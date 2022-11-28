@@ -22,9 +22,6 @@ async function getUserByUsername(username) {
     username = validation.checkUsername(username);
     const users = db.collection('users')
     const user = await users.where('username', '==', username).get()
-    if (!user.empty) {
-        throw `Error: username already exists`
-    }
     return user;
 }
 
@@ -33,9 +30,6 @@ async function getUserByEmail(email) {
     email = validation.checkEmail(email);
     const users = db.collection('users')
     const user = await users.where('email', '==', email).get()
-    if (!user.empty) {
-        throw `Error: Email is in use.`
-    }
     return user;
 }
 
@@ -47,16 +41,25 @@ async function getAllUsers() {
     return userList.docs.map(doc => doc.data());
 }
 
+// jordan tested
 async function checkUser(username, password) {
     username = validation.checkUsername(username);
     password = validation.checkPassword(password);
     
     let user = await getUserByUsername(username);
-    if (!user) throw 'Either the username or password is invalid.';
-
-    const compare = await bcrypt.compare(password, user.password);
+    if (user.empty) throw 'Either the username or password is invalid.';
+    let userData
+    let id
+    user.forEach(doc => {
+        id = doc.id
+        userData = doc.data()
+    })
+    const compare = await bcrypt.compare(password, userData.password);
     if (!compare) throw 'Either the username or password is invalid.';
-    return {id: user._id};
+    return {
+        loggedIn: true,
+        id: id
+    };
 }
 
 // jordan tested

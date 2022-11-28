@@ -13,18 +13,22 @@ router
             req.body.username = validation.checkUsername(xss(req.body.username));
             req.body.password = validation.checkPassword(xss(req.body.password));
         } catch (e) {
+            console.log(e)
             return res.status(400).json({error: e})
         }
         try {
-            await userData.getUserByUsername(xss(req.body.username))
+            const userExists = await userData.getUserByUsername(xss(req.body.username))
+            if (userExists.empty) throw `Error: username doesn't exist`
         } catch (e) {
+            console.log(e)
             return res.status(404).json({error: e})
         }
         try {
             const user = await userData.checkUser(xss(req.body.username), xss(req.body.password))
             res.status(200).json(user)
         } catch (e) {
-            return res.status(404).json({error: e})
+            console.log(e)
+            return res.status(400).json({error: e})
         }
     })
 
@@ -35,11 +39,13 @@ router
             req.body.firstName = validation.checkString(xss(req.body.firstName), 'first name')
             req.body.lastName = validation.checkString(xss(req.body.lastName), 'last name')
             req.body.username = validation.checkUsername(xss(req.body.username))
-            await userData.getUserByUsername(xss(req.body.username))
+            const userExists = await userData.getUserByUsername(xss(req.body.username))
+            if (!userExists.empty) throw `Error: username already exists`
             req.body.password = validation.checkPassword(xss(req.body.password))
             req.body.confirmPassword = await userData.confirmPassword(xss(req.body.password), xss(req.body.confirmPassword), false);
             req.body.email = validation.checkEmail(xss(req.body.email))
-            await userData.getUserByEmail(xss(req.body.email))
+            const emailExists = await userData.getUserByEmail(xss(req.body.email))
+            if (!emailExists.empty) throw `Error: email already exists`
             const user = await userData.createUser(
                 xss(req.body.firstName), 
                 xss(req.body.lastName), 

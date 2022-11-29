@@ -1,17 +1,13 @@
 import React from "react";
-import { BrowserRouter, Route } from "react-router-dom";
-
+import { Routes, BrowserRouter as Router, Route } from "react-router-dom";
 import Auth from './Auth'
 
-const Routes = () => {
+const AllRoutes = () => {
     return (
-        <>
-            <BrowserRouter>
-                <Route exact path ="/login" element={<Auth/>}/>
-                <Route exact path ="/"/>
-            </BrowserRouter>
-        </>
+        <Router>
+            <Auth/>
+        </Router>
     )
 }
 
-export default Routes
+export default AllRoutes

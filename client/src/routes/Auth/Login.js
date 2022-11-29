@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { Link, Heading, Box, FormControl, FormLabel, Input, Button, Stack, HStack } from '@chakra-ui/react'
 import { Link as RouterLinks } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+// import { useDispatch } from 'react-redux'
 
 const Login = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
     
     const handleUsername = (e) => setUsername(e.target.value)
     const handlePassword = (e) => setPassword(e.target.value)
@@ -23,9 +23,9 @@ const Login = () => {
                 <FormControl isRequired>
                     <Stack>
                         <FormLabel>Username</FormLabel>
-                        <Input type='text' value={username} onChange={handleUsername} placeholder='Enter username'/>
+                        <Input type='text' value={username} onChange={handleUsername} placeholder='Enter Username'/>
                         <FormLabel>Password</FormLabel>
-                        <Input type='password' value={password} onChange={handlePassword}/>
+                        <Input type='password' value={password} onChange={handlePassword} placeholder='Enter Password'/>
                         <HStack>
                             <Button type='submit'>Sign In</Button>
                             <Link as={RouterLinks} to='/register'>

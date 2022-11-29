@@ -14,10 +14,11 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         // insert submit stuff here with firebase auth
+        console.log("login")
     }
     return (
         <Box>
-            <Heading as='h1'>Ogie Bank</Heading>
+            <Heading as='h1'>Log In</Heading>
             <form onSubmit={handleSubmit}>
                 <FormControl isRequired>
                     <Stack>
@@ -27,8 +28,8 @@ const Login = () => {
                         <Input type='password' value={password} onChange={handlePassword}/>
                         <HStack>
                             <Button type='submit'>Sign In</Button>
-                            <Link as={RouterLinks} to='/signup'>
-                                Sign Up!
+                            <Link as={RouterLinks} to='/register'>
+                                Register
                             </Link>
                         </HStack>
                     </Stack>

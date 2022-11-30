@@ -1,6 +1,7 @@
 // import { Provider } from 'react-redux'
 // import { createStore, applyMiddleware } from 'redux'
 import { ChakraProvider } from '@chakra-ui/react'
+import { AuthProvider } from '../src/firebase/Auth'
 import Error from './components/Error'
 // import rootReducer from './reducers/rootReducer'
 // import logger from 'redux-logger'
@@ -10,11 +11,13 @@ import AllRoutes from './routes/index'
 
 function App() {
   return (
-    <ChakraProvider>
+    <AuthProvider>
+      <ChakraProvider>
       {/* <Provider store={store}> */}
           <AllRoutes/>
       {/* </Provider> */}
-    </ChakraProvider>
+      </ChakraProvider>
+    </AuthProvider>
   );
 }
 

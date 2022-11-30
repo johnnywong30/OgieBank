@@ -1,4 +1,4 @@
-// lecture code
+// lecture code, need to update using redux
 import React, {useState, useEffect} from 'react';
 import firebaseApp from './Firebase';
 

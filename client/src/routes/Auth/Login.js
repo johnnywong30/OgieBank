@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, Heading, Box, FormControl, FormLabel, Input, Button, Stack, HStack } from '@chakra-ui/react'
 import { Link as RouterLinks } from 'react-router-dom'
+import SocialSignIn from './SocialSignIn'
 // import { useDispatch } from 'react-redux'
 
 const Login = () => {
@@ -35,6 +36,9 @@ const Login = () => {
                     </Stack>
                 </FormControl>
             </form>
+            <br>
+                <SocialSignIn/>
+            </br>
         </Box>
     )
 }

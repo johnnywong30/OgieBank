@@ -1,9 +1,20 @@
-// lecture code
-import firebase from 'firebase/app';
+// https://firebase.google.com/docs/auth/web/password-auth#web-version-9
+// need to update methods
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword, 
+  reauthenticateWithCredential, 
+  updatePassword, 
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  updateProfile
+} 
+from 'firebase/auth';
 
 async function doCreateUserWithEmailAndPassword(email, password, displayName) {
-  await firebase.auth().createUserWithEmailAndPassword(email, password);
-  firebase.auth().currentUser.updateProfile({displayName: displayName});
+  const auth = getAuth()
+  await createUserWithEmailAndPassword(auth, email, password);
+  await updateProfile(auth.currentUser, { displayName: displayName })
 }
 
 async function doChangePassword(email, oldPassword, newPassword) {
@@ -41,7 +52,7 @@ async function doSignOut() {
   await firebase.auth().signOut();
 }
 
-export {
+module.exports = {
   doCreateUserWithEmailAndPassword,
   doSocialSignIn,
   doSignInWithEmailAndPassword,

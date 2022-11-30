@@ -5,11 +5,11 @@ import SocialSignIn from './SocialSignIn'
 // import { useDispatch } from 'react-redux'
 
 const Login = () => {
-    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     // const dispatch = useDispatch()
     
-    const handleUsername = (e) => setUsername(e.target.value)
+    const handleEmail = (e) => setEmail(e.target.value)
     const handlePassword = (e) => setPassword(e.target.value)
 
     const handleSubmit = async (e) => {
@@ -23,10 +23,10 @@ const Login = () => {
             <form onSubmit={handleSubmit}>
                 <FormControl isRequired>
                     <Stack>
-                        <FormLabel>Username</FormLabel>
-                        <Input type='text' value={username} onChange={handleUsername} placeholder='Enter Username'/>
+                        <FormLabel>Email</FormLabel>
+                        <Input type='text' value={email} onChange={handleEmail} placeholder='Enter Email' id='email'/>
                         <FormLabel>Password</FormLabel>
-                        <Input type='password' value={password} onChange={handlePassword} placeholder='Enter Password'/>
+                        <Input type='password' value={password} onChange={handlePassword} placeholder='Enter Password' id='password'/>
                         <HStack>
                             <Button type='submit'>Sign In</Button>
                             <Link as={RouterLinks} to='/register'>
@@ -36,9 +36,7 @@ const Login = () => {
                     </Stack>
                 </FormControl>
             </form>
-            <br>
-                <SocialSignIn/>
-            </br>
+            <SocialSignIn/>
         </Box>
     )
 }

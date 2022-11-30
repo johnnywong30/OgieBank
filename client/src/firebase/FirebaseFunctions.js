@@ -62,7 +62,7 @@ async function doSignOut() {
   await doSignOut(auth);
 }
 
-module.exports = {
+const FirebaseFunctions = {
   doCreateUserWithEmailAndPassword,
   doSocialSignIn,
   doSignInWithEmailAndPassword,
@@ -70,4 +70,6 @@ module.exports = {
   doPasswordUpdate,
   doSignOut,
   doChangePassword
-};
+}
+
+export default FirebaseFunctions

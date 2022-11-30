@@ -1,5 +1,5 @@
 // https://firebase.google.com/docs/auth/web/password-auth#web-version-9
-// need to update methods
+// need to update methods, i think i fixed them?
 import { 
   getAuth, 
   createUserWithEmailAndPassword, 

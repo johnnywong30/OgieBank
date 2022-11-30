@@ -7,7 +7,9 @@ import {
   updatePassword, 
   signInWithEmailAndPassword,
   GoogleAuthProvider,
-  updateProfile
+  updateProfile,
+  EmailAuthProvider,
+  signInWithPopup
 } 
 from 'firebase/auth';
 
@@ -17,26 +19,31 @@ async function doCreateUserWithEmailAndPassword(email, password, displayName) {
   await updateProfile(auth.currentUser, { displayName: displayName })
 }
 
+// https://stackoverflow.com/questions/37811684/how-to-create-credential-object-needed-by-firebase-web-user-reauthenticatewith
 async function doChangePassword(email, oldPassword, newPassword) {
-  let credential = firebase.auth.EmailAuthProvider.credential(
+  const auth = getAuth()
+  const credential = EmailAuthProvider.credential(
     email,
     oldPassword
   );
-  await firebase.auth().currentUser.reauthenticateWithCredential(credential);
-  await firebase.auth().currentUser.updatePassword(newPassword);
-  await doSignOut();
+  await reauthenticateWithCredential(auth.currentUser, credential);
+  const user = auth.currentUser
+  await updatePassword(user, newPassword);
+  await doSignOut(auth);
 }
 
 async function doSignInWithEmailAndPassword(email, password) {
-  await firebase.auth().signInWithEmailAndPassword(email, password);
+  const auth = getAuth()
+  await signInWithEmailAndPassword(auth, email, password);
 }
 
 async function doSocialSignIn(provider) {
   let socialProvider = null;
   if (provider === 'google') {
-    socialProvider = new firebase.auth.GoogleAuthProvider();
+    socialProvider = new GoogleAuthProvider();
   }
-  await firebase.auth().signInWithPopup(socialProvider);
+  const auth = getAuth()
+  await signInWithPopup(auth, socialProvider);
 }
 
 // don't know if we're offering this
@@ -45,11 +52,14 @@ async function doSocialSignIn(provider) {
 // }
 
 async function doPasswordUpdate(password) {
-  await firebase.auth().updatePassword(password);
+  const auth = getAuth()
+  const user = auth.currentUser
+  await updatePassword(user, password);
 }
 
 async function doSignOut() {
-  await firebase.auth().signOut();
+  const auth = getAuth()
+  await doSignOut(auth);
 }
 
 module.exports = {

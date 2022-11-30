@@ -10,21 +10,22 @@ router
     .route('/login')
     .post(async (req, res) => {
         try {
-            req.body.username = validation.checkUsername(xss(req.body.username));
+            req.body.email = validation.checkEmail(xss(req.body.email));
             req.body.password = validation.checkPassword(xss(req.body.password));
         } catch (e) {
             console.log(e)
             return res.status(400).json({error: e})
         }
+        // check if the user exists
         try {
-            const userExists = await userData.getUserByUsername(xss(req.body.username))
-            if (userExists.empty) throw `Error: username doesn't exist`
+            await userData.getUserByEmail(xss(req.body.email))
         } catch (e) {
             console.log(e)
             return res.status(404).json({error: e})
         }
+        // validate the user
         try {
-            const user = await userData.checkUser(xss(req.body.username), xss(req.body.password))
+            const user = await userData.checkUserByEmail(xss(req.body.email), xss(req.body.password))
             res.status(200).json(user)
         } catch (e) {
             console.log(e)

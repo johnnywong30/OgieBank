@@ -44,7 +44,7 @@ async function getAllUsers() {
 }
 
 // jordan tested
-async function checkUser(username, password) {
+async function checkUserByUsername(username, password) {
     username = validation.checkUsername(username);
     password = validation.checkPassword(password);
     
@@ -58,6 +58,27 @@ async function checkUser(username, password) {
     })
     const compare = await bcrypt.compare(password, userData.password);
     if (!compare) throw 'Either the username or password is invalid.';
+    return {
+        loggedIn: true,
+        id: id
+    };
+}
+
+// jordan tested
+async function checkUserByEmail(email, password) {
+    email = validation.checkEmail(email);
+    password = validation.checkPassword(password);
+    
+    let user = await getUserByEmail(email);
+    if (user.empty) throw 'Either the email or password is invalid.';
+    let userData
+    let id
+    user.forEach(doc => {
+        id = doc.id
+        userData = doc.data()
+    })
+    const compare = await bcrypt.compare(password, userData.password);
+    if (!compare) throw 'Either the email or password is invalid.';
     return {
         loggedIn: true,
         id: id
@@ -150,7 +171,8 @@ module.exports = {
     getUserByUsername,
     getUserByEmail,
     getAllUsers,
-    checkUser,
+    checkUserByUsername,
+    checkUserByEmail,
     confirmPassword,
     createUser,
     removeUser

@@ -21,7 +21,7 @@ function checkUsername(username) {
     if (!/^[a-zA-Z0-9]+$/g.test(username)) throw 'Username contains illegal characters.';
     // Check if username is of sufficient length
     if (username.length < 8) throw 'Username must be at least 8 characters long.';
-    return username.toLowerCase(); //for storage purposes
+    return username.toLowerCase(); //for storage purposes, not case sensitive
 }
 
 // Throws an error if the provided password does not meet every requirement
@@ -38,7 +38,7 @@ function checkPassword(password) {
 function checkEmail(email) {
     checkString(email, 'email');
     if (!emailValidator.validate(email)) throw "Email is invalid.";
-    return email;
+    return email.toLowerCase(); //for storage purposes, not case sensitive
 }
 
 function leapYear(year){

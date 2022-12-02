@@ -1,25 +1,76 @@
 import React, { useState } from 'react'
-import { Link, Heading, Box, FormControl, FormLabel, Input, Button, Stack, HStack } from '@chakra-ui/react'
+import { 
+    Link, 
+    Heading, 
+    Box, 
+    FormControl, 
+    FormLabel, 
+    Input, 
+    Button, 
+    Stack, 
+    HStack,
+    Alert, 
+    AlertIcon,
+    Text
+} from '@chakra-ui/react'
+import {
+    FcGoogle
+} from 'react-icons/fc'
+import FirebaseFunctions from '../../firebase/FirebaseFunctions'
 import { Link as RouterLinks } from 'react-router-dom'
-import SocialSignIn from './SocialSignIn'
+import axios from 'axios'
 // import { useDispatch } from 'react-redux'
 
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    // const dispatch = useDispatch()
+    const [loginSuccessful, setLoginSuccessful] = useState('')
+    const [error, setError] = useState('')
+    // const dispatch = useDispatch() NEED TO ADD REDUX STUFF
     
     const handleEmail = (e) => setEmail(e.target.value)
     const handlePassword = (e) => setPassword(e.target.value)
 
+    // ADD REDUX STUFF
     const handleSubmit = async (e) => {
         e.preventDefault()
-        // insert submit stuff here with firebase auth
         console.log("login")
+        try {
+            const { data } = await axios.post('/login',{
+                email: email,
+                password: password
+            })
+            setLoginSuccessful(true)
+        } catch (e) {
+            setError(e.response.data.error)
+            setLoginSuccessful(false)
+        }
     }
+    //ADD REDUX STUFF
+    const socialSignOn = async (provider) => {
+        try {
+          await FirebaseFunctions.doSocialSignIn(provider);
+        } catch (error) {
+          setError(`Unable to sign in using ${provider}`)
+          setLoginSuccessful(false)
+        }
+      };
+
     return (
         <Box>
             <Heading as='h1'>Log In</Heading>
+            {loginSuccessful && (
+                <Alert status='success'>
+                    <AlertIcon/>
+                    Successfully logged in!
+                </Alert>
+            )}
+            {!loginSuccessful && loginSuccessful !== '' && (
+                <Alert status='error'>
+                <AlertIcon/>
+                    <Text>{error}</Text>
+                </Alert>
+            )}
             <form onSubmit={handleSubmit}>
                 <FormControl isRequired>
                     <Stack>
@@ -36,7 +87,12 @@ const Login = () => {
                     </Stack>
                 </FormControl>
             </form>
-            <SocialSignIn/>
+            <Button
+                onClick={() => socialSignOn('google')}
+                leftIcon={<FcGoogle/>}
+            >
+                Google Sign In
+            </Button>
         </Box>
     )
 }

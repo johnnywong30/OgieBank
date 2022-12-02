@@ -77,11 +77,14 @@ async function checkUserByEmail(email, password) {
         id = doc.id
         userData = doc.data()
     })
+    // console.log(userData)
     const compare = await bcrypt.compare(password, userData.password);
     if (!compare) throw 'Either the email or password is invalid.';
+    delete userData['password']
     return {
         loggedIn: true,
-        id: id
+        id: id,
+        ...userData
     };
 }
 

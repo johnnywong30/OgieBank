@@ -34,12 +34,12 @@ const Login = () => {
     // ADD REDUX STUFF
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log("login")
         try {
-            const { data } = await axios.post('/login',{
+            const reqBody = {
                 email: email,
                 password: password
-            })
+            }
+            const { data } = await axios.post('/login', reqBody)
             setLoginSuccessful(true)
         } catch (e) {
             setError(e.response.data.error)

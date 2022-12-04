@@ -1,21 +1,31 @@
+import { User } from '../../models/User'
 
+const initialState = {
+    user: {},
+    auth: false
+}
 
-const initialState = [
-    {
-        
-    }
-]
-let copyState = null;
-let index = 0;
 const authReducer = (state = initialState, action) => {
     const { type, payload } = action
     switch (type) {
         case "LOGIN_USER":
-            return 'login'
+            return {
+                ...state,
+                user: new User(payload),
+                auth: true
+            }
         case "LOGOUT_USER":
-            return 'logout'
+            return {
+                ...state,
+                user: {},
+                auth: false
+            }
         case "UPDATE_USER":
-            return 'update'
+            return {
+                ...state,
+                user: new User(payload),
+                auth: true
+            }
         default:
             return state
     }

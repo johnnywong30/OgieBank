@@ -16,7 +16,7 @@ import {
 import {
     FcGoogle
 } from 'react-icons/fc'
-import FirebaseFunctions from '../../firebase/FirebaseFunctions'
+import FirebaseFunctions from '../../../firebase/FirebaseFunctions'
 import { Link as RouterLinks } from 'react-router-dom'
 import axios from 'axios'
 // import { useDispatch } from 'react-redux'

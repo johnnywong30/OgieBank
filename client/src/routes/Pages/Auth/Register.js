@@ -3,6 +3,7 @@ import {
     Link, 
     Heading, 
     Box, 
+    Container,
     FormControl, 
     FormLabel, 
     Input, 
@@ -54,7 +55,7 @@ const Register = () => {
         }
     }
     return (
-        <Box>
+        <Container>
             <Heading as='h1'>Register</Heading>
             {registerSuccessful && (
                 <Alert status='success'>
@@ -74,25 +75,25 @@ const Register = () => {
                         <HStack>
                             <Stack>
                                 <FormLabel>First Name</FormLabel>
-                                <Input type='text' value={firstName} onChange={handleFirstName} placeholder='First Name'/>
+                                <Input type='text' id='firstname' value={firstName} onChange={handleFirstName} placeholder='First Name'/>
                             </Stack>
                             <Stack>
                                 <FormLabel>Last Name</FormLabel>
-                                <Input type='text' value={lastName} onChange={handleLastName} placeholder='Last Name'/>
+                                <Input type='text' id='lastname' value={lastName} onChange={handleLastName} placeholder='Last Name'/>
                             </Stack>
                         </HStack>
                         <FormLabel>Email</FormLabel>
-                        <Input type='text' value={email} onChange={handleEmail} placeholder='Email'/>
+                        <Input type='text' id='email' value={email} onChange={handleEmail} placeholder='Email'/>
                         <FormLabel>Username</FormLabel>
-                        <Input type='text' value={username} onChange={handleUsername} placeholder='Username'/>
+                        <Input type='text' id='username' value={username} onChange={handleUsername} placeholder='Username'/>
                         <HStack>
                             <Stack>
                                 <FormLabel mb='0'>Password</FormLabel>
-                                <Input type='password' value={password} onChange={handlePassword} placeholder='Password'/>
+                                <Input type='password' id='password' value={password} onChange={handlePassword} placeholder='Password'/>
                             </Stack>
                             <Stack>
                                 <FormLabel mb='0'>Confirm Password</FormLabel>
-                                <Input type='password' value={confirmPassword} onChange={handleConfirmPassword} placeholder='Confirm Password'/>
+                                <Input type='password' id='confirmpassword' value={confirmPassword} onChange={handleConfirmPassword} placeholder='Confirm Password'/>
                             </Stack>
                         </HStack>
                         <HStack>
@@ -104,7 +105,7 @@ const Register = () => {
                     </Stack>
                 </FormControl>
             </form>
-        </Box>
+        </Container>
     )
 }
 

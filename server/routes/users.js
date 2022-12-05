@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data');
 const userData = data.users;
-const calculationData = data.calculations;
+// const calculationData = data.calculations;
 const xss = require('xss');
 const validation = require('../validation');
 
@@ -18,7 +18,8 @@ router
         }
         // check if the user exists
         try {
-            await userData.getUserByEmail(xss(req.body.email))
+            const user = await userData.getUserByEmail(xss(req.body.email))
+            if (user.empty) throw `Error: user not found`
         } catch (e) {
             console.log(e)
             return res.status(404).json({error: e})
@@ -26,7 +27,40 @@ router
         // validate the user
         try {
             const user = await userData.checkUserByEmail(xss(req.body.email), xss(req.body.password))
+            console.log(user)
             res.status(200).json(user)
+        } catch (e) {
+            console.log(e)
+            return res.status(400).json({error: e})
+        }
+    })
+
+router
+    .route('/loginauth')
+    .post(async (req, res) => {
+        try {
+            req.body.uid = validation.checkString(xss(req.body.uid))
+            req.body.email = validation.checkEmail(xss(req.body.email))
+            let authUser = await userData.getUserByEmail(xss(req.body.email))
+            // if the user doesn't exist yet, create them
+            if (authUser.empty) {
+                const user = await userData.createUserByAuth(
+                    xss(req.body.uid),
+                    xss(req.body.displayName),
+                    xss(req.body.email)
+                )
+                if (!user.userInserted) return res.status(500).json({error: `Internal Server Error`})
+                // query them again
+                authUser = await userData.getUserByEmail(xss(req.body.email))
+            }
+            delete authUser['password']
+            console.log(authUser)
+            const ret = {
+                loggedIn: true,
+                ...authUser
+            }
+            res.status(200).json(ret)
+            
         } catch (e) {
             console.log(e)
             return res.status(400).json({error: e})
@@ -66,4 +100,4 @@ router
         }
     })
 
-    module.exports = router;
+module.exports = router;

@@ -3,6 +3,7 @@ import {
     Link, 
     Heading, 
     Box, 
+    Container,
     FormControl, 
     FormLabel, 
     Input, 
@@ -19,14 +20,15 @@ import {
 import FirebaseFunctions from '../../../firebase/FirebaseFunctions'
 import { Link as RouterLinks } from 'react-router-dom'
 import axios from 'axios'
-// import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import actions from '../../../redux/actions/auth'
 
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loginSuccessful, setLoginSuccessful] = useState('')
     const [error, setError] = useState('')
-    // const dispatch = useDispatch() NEED TO ADD REDUX STUFF
+    const dispatch = useDispatch() 
     
     const handleEmail = (e) => setEmail(e.target.value)
     const handlePassword = (e) => setPassword(e.target.value)
@@ -40,8 +42,10 @@ const Login = () => {
                 password: password
             }
             const { data } = await axios.post('/login', reqBody)
+            dispatch(actions.loginAuthUser(data))
             setLoginSuccessful(true)
         } catch (e) {
+            console.log(e)
             setError(e.response.data.error)
             setLoginSuccessful(false)
         }
@@ -49,15 +53,25 @@ const Login = () => {
     //ADD REDUX STUFF
     const socialSignOn = async (provider) => {
         try {
-          await FirebaseFunctions.doSocialSignIn(provider);
-        } catch (error) {
-          setError(`Unable to sign in using ${provider}`)
-          setLoginSuccessful(false)
+            const userData = await FirebaseFunctions.doSocialSignIn(provider);
+            const reqBody = {
+                displayName: userData.displayName,
+                email: userData.email,
+                uid: userData.uid
+            }
+            const { data } = await axios.post('/loginauth', reqBody)
+            console.log(data)
+            dispatch(actions.loginAuthUser(data))
+            setLoginSuccessful(true)
+        } catch (e) {
+            console.log(e)
+            setError(`Unable to sign in using ${provider}`)
+            setLoginSuccessful(false)
         }
       };
 
     return (
-        <Box>
+        <Container>
             <Heading as='h1'>Log In</Heading>
             {loginSuccessful && (
                 <Alert status='success'>
@@ -93,7 +107,7 @@ const Login = () => {
             >
                 Google Sign In
             </Button>
-        </Box>
+        </Container>
     )
 }
 

@@ -43,7 +43,12 @@ async function doSocialSignIn(provider) {
     socialProvider = new GoogleAuthProvider();
   }
   const auth = getAuth()
-  await signInWithPopup(auth, socialProvider);
+  const userData = await signInWithPopup(auth, socialProvider);
+  return {
+    displayName: userData.user.displayName,
+    email: userData.user.email,
+    uid: userData.user.uid
+  }
 }
 
 // don't know if we're offering this

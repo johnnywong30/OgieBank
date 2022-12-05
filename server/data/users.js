@@ -23,7 +23,17 @@ async function getUserByUsername(username) {
     username = validation.checkUsername(username);
     const users = db.collection('users')
     const user = await users.where('username', '==', username).get()
-    return user;
+    if (user.empty) return user //handle error in route
+    let userData
+    let id
+    user.forEach(doc => {
+        id = doc.id
+        userData = doc.data()
+    })
+    return {
+        ...userData,
+        id: id
+    };
 }
 
 // jordan tested
@@ -31,7 +41,17 @@ async function getUserByEmail(email) {
     email = validation.checkEmail(email);
     const users = db.collection('users')
     const user = await users.where('email', '==', email).get()
-    return user;
+    if (user.empty) return user //handle error in route
+    let userData
+    let id
+    user.forEach(doc => {
+        id = doc.id
+        userData = doc.data()
+    })
+    return {
+        ...userData,
+        id: id
+    };
 }
 
 // did not test
@@ -43,48 +63,35 @@ async function getAllUsers() {
     return userList.docs.map(doc => doc.data());
 }
 
-// jordan tested
+// logs in the user by username
 async function checkUserByUsername(username, password) {
     username = validation.checkUsername(username);
     password = validation.checkPassword(password);
     
     let user = await getUserByUsername(username);
-    if (user.empty) throw 'Either the username or password is invalid.';
-    let userData
-    let id
-    user.forEach(doc => {
-        id = doc.id
-        userData = doc.data()
-    })
-    const compare = await bcrypt.compare(password, userData.password);
+    const compare = await bcrypt.compare(password, user.password);
     if (!compare) throw 'Either the username or password is invalid.';
+    delete user['password']
     return {
         loggedIn: true,
-        id: id
+        ...user
     };
 }
 
 // jordan tested
+// logs in the user by email
 async function checkUserByEmail(email, password) {
     email = validation.checkEmail(email);
     password = validation.checkPassword(password);
     
     let user = await getUserByEmail(email);
-    if (user.empty) throw 'Either the email or password is invalid.';
-    let userData
-    let id
-    user.forEach(doc => {
-        id = doc.id
-        userData = doc.data()
-    })
-    // console.log(userData)
-    const compare = await bcrypt.compare(password, userData.password);
+    if (!user.password) throw `Error: account exists with provider!`
+    const compare = await bcrypt.compare(password, user.password);
     if (!compare) throw 'Either the email or password is invalid.';
-    delete userData['password']
+    delete user['password']
     return {
         loggedIn: true,
-        id: id,
-        ...userData
+        ...user
     };
 }
 
@@ -110,7 +117,12 @@ async function createUser(firstName, lastName, username, password, email) {
     username = validation.checkUsername(username);
     password = validation.checkPassword(password);
     email = validation.checkEmail(email);
-    await getUserByUsername(username)
+    
+    // check if user with that username or email exist already
+    const usernameExists = await getUserByUsername(username)
+    if (!usernameExists.empty) throw `Error: username already exists`
+    const emailExists = await getUserByEmail(email)
+    if (!emailExists.empty) throw `Error: email already exists`
 
     const hash = await bcrypt.hash(password, saltRounds);
     const users = db.collection('users')
@@ -154,6 +166,53 @@ async function createUser(firstName, lastName, username, password, email) {
     return {userInserted: true};
 }
 
+// jordan tested
+// Auth users don't have a password field!
+async function createUserByAuth(uid, displayName, email) {
+    uid = validation.checkString(uid)
+    displayName = validation.checkString(displayName, 'display name');
+    email = validation.checkEmail(email);
+    // check if user with that email exists already
+    const emailExists = await getUserByEmail(email)
+    if (!emailExists.empty) throw `Error: email already exists`
+    const users = db.collection('users')
+    let newUser = {
+        displayName: displayName,
+        email: email,
+        accountInfo: {
+            bankName: "",
+            bankBalance: 0,
+            creditName: "",
+            creditBalance: 0,
+            creditLimit: 0,
+        },
+        payInfo: {
+            amount: 0,
+            date: "",
+            month: 0,
+            isWeekly: true,
+        },
+        budget: {
+            monthIncome: 0,
+            monthDeposit: 0,
+            monthRecurring: 0,
+            monthVariable: 0,
+            weekAllocated: 0,
+            weekDeposit: 0,
+            weekVariable: 0,
+        },
+        categories: {
+            expenses: [],
+            spending: [],
+        },
+        transactions: [],
+        summary: [],
+    };
+    const insertInfo = await users.doc(uid).set(newUser);
+    if (!insertInfo) throw 'Error: Could not add user with auth';
+    return {userInserted: true};
+}
+
 // did not test
 // https://firebase.google.com/docs/firestore/manage-data/delete-data
 async function removeUser(id) {
@@ -178,5 +237,6 @@ module.exports = {
     checkUserByEmail,
     confirmPassword,
     createUser,
+    createUserByAuth,
     removeUser
 }

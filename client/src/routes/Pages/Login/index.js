@@ -17,12 +17,12 @@ import {
 import {
     FcGoogle
 } from 'react-icons/fc'
-import FirebaseFunctions from '../../firebase/FirebaseFunctions'
+import FirebaseFunctions from '../../../firebase/FirebaseFunctions'
 import { Link as RouterLinks } from 'react-router-dom'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-import actions from '../../redux/actions/auth'
-import Nav from '../../components/Nav'
+import actions from '../../../redux/actions/auth'
+// import Nav from '../../components/Nav'
 
 const Login = () => {
     const [email, setEmail] = useState('')
@@ -76,7 +76,6 @@ const Login = () => {
 
     return (
         <Container>
-            <Nav/>
             <Heading as='h1'>Log In</Heading>
             {loginSuccessful && (
                 <Alert status='success'>

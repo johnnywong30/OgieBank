@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +18,7 @@
     "express-session": "^1.17.3",
     "firebase": "^9.14.0",
     "firebase-admin": "^11.3.0",
+    "nodemon": "^2.0.20",
     "xss": "^1.0.14"
   },
   "devDependencies": {

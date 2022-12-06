@@ -97,7 +97,9 @@ router
                 xss(req.body.email)
             )
             if (user.userInserted) {
-                res.status(200).json(user)
+                const loginUser = await userData.checkUserByEmail(req.body.email, req.body.password)
+                req.session.user = {email: loginUser.email, id: loginUser.id}
+                res.status(200).json(loginUser)
             }
             else {
                 return res.status(500).json({error: `Internal Server Error`})

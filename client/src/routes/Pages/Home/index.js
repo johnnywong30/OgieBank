@@ -1,11 +1,11 @@
 import React from "react";
 import { Heading, Box } from '@chakra-ui/react'
-import Nav from '../../components/Nav'
+// import Nav from '../../components/Nav'
 
 const Home = () => {
     return (
         <Box>
-            <Nav/>
+            {/* <Nav/> */}
             <Heading as='h1'>
                 welcome
             </Heading>

@@ -7,7 +7,7 @@ const Nav = () => {
         <Box>
             <Link as={RouterLinks} to='/'>Home</Link>
             <Link as={RouterLinks} to='/login'>Login</Link>
-            <Link as={RouterLinks} to='/login'>Register</Link>
+            <Link as={RouterLinks} to='/register'>Register</Link>
             <Link as={RouterLinks} to='/protected'>Protected</Link>
         </Box>
     )

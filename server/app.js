@@ -5,6 +5,8 @@ const configRoutes = require("./routes");
 const cors = require('cors')
 const session = require('express-session');
 
+const PORT = 8080;
+
 app.use(cors())
 app.use(express.json());
 
@@ -20,7 +22,7 @@ app.use(
 
 configRoutes(app);
 
-app.listen(8080, async () => {
+app.listen(PORT, async () => {
     // await client.connect();
     console.log("We've now got a server!");
     console.log('Your routes will be running on http://localhost:8080');

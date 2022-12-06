@@ -1,21 +1,19 @@
-import { Provider } from 'react-redux'
-import { ChakraProvider } from '@chakra-ui/react'
-import { AuthProvider } from '../src/firebase/Auth'
-import Error from './routes/Pages/Error'
-import store from './redux/store'
 import './App.css';
 import AllRoutes from './routes/index'
+import { BrowserRouter as Router } from 'react-router-dom'
+import Nav from './components/Nav';
+import { VStack } from '@chakra-ui/react';
 
-function App() {
+
+const App = () => {
   return (
-    <AuthProvider>
-      <ChakraProvider>
-        <Provider store={store}>
-          <AllRoutes/>
-        </Provider>
-      </ChakraProvider>
-    </AuthProvider>
-  );
+    <Router>
+      <VStack>
+        <Nav />
+        <AllRoutes />
+      </VStack>
+    </Router>
+  )
 }
 
 export default App;

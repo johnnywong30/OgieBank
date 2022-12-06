@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, BrowserRouter as Router, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import Login from './Pages/Login'
@@ -31,7 +31,7 @@ const AllRoutes = () => {
                 </RestrictedRoute>
             }/>
             <Route path='/' element={<Home/>}/>
-            <Route path='*' element={<Home/>}/>
+            <Route path='*' element={<Error/>}/>
         </Routes>
     )
 }

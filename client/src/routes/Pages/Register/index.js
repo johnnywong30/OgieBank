@@ -16,7 +16,8 @@ import {
 } from '@chakra-ui/react'
 import { Link as RouterLinks } from 'react-router-dom'
 import axios from 'axios'
-// import { useDispatch } from 'react-redux'
+import actions from '../../../redux/actions/auth'
+import { useDispatch } from 'react-redux'
 
 const Register = () => {
     const [firstName, setFirstName] = useState('')
@@ -26,8 +27,9 @@ const Register = () => {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [registerSuccessful, setRegisterSuccessful] = useState('')
+    const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
     
     const handleFirstName = (e) => setFirstName(e.target.value)
     const handleLastName = (e) => setLastName(e.target.value)
@@ -38,7 +40,9 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        
         try {
+            setLoading(true)
             const reqBody = {
                 firstName: firstName,
                 lastName: lastName,
@@ -48,10 +52,13 @@ const Register = () => {
                 email: email
             }
             const { data } = await axios.post('/signup', reqBody)
+            dispatch(actions.loginAuthUser(data))
             setRegisterSuccessful(true)
+            setLoading(false)
         } catch (e) {
             setError(e.response.data.error)
             setRegisterSuccessful(false)
+            setLoading(false)
         }
     }
     return (
@@ -97,7 +104,7 @@ const Register = () => {
                             </Stack>
                         </HStack>
                         <HStack>
-                            <Button type='submit'>Sign Up</Button>
+                            <Button type='submit' isLoading={loading}>Sign Up</Button>
                             <Link as={RouterLinks} to='/login'>
                                 Log In!
                             </Link>

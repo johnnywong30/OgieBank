@@ -9,6 +9,9 @@ const validation = require('../validation');
 router
     .route('/login')
     .post(async (req, res) => {
+        if (req.session.user) {
+            return res.status(400).json({error: 'User already logged in!'})
+        }
         try {
             req.body.email = validation.checkEmail(xss(req.body.email));
             req.body.password = validation.checkPassword(xss(req.body.password));
@@ -28,6 +31,8 @@ router
         try {
             const user = await userData.checkUserByEmail(xss(req.body.email), xss(req.body.password))
             console.log(user)
+            req.session.user = {email: user.email, id: user.id}
+            console.log(req.session.user)
             res.status(200).json(user)
         } catch (e) {
             console.log(e)
@@ -38,6 +43,9 @@ router
 router
     .route('/loginauth')
     .post(async (req, res) => {
+        if (req.session.user) {
+            return res.status(400).json({error: 'User already logged in!'})
+        }
         try {
             req.body.uid = validation.checkString(xss(req.body.uid))
             req.body.email = validation.checkEmail(xss(req.body.email))
@@ -59,8 +67,8 @@ router
                 loggedIn: true,
                 ...authUser
             }
+            req.session.user = {email: authUser.email, id: authUser.id}
             res.status(200).json(ret)
-            
         } catch (e) {
             console.log(e)
             return res.status(400).json({error: e})
@@ -99,5 +107,21 @@ router
             return res.status(400).json({error: e})
         }
     })
+
+router
+    .route('/logout')
+    .get(async (req, res) => {
+        if (req.session.user) {
+            req.session.destroy();
+            const message = 'User logged out!'
+            console.log(message)
+            res.status(200).json(message)
+        }
+        else {
+            return res.status(400).json({error: 'User not logged in!'})
+        }
+    })
+
+
 
 module.exports = router;

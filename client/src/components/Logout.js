@@ -4,6 +4,7 @@ import {
 } from '@chakra-ui/react'
 import { useSelector, useDispatch } from "react-redux";
 import actions from '../../src/redux/actions/auth'
+import axios from 'axios'
 
 const Logout = () => {
     const isAuth = useSelector(({auth}) => auth.auth);
@@ -13,6 +14,7 @@ const Logout = () => {
     const handleLogout = async (e) => {
         if (isAuth) {
             setLoading(true)
+            await axios.get('/logout')
             dispatch(actions.logoutAuthUser())
             console.log('Logged Out!')
         }

@@ -29,6 +29,7 @@ const Login = () => {
     const [password, setPassword] = useState('')
     const [loginSuccessful, setLoginSuccessful] = useState('')
     const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
     const dispatch = useDispatch() 
     
     const handleEmail = (e) => setEmail(e.target.value)
@@ -42,9 +43,11 @@ const Login = () => {
                 email: email,
                 password: password
             }
+            setLoading(true)
             const { data } = await axios.post('/login', reqBody)
             dispatch(actions.loginAuthUser(data))
             setLoginSuccessful(true)
+            setLoading(false)
         } catch (e) {
             console.log(e)
             setError(e.response.data.error)
@@ -95,7 +98,7 @@ const Login = () => {
                         <FormLabel>Password</FormLabel>
                         <Input type='password' value={password} onChange={handlePassword} placeholder='Enter Password' id='password'/>
                         <HStack>
-                            <Button type='submit'>Sign In</Button>
+                            <Button type='submit' isLoading={loading}>Sign In</Button>
                             <Link as={RouterLinks} to='/register'>
                                 Register
                             </Link>

@@ -1,32 +1,39 @@
 import React from "react";
-import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { Routes, BrowserRouter as Router, Route, Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import Error from '../components/Error'
-import RestrictedRoute from '../components/RestrictedRoute'
+import Login from './Pages/Login'
+import Register from './Pages/Register'
+import Error from './Pages/Error'
+import ProtectedTest from "./Pages/ProtectedTest";
+import Home from './Pages/Home'
 
-import Auth from './Pages/Auth'
+const RestrictedRoute = ({ children, redirectTo}) => {
+    const isAuth = useSelector(({auth}) => auth.auth);
+    return isAuth ? children : <Navigate to={redirectTo} />
+}
+
+// Page = Home Page, Login Page, Register Page; consists of multiple functionality
+// Component = Button, Form, Something with one functionality
 
 
 const AllRoutes = () => {
     // hook to just find the current location the user is at route wise
 	const location = useLocation();
-    const isAuth = useSelector(({auth}) => auth.auth)
-    const freePaths = ['/', '/login', '/register']
-    // don't have any restricted paths yet
-    const restrictedPaths = ['/error']
-    // if (! isAuth && (restrictedPaths.includes(location.pathname))) {
-    //     return <Navigate to={'/login'} replace/>
-    // } else if (isAuth && (freePaths.includes(location.pathname))) {
-    //     // might need to fix where this goes
-    //     return <Navigate to={'/register'} replace/>
-    // } 
     return (
-        <>
-            <Auth/>
-            {/* <RestrictedRoute exact path='/error' element={<Error/>}/> */}
-        </>
+        <Routes>
+            <Route path="/login" element={<Login/>} />
+            <Route path="/register" element={<Register/>} />    
+            <Route path='/protected' element={
+                <RestrictedRoute redirectTo={'/login'}>
+                    {/* this was just to test protected routes */}
+                    <ProtectedTest/>
+                </RestrictedRoute>
+            }/>
+            <Route path='/' element={<Home/>}/>
+            <Route path='*' element={<Home/>}/>
+        </Routes>
     )
 }
 
-export default AllRoutes
+export default AllRoutes;

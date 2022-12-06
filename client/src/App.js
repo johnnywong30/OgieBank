@@ -1,7 +1,7 @@
 import { Provider } from 'react-redux'
 import { ChakraProvider } from '@chakra-ui/react'
 import { AuthProvider } from '../src/firebase/Auth'
-import Error from './components/Error'
+import Error from './routes/Pages/Error'
 import store from './redux/store'
 import './App.css';
 import AllRoutes from './routes/index'

@@ -1,5 +1,4 @@
 import React from 'react'
-import '../App.css'
 import { Container, Text, Link } from '@chakra-ui/react'
 import { Link as RouterLinks  } from 'react-router-dom'
 

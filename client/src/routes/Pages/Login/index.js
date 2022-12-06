@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { 
     Link, 
     Heading, 
@@ -18,19 +18,29 @@ import {
     FcGoogle
 } from 'react-icons/fc'
 import FirebaseFunctions from '../../../firebase/FirebaseFunctions'
-import { Link as RouterLinks } from 'react-router-dom'
+import { Link as RouterLinks, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import actions from '../../../redux/actions/auth'
-// import Nav from '../../components/Nav'
 
 const Login = () => {
+    const isAuth = useSelector(({ auth }) => auth.auth)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (isAuth) {
+            // TODO: change to '/' when home page is developed...
+            navigate('/protected')
+        }
+    }, [isAuth])
+
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loginSuccessful, setLoginSuccessful] = useState('')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
-    const dispatch = useDispatch() 
     
     const handleEmail = (e) => setEmail(e.target.value)
     const handlePassword = (e) => setPassword(e.target.value)
@@ -52,6 +62,7 @@ const Login = () => {
             console.log(e)
             setError(e.response.data.error)
             setLoginSuccessful(false)
+            setLoading(false)
         }
     }
     //ADD REDUX STUFF

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { 
     Link, 
     Heading, 
@@ -14,12 +14,23 @@ import {
     HStack,
     Text 
 } from '@chakra-ui/react'
-import { Link as RouterLinks } from 'react-router-dom'
+import { Link as RouterLinks, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import actions from '../../../redux/actions/auth'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const Register = () => {
+    const isAuth = useSelector(({ auth }) => auth.auth)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (isAuth) {
+            // TODO: change to '/' when home page is developed...
+            navigate('/protected')
+        }
+    }, [isAuth])
+
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
@@ -29,7 +40,6 @@ const Register = () => {
     const [registerSuccessful, setRegisterSuccessful] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
-    const dispatch = useDispatch()
     
     const handleFirstName = (e) => setFirstName(e.target.value)
     const handleLastName = (e) => setLastName(e.target.value)

@@ -30,8 +30,7 @@ router
         // validate the user
         try {
             const user = await userData.checkUserByEmail(xss(req.body.email), xss(req.body.password))
-            console.log(user)
-            req.session.user = {email: user.email, id: user.id}
+            req.session.user = user
             console.log(req.session.user)
             res.status(200).json(user)
         } catch (e) {
@@ -67,7 +66,7 @@ router
                 loggedIn: true,
                 ...authUser
             }
-            req.session.user = {email: authUser.email, id: authUser.id}
+            req.session.user = authUser
             res.status(200).json(ret)
         } catch (e) {
             console.log(e)
@@ -98,7 +97,7 @@ router
             )
             if (user.userInserted) {
                 const loginUser = await userData.checkUserByEmail(req.body.email, req.body.password)
-                req.session.user = {email: loginUser.email, id: loginUser.id}
+                req.session.user = loginUser
                 res.status(200).json(loginUser)
             }
             else {
@@ -124,6 +123,16 @@ router
         }
     })
 
+router
+    .route('/session')
+    .get(async (req, res) => {
+        if (req.session.user) {
+            res.status(200).json(req.session.user)
+        }
+        else {
+            return res.status(200).json({error: 'User not logged in!'})
+        }
+    })
 
 
 module.exports = router;

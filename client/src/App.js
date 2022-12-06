@@ -4,7 +4,6 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import Nav from './components/Nav';
 import { VStack } from '@chakra-ui/react';
 
-
 const App = () => {
   return (
     <Router>

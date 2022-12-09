@@ -211,7 +211,7 @@ async function createUserByAuth(uid, displayName, email) {
     return {userInserted: true};
 }
 
-// did not test
+// did not test, idk if we'll use this
 // https://firebase.google.com/docs/firestore/manage-data/delete-data
 async function removeUser(id) {
     id = validation.checkId(id);
@@ -226,6 +226,7 @@ async function removeUser(id) {
     return `${username} has been successfully deleted`;
 }
 
+// jordan tested
 async function updateUsername(id, username) {
     id = validation.checkId(id)
     username = validation.checkUsername(username)
@@ -242,6 +243,7 @@ async function updateUsername(id, username) {
     return user;
 }
 
+// not tested
 async function updatePassword(id, password) {
     id = validation.checkId(id)
     password = validation.checkPassword(password)

@@ -137,14 +137,20 @@ router
 router
     .route('/settings')
     .post(async (req, res) => {
+        if (!req.session.user) {
+            return res.status(400).json({error: 'User not logged in!'})
+        }
+        console.log(req.body)
         if (req.body.username) {
             try {
                 req.body.username = validation.checkUsername(xss(req.body.username))
                 const userExists = await userData.getUserByUsername(req.body.username)
-                if (userExists.empty) throw `Error: user with given username doesn't exist`
+                if (!userExists.empty) throw `Error: user with given username already exists`
                 const user = await userData.updateUsername(req.session.user.id, xss(req.body.username))
+                req.session.user = user
                 return res.status(200).json(user)
             } catch (e) {
+                console.log(e)
                 return res.status(400).json({error: e})
             }
         }

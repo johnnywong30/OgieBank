@@ -5,16 +5,14 @@ const validation = require('../validation');
 const dbCollections = require('../config/firebase')
 const db = dbCollections.db
 
-// did not test
+// jordan tested
 // https://stackoverflow.com/questions/69012256/how-do-you-find-a-document-by-its-id-using-version-9-of-the-firebase-js-sdk
 async function getUser(id) {
     id = validation.checkId(id);
     const users = db.collection('users')
-    const docRef = users.doc(db, 'users', id)
-    const user = await docRef.get()
-    if (!user.exists()) throw 'Error: No user with given id';
-    user._id = user._id.toString();
-    return user;
+    const user = await users.doc(id).get()
+    if (user.empty) throw `Error: unable to find user with given id`
+    return user.data()
 }
 
 // https://firebase.google.com/docs/firestore/query-data/queries#node.js_1
@@ -233,7 +231,7 @@ async function updateUsername(id, username) {
     username = validation.checkUsername(username)
 
     const userExists = await getUserByUsername(username)
-    if (userExists.empty) throw `Username is taken`
+    if (!userExists.empty) throw `Username is taken`
 
     const users = db.collection('users')
     const updateInfo = await users.doc(id).update({

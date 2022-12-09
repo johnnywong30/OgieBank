@@ -228,6 +228,36 @@ async function removeUser(id) {
     return `${username} has been successfully deleted`;
 }
 
+async function updateUsername(id, username) {
+    id = validation.checkId(id)
+    username = validation.checkUsername(username)
+
+    const userExists = await getUserByUsername(username)
+    if (userExists.empty) throw `Username is taken`
+
+    const users = db.collection('users')
+    const updateInfo = await users.doc(id).update({
+        username: username
+    })
+    console.log(updateInfo)
+    const user = await getUser(id)
+    return user;
+}
+
+async function updatePassword(id, password) {
+    id = validation.checkId(id)
+    password = validation.checkPassword(password)
+
+    const hash = await bcrypt.hash(password, saltRounds)
+    const users = db.collection('users')
+    const updateInfo = await users.doc(id).update({
+        password: hash
+    })  
+    console.log(updateInfo)
+    const user = await getUser(id)
+    return user
+}
+
 module.exports = {
     getUser,
     getUserByUsername,
@@ -238,5 +268,7 @@ module.exports = {
     confirmPassword,
     createUser,
     createUserByAuth,
-    removeUser
+    removeUser,
+    updateUsername,
+    updatePassword
 }

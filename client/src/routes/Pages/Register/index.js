@@ -61,7 +61,7 @@ const Register = () => {
                 confirmPassword: confirmPassword,
                 email: email
             }
-            const { data } = await axios.post('/signup', reqBody)
+            const { data } = await axios.post('/api/user/signup', reqBody)
             dispatch(actions.loginAuthUser(data))
             setRegisterSuccessful(true)
             setLoading(false)

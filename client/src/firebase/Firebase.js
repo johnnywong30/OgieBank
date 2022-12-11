@@ -1,5 +1,7 @@
 import { initializeApp } from "firebase/app";
 
+// should move to a .env file
+// then populate to heroku's CONFIG VARS 
 const firebaseConfig = {
   apiKey: "AIzaSyBQBRN1M5XHtGmo4H9jWa21k87x-BQ97s8",
   authDomain: "ogiebank-d48a5.firebaseapp.com",

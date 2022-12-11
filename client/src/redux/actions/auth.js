@@ -25,8 +25,10 @@ const updateUser = (user) => {
     }
 }
 
-module.exports = {
+const authActions = {
     loginAuthUser,
     logoutAuthUser,
     updateUser
 }
+
+export default authActions;

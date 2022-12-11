@@ -28,7 +28,7 @@ const AllRoutes = () => {
     useEffect(() => {
         const checkSession = async () => {
             console.log('checking session')
-            const { data } = await axios.get('/session')
+            const { data } = await axios.get('/api/user/session')
             if (!isAuth && !data.error) {
                 console.log(data)
                 dispatch(actions.loginAuthUser(data))

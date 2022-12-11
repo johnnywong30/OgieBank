@@ -14,7 +14,7 @@ const Logout = () => {
     const handleLogout = async (e) => {
         if (isAuth) {
             setLoading(true)
-            await axios.get('/logout')
+            await axios.get('/api/user/logout')
             dispatch(actions.logoutAuthUser())
             console.log('Logged Out!')
         }

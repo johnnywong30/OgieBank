@@ -78,8 +78,8 @@ router
     .route('/signup')
     .post(async (req, res) => {
         try {
-            req.body.firstName = validation.checkString(xss(req.body.firstName), 'first name')
-            req.body.lastName = validation.checkString(xss(req.body.lastName), 'last name')
+            req.body.firstName = validation.checkName(xss(req.body.firstName), 'first name')
+            req.body.lastName = validation.checkName(xss(req.body.lastName), 'last name')
             req.body.username = validation.checkUsername(xss(req.body.username))
             const userExists = await userData.getUserByUsername(xss(req.body.username))
             if (!userExists.empty) throw `Error: username already exists`

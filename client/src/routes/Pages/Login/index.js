@@ -22,6 +22,7 @@ import { Link as RouterLinks, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import actions from '../../../redux/actions/auth'
+import validation from '../../../constants/validation'
 
 const Login = () => {
     const isAuth = useSelector(({ auth }) => auth.auth)
@@ -49,18 +50,22 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
+            setLoading(true)
+            await validation.checkEmail(email)
             const reqBody = {
                 email: email,
                 password: password
             }
-            setLoading(true)
             const { data } = await axios.post('/api/user/login', reqBody)
             dispatch(actions.loginAuthUser(data))
             setLoginSuccessful(true)
             setLoading(false)
         } catch (e) {
             console.log(e)
-            setError(e.response.data.error)
+            if (e.response)
+                setError(e.response.data.error)
+            else
+                setError(e)
             setLoginSuccessful(false)
             setLoading(false)
         }

@@ -112,8 +112,8 @@ async function confirmPassword(password1, password2, hash) {
 // jordan tested
 // https://firebase.google.com/docs/firestore/manage-data/add-data
 async function createUser(firstName, lastName, username, password, email) {
-    firstName = validation.checkString(firstName, 'first name');
-    lastName = validation.checkString(lastName, 'last name');
+    firstName = validation.checkName(firstName, 'first name');
+    lastName = validation.checkName(lastName, 'last name');
     username = validation.checkUsername(username);
     password = validation.checkPassword(password);
     email = validation.checkEmail(email);

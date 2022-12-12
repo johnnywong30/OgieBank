@@ -22,6 +22,7 @@ import { Link as RouterLinks, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import actions from '../../../redux/actions/auth'
+import validation from '../../../constants/validation'
 
 const Login = () => {
     const isAuth = useSelector(({ auth }) => auth.auth)
@@ -49,6 +50,8 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
+            await validation.checkEmail(email)
+            console.log('ppp')
             const reqBody = {
                 email: email,
                 password: password
@@ -60,7 +63,10 @@ const Login = () => {
             setLoading(false)
         } catch (e) {
             console.log(e)
-            setError(e.response.data.error)
+            if (e.response)
+                setError(e.response.data.error)
+            else
+                setError(e)
             setLoginSuccessful(false)
             setLoading(false)
         }

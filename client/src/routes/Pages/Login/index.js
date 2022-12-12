@@ -50,13 +50,12 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
+            setLoading(true)
             await validation.checkEmail(email)
-            console.log('ppp')
             const reqBody = {
                 email: email,
                 password: password
             }
-            setLoading(true)
             const { data } = await axios.post('/api/user/login', reqBody)
             dispatch(actions.loginAuthUser(data))
             setLoginSuccessful(true)

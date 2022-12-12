@@ -18,6 +18,7 @@ import { Link as RouterLinks, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import actions from '../../../redux/actions/auth'
 import { useDispatch, useSelector } from 'react-redux'
+import validation from '../../../constants/validation'
 
 const Register = () => {
     const isAuth = useSelector(({ auth }) => auth.auth)
@@ -53,6 +54,12 @@ const Register = () => {
         
         try {
             setLoading(true)
+            await validation.checkName(firstName, 'first name');
+            await validation.checkName(lastName, 'last name');
+            await validation.checkUsername(username);
+            await validation.checkPassword(password);
+            await validation.confirmPassword(password, confirmPassword)
+            await validation.checkEmail(email);
             const reqBody = {
                 firstName: firstName,
                 lastName: lastName,
@@ -66,7 +73,11 @@ const Register = () => {
             setRegisterSuccessful(true)
             setLoading(false)
         } catch (e) {
-            setError(e.response.data.error)
+            console.log(e)
+            if (e.response)
+                setError(e.response.data.error)
+            else
+                setError(e)
             setRegisterSuccessful(false)
             setLoading(false)
         }

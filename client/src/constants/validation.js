@@ -137,7 +137,7 @@ async function checkName(name, parameter) {
     return name
 }
 
-module.exports = {
+const validation = {
     checkId,
     checkString,
     checkUsername,
@@ -154,3 +154,5 @@ module.exports = {
     confirmPassword,
     checkName
 }
+
+export default validation;

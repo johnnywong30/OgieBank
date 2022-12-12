@@ -5,16 +5,14 @@ const validation = require('../validation');
 const dbCollections = require('../config/firebase')
 const db = dbCollections.db
 
-// did not test
+// jordan tested
 // https://stackoverflow.com/questions/69012256/how-do-you-find-a-document-by-its-id-using-version-9-of-the-firebase-js-sdk
 async function getUser(id) {
     id = validation.checkId(id);
     const users = db.collection('users')
-    const docRef = users.doc(db, 'users', id)
-    const user = await docRef.get()
-    if (!user.exists()) throw 'Error: No user with given id';
-    user._id = user._id.toString();
-    return user;
+    const user = await users.doc(id).get()
+    if (user.empty) throw `Error: unable to find user with given id`
+    return user.data()
 }
 
 // https://firebase.google.com/docs/firestore/query-data/queries#node.js_1
@@ -213,7 +211,7 @@ async function createUserByAuth(uid, displayName, email) {
     return {userInserted: true};
 }
 
-// did not test
+// did not test, idk if we'll use this
 // https://firebase.google.com/docs/firestore/manage-data/delete-data
 async function removeUser(id) {
     id = validation.checkId(id);
@@ -228,6 +226,38 @@ async function removeUser(id) {
     return `${username} has been successfully deleted`;
 }
 
+// jordan tested
+async function updateUsername(id, username) {
+    id = validation.checkId(id)
+    username = validation.checkUsername(username)
+
+    const userExists = await getUserByUsername(username)
+    if (!userExists.empty) throw `Username is taken`
+
+    const users = db.collection('users')
+    const updateInfo = await users.doc(id).update({
+        username: username
+    })
+    console.log(updateInfo)
+    const user = await getUser(id)
+    return user;
+}
+
+// not tested
+async function updatePassword(id, password) {
+    id = validation.checkId(id)
+    password = validation.checkPassword(password)
+
+    const hash = await bcrypt.hash(password, saltRounds)
+    const users = db.collection('users')
+    const updateInfo = await users.doc(id).update({
+        password: hash
+    })  
+    console.log(updateInfo)
+    const user = await getUser(id)
+    return user
+}
+
 module.exports = {
     getUser,
     getUserByUsername,
@@ -238,5 +268,7 @@ module.exports = {
     confirmPassword,
     createUser,
     createUserByAuth,
-    removeUser
+    removeUser,
+    updateUsername,
+    updatePassword
 }

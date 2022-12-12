@@ -91,33 +91,33 @@ const Register = () => {
                     <Stack>
                         <HStack>
                             <Stack>
-                                <FormLabel>First Name</FormLabel>
+                                <FormLabel id='labelForFirstName' htmlFor='firstname'>First Name</FormLabel>
                                 <Input type='text' id='firstname' value={firstName} onChange={handleFirstName} placeholder='First Name'/>
                             </Stack>
                             <Stack>
-                                <FormLabel>Last Name</FormLabel>
+                                <FormLabel id='labelForLastName' htmlFor='lastname'>Last Name</FormLabel>
                                 <Input type='text' id='lastname' value={lastName} onChange={handleLastName} placeholder='Last Name'/>
                             </Stack>
                         </HStack>
-                        <FormLabel>Email</FormLabel>
-                        <Input type='text' id='email' value={email} onChange={handleEmail} placeholder='Email'/>
-                        <FormLabel>Username</FormLabel>
+                        <FormLabel id='labelForEmail' htmlFor='email'>Email</FormLabel>
+                        <Input type='email' id='email' value={email} onChange={handleEmail} placeholder='Email'/>
+                        <FormLabel id='labelForUsername' htmlFor='username'>Username</FormLabel>
                         <Input type='text' id='username' value={username} onChange={handleUsername} placeholder='Username'/>
                         <HStack>
                             <Stack>
-                                <FormLabel mb='0'>Password</FormLabel>
+                                <FormLabel mb='0' id='labelForPassword' htmlFor='password'>Password</FormLabel>
                                 <Input type='password' id='password' value={password} onChange={handlePassword} placeholder='Password'/>
                             </Stack>
                             <Stack>
-                                <FormLabel mb='0'>Confirm Password</FormLabel>
+                                <FormLabel mb='0' id='labelForConfirmPassword' htmlFor='confirmpassword'>Confirm Password</FormLabel>
                                 <Input type='password' id='confirmpassword' value={confirmPassword} onChange={handleConfirmPassword} placeholder='Confirm Password'/>
                             </Stack>
                         </HStack>
                         <HStack>
                             <Button type='submit' isLoading={loading}>Sign Up</Button>
-                            <Link as={RouterLinks} to='/login'>
+                            {/* <Link as={RouterLinks} to='/login'>
                                 Log In!
-                            </Link>
+                            </Link> */}
                         </HStack>
                     </Stack>
                 </FormControl>

@@ -108,15 +108,15 @@ const Login = () => {
             <form onSubmit={handleSubmit}>
                 <FormControl isRequired>
                     <Stack>
-                        <FormLabel>Email</FormLabel>
-                        <Input type='text' value={email} onChange={handleEmail} placeholder='Enter Email' id='email'/>
-                        <FormLabel>Password</FormLabel>
+                        <FormLabel id='labelForEmail' htmlFor='email'>Email</FormLabel>
+                        <Input type='email' value={email} onChange={handleEmail} placeholder='Enter Email' id='email'/>
+                        <FormLabel id='labelForPassword' htmlFor='password'>Password</FormLabel>
                         <Input type='password' value={password} onChange={handlePassword} placeholder='Enter Password' id='password'/>
                         <HStack>
                             <Button type='submit' isLoading={loading}>Sign In</Button>
-                            <Link as={RouterLinks} to='/register'>
+                            {/* <Link as={RouterLinks} to='/register'>
                                 Register
-                            </Link>
+                            </Link> */}
                         </HStack>
                     </Stack>
                 </FormControl>

@@ -54,7 +54,7 @@ const Login = () => {
                 password: password
             }
             setLoading(true)
-            const { data } = await axios.post('/login', reqBody)
+            const { data } = await axios.post('/api/user/login', reqBody)
             dispatch(actions.loginAuthUser(data))
             setLoginSuccessful(true)
             setLoading(false)
@@ -74,7 +74,7 @@ const Login = () => {
                 email: userData.email,
                 uid: userData.uid
             }
-            const { data } = await axios.post('/loginauth', reqBody)
+            const { data } = await axios.post('/api/user/loginauth', reqBody)
             console.log(data)
             dispatch(actions.loginAuthUser(data))
             setLoginSuccessful(true)

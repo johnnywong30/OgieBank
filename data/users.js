@@ -141,23 +141,18 @@ async function createUser(firstName, lastName, username, password, email) {
             amount: 0,
             date: "",
             month: 0,
-            isWeekly: true,
         },
         budget: {
             monthIncome: 0,
             monthDeposit: 0,
             monthRecurring: 0,
             monthVariable: 0,
-            weekAllocated: 0,
-            weekDeposit: 0,
-            weekVariable: 0,
         },
         categories: {
             expenses: [],
             spending: [],
         },
         transactions: [],
-        summary: [],
     };
     const insertInfo = await users.add(newUser);
     if (!insertInfo) throw 'Error: Could not add user';
@@ -188,23 +183,18 @@ async function createUserByAuth(uid, displayName, email) {
             amount: 0,
             date: "",
             month: 0,
-            isWeekly: true,
         },
         budget: {
             monthIncome: 0,
             monthDeposit: 0,
             monthRecurring: 0,
             monthVariable: 0,
-            weekAllocated: 0,
-            weekDeposit: 0,
-            weekVariable: 0,
         },
         categories: {
             expenses: [],
             spending: [],
         },
         transactions: [],
-        summary: [],
     };
     const insertInfo = await users.doc(uid).set(newUser);
     if (!insertInfo) throw 'Error: Could not add user with auth';

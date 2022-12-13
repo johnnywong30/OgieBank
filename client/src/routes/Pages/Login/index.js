@@ -32,9 +32,9 @@ const Login = () => {
     useEffect(() => {
         if (isAuth) {
             // TODO: change to '/' when home page is developed...
-            navigate('/protected')
+            navigate('/overview')
         }
-    }, [isAuth])
+    }, [isAuth, navigate])
 
 
     const [email, setEmail] = useState('')

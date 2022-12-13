@@ -81,8 +81,8 @@ const MenuLinks = ({ isOpen, loading, handleLogout, isAuth }) => {
                 direction={["column", "row", "row", "row"]}
                 pt={[4, 4, 0, 0]}
             >
-                <MenuItem to="/register">Register</MenuItem>
-                <MenuItem to="/protected">Protected</MenuItem>
+                { isAuth ? null : <MenuItem to="/register">Register</MenuItem>}
+                { isAuth ? <MenuItem to="/overview">Overview</MenuItem> : null }
                 { isAuth ? (
                     <Button
                         isLoading={loading}

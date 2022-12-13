@@ -23,13 +23,16 @@ import { Heading,
 import DatePicker from "react-datepicker";
 import Balance from "./Balance";
 import Debt from "./Debt";
+import {useSelector} from 'react-redux';
 import "react-datepicker/dist/react-datepicker.css";
 
 const Overview = () => {
     const [startDate, setStartDate] = useState(new Date());
+    const userData = useSelector((state) => state.auth.user);
+    const userName = userData.displayName === '' ? "Change Name In Settings" : userData.displayName;
     return (
         <Container maxW={'7xl'} px="12" py="6">
-            <Heading as="h1">Hello! UserName</Heading>
+            <Heading as="h1">Hello {userName}!</Heading>
             <SimpleGrid columns={[1]} my="3">
                 <Balance/>
             </SimpleGrid>

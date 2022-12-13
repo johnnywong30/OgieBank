@@ -12,8 +12,24 @@ import {
     Center
 } from '@chakra-ui/react'
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
+import { useNavigate } from 'react-router-dom'
+import {useSelector} from 'react-redux';
+import validation from '../../../constants/validation';
 
 const Balance = () => {
+    const navigate = useNavigate();
+    const userData = useSelector((state) => state.auth.user);
+    const bankName = userData.accountInfo.bankName === '' ? "Add Bank Name In Settings" : userData.accountInfo.bankName;
+    const bankBalance = validation.getRounded(userData.accountInfo.bankBalance);
+    const creditName = userData.accountInfo.creditName === '' ? "Add Credit Name In Settings" : userData.accountInfo.creditName;
+    const creditBalance = validation.getRounded(userData.accountInfo.creditBalance);
+    const creditLimit = validation.getRounded(userData.accountInfo.creditLimit);
+    const monthIncome = validation.getRounded(userData.budget.monthIncome);
+    const monthDeposit = validation.getRounded(userData.budget.monthDeposit);
+    const monthRecurring = validation.getRounded(userData.budget.monthRecurring);
+    const monthVariable = validation.getRounded(userData.budget.monthVariable);
+    const remaining = validation.getRounded(monthIncome + monthDeposit - monthRecurring - monthVariable);
+
     return (
         <Box
             marginTop={{ base: '1', sm: '5' }}
@@ -41,12 +57,12 @@ const Balance = () => {
                             px={3}
                             color={'green.500'}
                             rounded={'full'}>
-                            BankNameHere
+                            {bankName}
                         </Text>
                         <Stack direction={'row'} align={'center'} justify={'center'}>
                             <Text fontSize={'xl'}>$</Text>
                             <Text fontSize={'3xl'} fontWeight={800}>
-                                Bank Balance
+                                {bankBalance}
                             </Text>
                         </Stack>
                     </Stack>
@@ -64,14 +80,14 @@ const Balance = () => {
                             px={3}
                             color={'red.500'}
                             rounded={'full'}>
-                            CreditNameHere
+                            {creditName}
                         </Text>
                         <Stack direction={'row'} align={'center'} justify={'center'}>
                             <Text fontSize={'xl'}>$</Text>
                             <Text fontSize={'3xl'} fontWeight={800}>
-                                Credit Balance
+                                {creditBalance}
                             </Text>
-                            <Text color={'gray.500'}>/creditlimit</Text>
+                            <Text color={'gray.500'}>/ {creditLimit}</Text>
                         </Stack>
                     </Stack>
                 </SimpleGrid>
@@ -80,24 +96,25 @@ const Balance = () => {
                     <List spacing={3}>
                             <ListItem>
                                 <Text fontSize={'3xl'} fontWeight={800}>
-                                    Remaining: $YourePoor
+                                    Remaining: ${remaining}
                                 </Text>
                             </ListItem>
                             <ListItem>
                                 <ListIcon as={TriangleUpIcon} color="green.400" />
-                                Income: $YourePoor
+                                Income: ${monthIncome}
                             </ListItem>
                             <ListItem>
                                 <ListIcon as={TriangleDownIcon} color="red.400" />
-                                Expenses: $YourePoor
+                                Expenses: ${monthRecurring}
                             </ListItem>
                             <ListItem>
                                 <ListIcon as={TriangleDownIcon} color="red.400" />
-                                Spending: $YourePoor
+                                Spending: ${monthVariable}
                             </ListItem>
                         </List>
                     </Center>
                     <Button
+                        onClick = {() => navigate('/budget')}
                         mt={10}
                         mx="25%"
                         w={'50%'}

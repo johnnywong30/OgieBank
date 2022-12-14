@@ -45,7 +45,7 @@ async function leapYear(year){
     return ((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0);
 }
 
-async function checkValidDate(date){
+function checkValidDate(date){
     let splitSearchTerm = date.split("/");
     if(splitSearchTerm.length !== 3){throw "Error: Date should be in the form of MM/DD/YYYY (ex. 01/30/2001)";}
     let year = splitSearchTerm[2]

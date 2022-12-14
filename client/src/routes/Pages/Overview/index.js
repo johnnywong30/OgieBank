@@ -4,32 +4,47 @@ import { Heading,
     Container, 
     Text,
     Stack,
-    List,
-    ListItem,
-    ListIcon,
     Button,
     useColorModeValue, 
     SimpleGrid, 
-    Center,
-    Flex,
     FormControl,
     FormLabel,
     Input,
-    InputGroup,
     HStack,
-    InputRightElement, 
-    Link, 
-    Select } from '@chakra-ui/react'
-import DatePicker from "react-datepicker";
+    FormErrorMessage,
+    Select,
+} from '@chakra-ui/react'
+
 import Balance from "./Balance";
 import Debt from "./Debt";
 import {useSelector} from 'react-redux';
 import "react-datepicker/dist/react-datepicker.css";
+import { Formik, Field } from "formik";
+import validation from '../../../constants/validation';
 
 const Overview = () => {
     const [startDate, setStartDate] = useState(new Date());
+    const startDateFormat = (((startDate.getMonth() > 8) ? (startDate.getMonth() + 1) : ('0' + (startDate.getMonth() + 1))) + '/' + ((startDate.getDate() > 9) ? startDate.getDate() : ('0' + startDate.getDate())) + '/' + startDate.getFullYear());
     const userData = useSelector((state) => state.auth.user);
     const userName = userData.displayName === '' ? "Change Name In Settings" : userData.displayName;
+    
+    const [category, setCategory] = useState("Option 1");
+    const [paymentMethod, setPaymentMethod] = useState("Option 1");
+    
+    const handleChange = (event) => {
+        setCategory(event.target.value);
+    }
+
+    const handleChange2 = (event) => {
+        setPaymentMethod(event.target.value)
+    }
+
+    function sendValues(values) {
+        values.category = category;
+        values.paymentMethod = paymentMethod;
+        console.log(values);
+    }
+
     return (
         <Container maxW={'7xl'} px="12" py="6">
             <Heading as="h1">Hello {userName}!</Heading>
@@ -57,81 +72,122 @@ const Overview = () => {
                                 align={'center'}>
                                 <Stack direction={'row'} align={'center'} justify={'center'}>
                                     <Text fontSize={'3xl'} fontWeight={800}>
-                                        Add a Transaction
+                                        Add Transaction
                                     </Text>
                                 </Stack>
                             </Stack>
                         </SimpleGrid>
                         <Box bg={useColorModeValue('gray.50', 'gray.900')} px={6} py={10}>
-                            <Center>
-                                <Stack spacing={4}>
-                                    <HStack>
-                                    <Box>
-                                        <FormControl id="firstName" isRequired>
-                                        <FormLabel>Tag</FormLabel>
-                                        <Input type="text" />
-                                        </FormControl>
-                                    </Box>
-                                    <Box>
-                                        <FormControl id="lastName" isRequired>
-                                        <FormLabel>Amount</FormLabel>
-                                        <Input type="text" />
-                                        </FormControl>
-                                    </Box>
-                                    </HStack>
-                                    <FormControl id="email" isRequired>
-                                    <FormLabel>Date</FormLabel>
-                                    <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
-                                    </FormControl>
-                                    {/* <FormControl id="password" isRequired> */}
-                                    <FormLabel>Select Category</FormLabel>
-                                    {/* <InputGroup>
-                                        <Input type={'text'} />
-                                        <InputRightElement h={'full'}>
-                                        </InputRightElement>
-                                    </InputGroup>
-                                    </FormControl> */}
-                                    <Select placeholder='Select option'>
-                                        <option value='option1'>Option 1</option>
-                                        <option value='option2'>Option 2</option>
-                                        <option value='option3'>Option 3</option>
-                                    </Select>
-                                    <FormLabel>Select Payment Method</FormLabel>
-                                    {/* <Stack spacing={10} pt={2}>
-                                    <Button
-                                        loadingText="Submitting"
-                                        size="lg"
-                                        bg={'blue.400'}
-                                        color={'white'}
-                                        _hover={{
-                                        bg: 'blue.500',
-                                        }}>
-                                        Sign up
-                                    </Button>
-                                    </Stack> */}
-                                    <Select placeholder='Select option'>
-                                        <option value='option1'>Option 1</option>
-                                        <option value='option2'>Option 2</option>
-                                        <option value='option3'>Option 3</option>
-                                    </Select>
-                                </Stack>
-                            </Center>
-                            <Button
-                                mt={10}
-                                mx="25%"
-                                w={'50%'}
-                                bg={'green.400'}
-                                color={'white'}
-                                rounded={'xl'}
-                                boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
-                                _hover={{
-                                bg: 'green.500',
+                            <Formik
+                                initialValues={{
+                                    name: "",
+                                    amount: "",
+                                    date: "",
+                                    category: "test",
                                 }}
-                                _focus={{
-                                bg: 'green.500',
-                                }}>
-                                Add Transaction
-                            </Button>
+                                onSubmit={(values) => sendValues(values)}
+                                validateOnChange={false}
+                                validateOnBlur={false}
+                            >
+                                {({  handleSubmit, errors }) => (
+                                    <form onSubmit={handleSubmit}>
+                                        <HStack>
+                                        <FormControl isInvalid={!!errors.name}>
+                                            <FormLabel my={1} htmlFor="name">Name</FormLabel>
+                                                <Field
+                                                    as={Input}
+                                                    id="name"
+                                                    name="name"
+                                                    type="text"
+                                                    variant="filled"
+                                                    validate={(value) => {
+                                                        let error;
+                                                        if (!value || typeof value != 'string' || value.trim().length < 3) error = "Invalid Name"
+                                                        return error;
+                                                    }}
+                                                />
+                                                <FormErrorMessage>{errors.name}</FormErrorMessage>
+                                            </FormControl>
+                                            <FormControl isInvalid={!!errors.amount}>
+                                                <FormLabel my={1} htmlFor="amount">Amount</FormLabel>
+                                                <Field
+                                                    as={Input}
+                                                    id="amount"
+                                                    name="amount"
+                                                    type="number"
+                                                    variant="filled"
+                                                    validate={(value) => {
+                                                        let error;
+                                                        if (!value || value <= 0 || !Number(value)) error = "Invalid Amount"
+                                                        return error;
+                                                    }}
+                                                />
+                                                <FormErrorMessage>{errors.amount}</FormErrorMessage>
+                                            </FormControl>
+                                        </HStack>
+                                        <FormControl isInvalid={!!errors.date}>
+                                            <FormLabel my={1} htmlFor="date">Date</FormLabel>
+                                            <Field
+                                                as={Input}
+                                                id="date"
+                                                name="date"
+                                                type="text"
+                                                variant="filled"
+                                                placeholder={startDateFormat}
+                                                validate={(value) => {
+                                                    let error;
+                                                    if (!value || value.trim().length === 0){
+                                                        error = "Invalid Date (format: mm/dd/year)";
+                                                        return error;
+                                                    }
+                                                    try {
+                                                        validation.checkValidDate(value);
+                                                    } catch {
+                                                        error = "Invalid Date (format: mm/dd/year)";
+                                                    }
+                                                    return error;
+                                                }}
+                                            />
+                                            <FormErrorMessage>{errors.date}</FormErrorMessage>
+                                        </FormControl>
+                                        <FormLabel my={1} htmlFor="category">Category</FormLabel>
+                                        <Select
+                                            value={category}
+                                            onChange={handleChange}
+                                        >
+                                            <option value="Option 1">Option 1</option>
+                                            <option value="Option 2">Option 2</option>
+                                            <option value="Option 3">Option 3</option>
+                                        </Select>
+                                        <FormLabel my={1} htmlFor="paymentMethod">Payment Method</FormLabel>
+                                        <Select
+                                            value={paymentMethod}
+                                            onChange={handleChange2}
+                                        >
+                                            <option value="Option 1">Option 1</option>
+                                            <option value="Option 2">Option 2</option>
+                                            <option value="Option 3">Option 3</option>
+                                        </Select>
+                                        <Button
+                                            mt={10}
+                                            mx="25%"
+                                            w={'50%'}
+                                            bg={'green.400'}
+                                            color={'white'}
+                                            rounded={'xl'}
+                                            boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
+                                            _hover={{
+                                            bg: 'green.500',
+                                            }}
+                                            _focus={{
+                                            bg: 'green.500',
+                                            }}
+                                            type='submit'>
+                                            Add Transaction
+                                        </Button>
+                                    </form>
+                                )}
+                            </Formik>
                         </Box>
                     </Box>
                 </Box>

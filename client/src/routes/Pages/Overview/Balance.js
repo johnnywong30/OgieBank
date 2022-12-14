@@ -30,6 +30,12 @@ const Balance = () => {
     const monthVariable = validation.getRounded(userData.budget.monthVariable);
     const remaining = validation.getRounded(monthIncome + monthDeposit - monthRecurring - monthVariable);
 
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    const d = new Date();
+
     return (
         <Box
             marginTop={{ base: '1', sm: '5' }}
@@ -95,8 +101,8 @@ const Balance = () => {
                     <Center>
                     <List spacing={3}>
                             <ListItem>
-                                <Text fontSize={'3xl'} fontWeight={800}>
-                                    Remaining: ${remaining}
+                                <Text fontSize={'xl'} fontWeight={800}>
+                                    Saved in {monthNames[d.getMonth()]}: ${remaining}
                                 </Text>
                             </ListItem>
                             <ListItem>

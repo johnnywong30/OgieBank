@@ -20,10 +20,12 @@ import { MinusIcon } from '@chakra-ui/icons';
 
 const Transactions = (props) => {
     const transactions = useSelector((state) => state.transactions.transactions)
+    const page = useSelector((state) => state.transactions.currentPage)
     const dispatch = useDispatch();
     const color = useColorModeValue('gray.800', 'white')
     const bg = useColorModeValue('green.50', 'green.900')
 
+    const [currentPage, setCurrentPage] = useState(0)
     const [selectValue, setSelectValue] = useState('')
 
     const onSelect = (event) => {
@@ -34,6 +36,19 @@ const Transactions = (props) => {
     const deleteTransaction = (id) => {
         dispatch(actions.deleteTransaction(id))
     }
+
+    const onNextPage = () => {
+        setCurrentPage(currentPage + 1)
+    }
+
+    const onPrevpage = () => {
+        setCurrentPage(currentPage - 1)
+    }
+
+    useEffect(() => {
+        console.log(page)
+       console.log(transactions.slice(page*10, (page*10) + 10))
+    }, [])
 
     const buildTransactions = (transactionList) => {
         return (
@@ -137,8 +152,6 @@ const Transactions = (props) => {
                             <option value='date'>Date</option>
                             <option value='low'>Price Low to High</option>
                             <option value='high'>Price High to Low</option>
-                            <option value='bank'>Bank Only</option>
-                            <option value='credit'>Credit Only</option>
                         </Select>
                 </Stack>
                 <Stack
@@ -149,21 +162,29 @@ const Transactions = (props) => {
                     py={2}
                     color={useColorModeValue('gray.800', 'white')}
                     align={'center'}>
-                        <Button>
+                        <Button 
+                            onClick={(event) => {
+                                onPrevpage()
+                            }}
+                            disabled={currentPage === 0}>
                             Prev
                         </Button>
-                        <Button>
+                        <Button
+                            disabled={transactions.slice((currentPage+1)*10, ((currentPage+1)*10) + 10).length === 0}
+                            onClick={(event) => {
+                                onNextPage()
+                            }}>
                             Next
                         </Button>
                 </Stack>
             </SimpleGrid>
             <Box bg={useColorModeValue('gray.50', 'gray.900')} px={6} py={10}>
                 <Center>
-                {buildTransactions(transactions)}
+                {buildTransactions(transactions.slice(currentPage*10, (currentPage*10) + 10))}
             </Center>
+            </Box>
         </Box>
     </Box>
-</Box>
   )
 }
 

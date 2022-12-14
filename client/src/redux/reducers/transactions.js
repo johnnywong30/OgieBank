@@ -1,4 +1,5 @@
 const initialState = {
+  currentPage: 0,
   transactions: [
     {
       id: 1,
@@ -31,7 +32,7 @@ const initialState = {
       date: '8/23/20',
       category: 'Food',
       payment: 'Credit'
-    }
+    },
   ]
 }
 
@@ -49,6 +50,10 @@ const transactionReducer = (state = initialState, action) => {
         return {...state, transactions: transactions}
       }
 
+      else if (payload.sort === 'date') {
+        let transactions = state.transactions.sort((a, b) => new Date(b.date) - new Date(a.date))
+        return {...state, transactions: transactions}
+      }
       else {
         return {...state}
       }

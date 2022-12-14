@@ -57,6 +57,12 @@ const transactionReducer = (state = initialState, action) => {
       let transactions = state.transactions.filter((t) => t.id !== payload.transaction)
       return {...state, transactions: transactions}
     }
+    case "ADD_TRANSACTION": {
+      let newTransaction = payload.transaction;
+      if (!newTransaction) return state;
+      let transactions = [newTransaction, ...state.transactions];
+      return {...state, transactions: transactions};
+    }
     default: 
       return state
   }

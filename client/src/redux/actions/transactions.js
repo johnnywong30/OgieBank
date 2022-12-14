@@ -20,9 +20,21 @@ const sortTransactions = (sortType) => {
   }
 }
 
+const addTransaction = (transaction) => {
+  return async dispatch => {
+    dispatch({
+      type: "ADD_TRANSACTION",
+      payload: {
+        transaction: transaction
+      }
+    })
+  }
+}
+
 const transactionActions = {
   deleteTransaction,
-  sortTransactions
+  sortTransactions,
+  addTransaction,
 }
 
 export default transactionActions

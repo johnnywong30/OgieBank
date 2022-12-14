@@ -1,5 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux'
+
+import actions from '../../../redux/actions/transactions'
 
 import { 
     Box,
@@ -11,14 +13,27 @@ import {
     Button,
     useColorModeValue, 
     SimpleGrid, 
-    Center
+    Center,
+    Select
 } from '@chakra-ui/react'
 import { MinusIcon } from '@chakra-ui/icons';
 
 const Transactions = (props) => {
     const transactions = useSelector((state) => state.transactions.transactions)
+    const dispatch = useDispatch();
     const color = useColorModeValue('gray.800', 'white')
     const bg = useColorModeValue('green.50', 'green.900')
+
+    const [selectValue, setSelectValue] = useState('')
+
+    const onSelect = (event) => {
+        setSelectValue(event.target.value)
+        dispatch(actions.sortTransactions(event.target.value))
+    }
+
+    const deleteTransaction = (id) => {
+        dispatch(actions.deleteTransaction(id))
+    }
 
     const buildTransactions = (transactionList) => {
         return (
@@ -79,6 +94,9 @@ const Transactions = (props) => {
                                     <Stack>
                                         <Button
                                             width={'25%'}
+                                            onClick={(event) => {
+                                                deleteTransaction(t.id)
+                                            }}
                                         >
                                             <MinusIcon />
                                         </Button>
@@ -104,7 +122,7 @@ const Transactions = (props) => {
             boxShadow={'2xl'}
             rounded={'md'}
             overflow={'hidden'}>
-            <SimpleGrid columns={[1, null, 2]} spacingX="0" spacingY="0">
+            <SimpleGrid columns={[2, null, 1]} spacingX="0" spacingY="0">
                 <Stack
                     textAlign={'center'}
                     px={6}
@@ -114,6 +132,29 @@ const Transactions = (props) => {
                         <Text fontSize={'3xl'} fontWeight={800}>
                             Overall Transactions
                         </Text>
+                        <Select onChange={onSelect}>
+                            <option value='recent'>Recently Added</option>
+                            <option value='date'>Date</option>
+                            <option value='low'>Price Low to High</option>
+                            <option value='high'>Price High to Low</option>
+                            <option value='bank'>Bank Only</option>
+                            <option value='credit'>Credit Only</option>
+                        </Select>
+                </Stack>
+                <Stack
+                    direction={'row'}
+                    justifyContent={'center'}
+                    textAlign={'center'}
+                    px={6}
+                    py={2}
+                    color={useColorModeValue('gray.800', 'white')}
+                    align={'center'}>
+                        <Button>
+                            Prev
+                        </Button>
+                        <Button>
+                            Next
+                        </Button>
                 </Stack>
             </SimpleGrid>
             <Box bg={useColorModeValue('gray.50', 'gray.900')} px={6} py={10}>

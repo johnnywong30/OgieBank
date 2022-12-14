@@ -6,7 +6,7 @@ const initialState = {
       amount: 26.21,
       date: '12/31/20',
       category: 'Food',
-      payment: 'Discover'
+      payment: 'Credit'
     },
     {
       id: 2,
@@ -14,7 +14,7 @@ const initialState = {
       amount: 2.91,
       date: '2/3/21',
       category: 'Food',
-      payment: 'Debit'
+      payment: 'Bank'
     },
     {
       id: 3,
@@ -22,7 +22,7 @@ const initialState = {
       amount: 17.21,
       date: '5/23/21',
       category: 'Drinks',
-      payment: 'Chase'
+      payment: 'Bank'
     },
     {
       id: 4,
@@ -30,7 +30,7 @@ const initialState = {
       amount: 9.54,
       date: '8/23/20',
       category: 'Food',
-      payment: 'Discover'
+      payment: 'Credit'
     }
   ]
 }
@@ -38,9 +38,25 @@ const initialState = {
 const transactionReducer = (state = initialState, action) => {
   const { type, payload } = action
   switch (type) {
-    case "DELETE_TRANSACTION":
-      let transactions = state.transactions.filter((t) => t.id !== payload.id)
+    case "SORT_TRANSACTION": {
+      if (payload.sort === 'low') {
+        let transactions = state.transactions.sort((a, b) => (a.amount > b.amount) ? 1 : -1)
+        return {...state, transactions: transactions}
+      }
+
+      else if (payload.sort === 'high') {
+        let transactions = state.transactions.sort((a, b) => (a.amount < b.amount) ? 1 : -1)
+        return {...state, transactions: transactions}
+      }
+
+      else {
+        return {...state}
+      }
+    }
+    case "DELETE_TRANSACTION": {
+      let transactions = state.transactions.filter((t) => t.id !== payload.transaction)
       return {...state, transactions: transactions}
+    }
     default: 
       return state
   }

@@ -111,7 +111,3 @@ npm-debug.log
 *.env
 *.dev
 .DS_Store
-
-# Docker
-Dockerfile
-docker-compose.yml

@@ -45,7 +45,7 @@ async function leapYear(year){
     return ((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0);
 }
 
-async function checkValidDate(date){
+function checkValidDate(date){
     let splitSearchTerm = date.split("/");
     if(splitSearchTerm.length !== 3){throw "Error: Date should be in the form of MM/DD/YYYY (ex. 01/30/2001)";}
     let year = splitSearchTerm[2]
@@ -85,7 +85,7 @@ async function checkKeyword(keyword){
 async function checkSearchTerm(searchTerm,keyword){
     if(searchTerm){
         if (!/^[a-zA-Z0-9\ \-]+$/g.test(searchTerm)) throw 'Error: Search term contains illegal characters.';
-        if(typeof searchTerm != 'string' || searchTerm.trim().length == 0){ throw 'Error: Search term is invalid';} //search term exists make sure it is correct type and not just spaces
+        if(typeof searchTerm != 'string' || searchTerm.trim().length === 0){ throw 'Error: Search term is invalid';} //search term exists make sure it is correct type and not just spaces
         searchTerm = searchTerm.trim();
         if(keyword === "Release Date"){ await checkValidDate(searchTerm); } //validate that the user provides a data in the form of 2001-01-30
         return searchTerm;
@@ -118,7 +118,7 @@ async function checkCreditLimit(limit){
     return limit;
 }
 
-async function getRounded(number){
+function getRounded(number){
     return Math.round(number * 100) / 100;
 }
 

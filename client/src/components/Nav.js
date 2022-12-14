@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link as RouterLinks } from 'react-router-dom'
-import { Link, Box, Flex, Button, Stack } from "@chakra-ui/react";
+import { Link, Box, Flex, Button, Stack, Text } from "@chakra-ui/react";
 import { useSelector, useDispatch } from "react-redux";
 import actions from '../../src/redux/actions/auth'
 import axios from 'axios'
@@ -25,7 +25,7 @@ const Nav = (props) => {
 
     return (
         <NavBarContainer {...props}>
-            <MenuItem to="/">Ogie Bank</MenuItem>
+            <MenuItem to="/"><Text fontSize='xl' as='b'>Ogie Bank</Text></MenuItem>
             <MenuToggle toggle={toggle} isOpen={isOpen} />
             <MenuLinks isOpen={isOpen} loading={loading} handleLogout={handleLogout} isAuth={isAuth}/>
         </NavBarContainer>
@@ -114,7 +114,6 @@ const NavBarContainer = ({ children, ...props }) => {
       justify="space-between"
       wrap="wrap"
       w="100%"
-      mb={8}
       p={8}
       bg={["primary.500", "primary.500", "transparent", "transparent"]}
       color={["black", "black", "primary.700", "primary.700"]}

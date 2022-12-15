@@ -47,16 +47,14 @@ const Transactions = (props) => {
         setCurrentPage(currentPage - 1)
     }
 
-    // const getData = async (reqBody) => {
-    //     const test = await axios.get('/api/calculations/getAllTransactions')
-    //     console.log('test')
-    //     console.log(test)
-    // }
+    const getData = async (reqBody) => {
+        const { data } = await axios.get('/api/calculations/getAllTransactions')
+        dispatch(actions.setTransactions(data.transactions))
+    }
 
-    // useEffect(() => {
-    //     console.log('hi')
-    //     getData()
-    // }, [])
+    useEffect(() => {
+        getData()
+    }, [])
 
     const buildTransactions = (transactionList) => {
         return (

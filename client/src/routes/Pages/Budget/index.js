@@ -1,18 +1,7 @@
-import React, {useState} from "react";
+import React from "react";
 import { Heading, 
-    Box, 
     Container, 
-    Text,
-    Stack,
-    Button,
-    useColorModeValue, 
     SimpleGrid, 
-    FormControl,
-    FormLabel,
-    Input,
-    HStack,
-    FormErrorMessage,
-    Select,
 } from '@chakra-ui/react'
 
 import Chart from './Chart';

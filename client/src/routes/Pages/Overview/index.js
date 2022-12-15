@@ -68,7 +68,7 @@ const Overview = () => {
                     height='auto'>
                     <Box
                         w={'full'}
-                        bg={'#86cf9d'}
+                        bg={'white'}
                         boxShadow={'2xl'}
                         rounded={'md'}
                         overflow={'hidden'}>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios';
+import { CSVLink, CSVDownload } from 'react-csv';
 
 import actions from '../../../redux/actions/transactions'
 
@@ -35,8 +36,8 @@ const Transactions = (props) => {
     }
 
     const deleteTransaction = async (id) => {
-        dispatch(actions.deleteTransaction(id))
         await axios.post('/api/calculations/deletetransaction', {id: id})
+        dispatch(actions.deleteTransaction(id))
     }
 
     const onNextPage = () => {
@@ -48,10 +49,14 @@ const Transactions = (props) => {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b45f736 (fix transaction routes, transaction page pulls from firestore, export button added to transactions page)
     const getData = async (reqBody) => {
         const { data } = await axios.get('/api/calculations/getAllTransactions')
         dispatch(actions.setTransactions(data.transactions))
     }
+<<<<<<< HEAD
 
     useEffect(() => {
         getData()
@@ -68,6 +73,12 @@ const Transactions = (props) => {
     //     getData()
     // }, [])
 >>>>>>> bc89938 (add delete and get transaction routes)
+=======
+
+    useEffect(() => {
+        getData()
+    }, [])
+>>>>>>> b45f736 (fix transaction routes, transaction page pulls from firestore, export button added to transactions page)
 
     const buildTransactions = (transactionList) => {
         return (
@@ -125,7 +136,7 @@ const Transactions = (props) => {
                                             {'$' + t.amount}
                                         </Text>
                                     </Stack>
-                                    <Stack>
+                                    <Stack direction={'row'} flexGrow='1' justifyContent={'flex-end'}>
                                         <Button
                                             width={'25%'}
                                             onClick={(event) => {
@@ -166,12 +177,21 @@ const Transactions = (props) => {
                         <Text fontSize={'3xl'} fontWeight={800}>
                             Overall Transactions
                         </Text>
-                        <Select onChange={onSelect}>
-                            <option value='recent'>Recently Added</option>
-                            <option value='date'>Date</option>
-                            <option value='low'>Price Low to High</option>
-                            <option value='high'>Price High to Low</option>
-                        </Select>
+                        <Stack width={'100%'} direction={'row'}>
+                            <Select onChange={onSelect}>
+                                <option value='recent'>Recently Added</option>
+                                <option value='date'>Date</option>
+                                <option value='low'>Price Low to High</option>
+                                <option value='high'>Price High to Low</option>
+                            </Select>
+                            <Stack>
+                                <Button>
+                                    <CSVLink data={transactions}>
+                                        Export
+                                    </CSVLink>
+                                </Button>
+                            </Stack>
+                        </Stack>
                 </Stack>
                 <Stack
                     direction={'row'}
@@ -189,7 +209,7 @@ const Transactions = (props) => {
                             Prev
                         </Button>
                         <Button
-                            disabled={transactions.slice((currentPage+1)*10, ((currentPage+1)*10) + 10).length === 0}
+                            disabled={transactions.slice((c urrentPage+1)*10, ((currentPage+1)*10) + 10).length === 0}
                             onClick={(event) => {
                                 onNextPage()
                             }}>

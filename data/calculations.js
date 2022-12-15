@@ -46,8 +46,9 @@ async function deleteTransaction(id, transactionId) {
     if (user.empty) throw 'No user found';
 
     let userData = user.data();
+    console.log(userData.transactions)
     let userTransactions = userData.transactions.filter((t) => t.id !== transactionId);
-
+    console.log(userTransactions)
     let updatedTransactions = await users.doc(id).update({
         transactions: userTransactions,
     })
@@ -63,6 +64,7 @@ async function getAllTransactions(id) {
     if (user.empty) throw 'No user found';
 
     let userData = user.data();
+    console.log(userData)
     let userTransactions = userData.transactions;
 
     return userTransactions;

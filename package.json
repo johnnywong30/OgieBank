@@ -24,7 +24,9 @@
     "express-session": "^1.17.3",
     "firebase": "^9.14.0",
     "firebase-admin": "^11.3.0",
+    "install-all": "^1.1.0",
     "nodemon": "^2.0.20",
+    "react-csv": "^2.2.2",
     "xss": "^1.0.14"
   },
   "devDependencies": {

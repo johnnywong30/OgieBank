@@ -40,7 +40,7 @@ router
             try {
                 req.body.id = validation.checkId(xss(req.body.id));
                 
-                await calculationData.addTransaction(req.session.user.id, xss(req.body.id));
+                await calculationData.deleteTransaction(req.session.user.id, xss(req.body.id));
                 return res.status(200).json({success: "success"});
             } catch (e) {
                 console.log(e)
@@ -56,7 +56,7 @@ router
             return res.status(400).json({error: 'User not logged in!'})
         }
 
-        if (req.body.id) {
+        if (req.session.user.id) {
             try {
                 const transactions = await calculationData.getAllTransactions(req.session.user.id)
                 return res.status(200).json({success: "success", transactions: transactions});

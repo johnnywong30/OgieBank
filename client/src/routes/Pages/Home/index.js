@@ -2,6 +2,7 @@ import React from "react";
 import { Heading, VStack, Text, HStack, Image, Box, Divider } from '@chakra-ui/react'
 import ALEX_JIANG_UNSPLASH from '../../../constants/imgs/alex-jiang-unsplash.jpg';
 import BIPPY_MILLION from '../../../constants/imgs/bippy_million.png';
+import { v4 as uuidv4 } from 'uuid';
 // Photo by <a href="https://unsplash.com/@aleex1809?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Alex jiang</a> on <a href="https://unsplash.com/t/business-work?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
   
 
@@ -72,7 +73,7 @@ const Home = () => {
                         {
                             CONTRIBUTORS.map(contributor => {
                                 return (
-                                    <Text fontSize='md' color='gray.400'>
+                                    <Text key={uuidv4()} fontSize='md' color='gray.400'>
                                         {contributor}
                                     </Text>
                                 )

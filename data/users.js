@@ -254,7 +254,7 @@ async function setBank(bank) {
 }
 
 async function setCreditCard(card) {
-    card = validation.checkString(card, 'Credit Card')
+    card = validation.checkString(card, 'Credit')
 } 
 
 module.exports = {

@@ -48,37 +48,14 @@ const Transactions = (props) => {
         setCurrentPage(currentPage - 1)
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> b45f736 (fix transaction routes, transaction page pulls from firestore, export button added to transactions page)
     const getData = async (reqBody) => {
         const { data } = await axios.get('/api/calculations/getAllTransactions')
         dispatch(actions.setTransactions(data.transactions))
     }
-<<<<<<< HEAD
 
     useEffect(() => {
         getData()
     }, [])
-=======
-    // const getData = async (reqBody) => {
-    //     const test = await axios.get('/api/calculations/getAllTransactions')
-    //     console.log('test')
-    //     console.log(test)
-    // }
-
-    // useEffect(() => {
-    //     console.log('hi')
-    //     getData()
-    // }, [])
->>>>>>> bc89938 (add delete and get transaction routes)
-=======
-
-    useEffect(() => {
-        getData()
-    }, [])
->>>>>>> b45f736 (fix transaction routes, transaction page pulls from firestore, export button added to transactions page)
 
     const buildTransactions = (transactionList) => {
         return (
@@ -178,18 +155,16 @@ const Transactions = (props) => {
                             Overall Transactions
                         </Text>
                         <Stack width={'100%'} direction={'row'}>
-                            <Select onChange={onSelect}>
-                                <option value='recent'>Recently Added</option>
-                                <option value='date'>Date</option>
-                                <option value='low'>Price Low to High</option>
-                                <option value='high'>Price High to Low</option>
-                            </Select>
+                        <Select onChange={onSelect}>
+                            <option value='recent'>Recently Added</option>
+                            <option value='date'>Date</option>
+                            <option value='low'>Price Low to High</option>
+                            <option value='high'>Price High to Low</option>
+                        </Select>
                             <Stack>
-                                <Button>
                                     <CSVLink data={transactions}>
-                                        Export
+                                        <Button>Export</Button>
                                     </CSVLink>
-                                </Button>
                             </Stack>
                         </Stack>
                 </Stack>
@@ -209,7 +184,7 @@ const Transactions = (props) => {
                             Prev
                         </Button>
                         <Button
-                            disabled={transactions.slice((c urrentPage+1)*10, ((currentPage+1)*10) + 10).length === 0}
+                            disabled={transactions.slice((currentPage+1)*10, ((currentPage+1)*10) + 10).length === 0}
                             onClick={(event) => {
                                 onNextPage()
                             }}>

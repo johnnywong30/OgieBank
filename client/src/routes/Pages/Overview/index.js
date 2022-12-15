@@ -17,32 +17,40 @@ import { Heading,
 
 import Balance from "./Balance";
 import Debt from "./Debt";
-import {useSelector} from 'react-redux';
-import "react-datepicker/dist/react-datepicker.css";
+import { useDispatch, useSelector} from 'react-redux';
 import { Formik, Field } from "formik";
 import validation from '../../../constants/validation';
+import actions from '../../../redux/actions/transactions'
+import axios from 'axios';
+import {v4 as uuid} from 'uuid';
 
 const Overview = () => {
     const [startDate, setStartDate] = useState(new Date());
     const startDateFormat = (((startDate.getMonth() > 8) ? (startDate.getMonth() + 1) : ('0' + (startDate.getMonth() + 1))) + '/' + ((startDate.getDate() > 9) ? startDate.getDate() : ('0' + startDate.getDate())) + '/' + startDate.getFullYear());
     const userData = useSelector((state) => state.auth.user);
     const userName = userData.displayName === '' ? "Change Name In Settings" : userData.displayName;
+    const dispatch = useDispatch();
     
     const [category, setCategory] = useState("Option 1");
-    const [paymentMethod, setPaymentMethod] = useState("Option 1");
+    const [payment, setPayment] = useState("Bank");
     
     const handleChange = (event) => {
         setCategory(event.target.value);
     }
 
     const handleChange2 = (event) => {
-        setPaymentMethod(event.target.value)
+        setPayment(event.target.value)
     }
 
-    function sendValues(values) {
+    const sendValues = async (values) => {
+        values.id = uuid();
         values.category = category;
-        values.paymentMethod = paymentMethod;
-        console.log(values);
+        values.payment = payment;
+        const reqBody = values;
+        await axios.post('/api/calculations/addtransaction', reqBody);
+        dispatch(actions.addTransaction(values));
+        setCategory("Option1");
+        setPayment("Bank");
     }
 
     return (
@@ -83,9 +91,18 @@ const Overview = () => {
                                     name: "",
                                     amount: "",
                                     date: "",
-                                    category: "test",
                                 }}
-                                onSubmit={(values) => sendValues(values)}
+                                onSubmit={(values, actions) => {
+                                    sendValues(values);
+                                    actions.setSubmitting(false);
+                                    actions.resetForm({
+                                        values: {
+                                            name: "",
+                                            amount: "",
+                                            date: "",
+                                        },
+                                    });
+                                }}
                                 validateOnChange={false}
                                 validateOnBlur={false}
                             >
@@ -136,7 +153,7 @@ const Overview = () => {
                                                 placeholder={startDateFormat}
                                                 validate={(value) => {
                                                     let error;
-                                                    if (!value || value.trim().length === 0){
+                                                    if (!value || typeof value != 'string' || value.trim().length === 0){
                                                         error = "Invalid Date (format: mm/dd/year)";
                                                         return error;
                                                     }
@@ -159,14 +176,13 @@ const Overview = () => {
                                             <option value="Option 2">Option 2</option>
                                             <option value="Option 3">Option 3</option>
                                         </Select>
-                                        <FormLabel my={1} htmlFor="paymentMethod">Payment Method</FormLabel>
+                                        <FormLabel my={1} htmlFor="payment">Payment</FormLabel>
                                         <Select
-                                            value={paymentMethod}
+                                            value={payment}
                                             onChange={handleChange2}
                                         >
-                                            <option value="Option 1">Option 1</option>
-                                            <option value="Option 2">Option 2</option>
-                                            <option value="Option 3">Option 3</option>
+                                            <option value="Bank">Bank</option>
+                                            <option value="Credit">Credit</option>
                                         </Select>
                                         <Button
                                             mt={10}
@@ -182,7 +198,8 @@ const Overview = () => {
                                             _focus={{
                                             bg: 'green.500',
                                             }}
-                                            type='submit'>
+                                            type='submit'
+                                            >
                                             Add Transaction
                                         </Button>
                                     </form>

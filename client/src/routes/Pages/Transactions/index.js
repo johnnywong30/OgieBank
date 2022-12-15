@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux'
+import axios from 'axios';
 
 import actions from '../../../redux/actions/transactions'
 
@@ -33,8 +34,9 @@ const Transactions = (props) => {
         dispatch(actions.sortTransactions(event.target.value))
     }
 
-    const deleteTransaction = (id) => {
+    const deleteTransaction = async (id) => {
         dispatch(actions.deleteTransaction(id))
+        await axios.post('/api/calculations/deletetransaction', {id: id})
     }
 
     const onNextPage = () => {
@@ -45,10 +47,16 @@ const Transactions = (props) => {
         setCurrentPage(currentPage - 1)
     }
 
-    useEffect(() => {
-        console.log(page)
-       console.log(transactions.slice(page*10, (page*10) + 10))
-    }, [])
+    // const getData = async (reqBody) => {
+    //     const test = await axios.get('/api/calculations/getAllTransactions')
+    //     console.log('test')
+    //     console.log(test)
+    // }
+
+    // useEffect(() => {
+    //     console.log('hi')
+    //     getData()
+    // }, [])
 
     const buildTransactions = (transactionList) => {
         return (

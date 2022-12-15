@@ -29,4 +29,42 @@ router
         }
     })
 
+router
+    .route('/deletetransaction')
+    .post(async (req, res) => {
+        if (!req.session.user) {
+            return res.status(400).json({error: 'User not logged in!'})
+        }
+
+        if (req.body.id) {
+            try {
+                req.body.id = validation.checkId(xss(req.body.id));
+                
+                await calculationData.addTransaction(req.session.user.id, xss(req.body.id));
+                return res.status(200).json({success: "success"});
+            } catch (e) {
+                console.log(e)
+                return res.status(400).json({error: "error"});
+            }
+        }
+    })
+
+router
+    .route('/getAllTransactions')
+    .get(async (req, res) => {
+        if (!req.session.user) {
+            return res.status(400).json({error: 'User not logged in!'})
+        }
+
+        if (req.body.id) {
+            try {
+                const transactions = await calculationData.getAllTransactions(req.session.user.id)
+                return res.status(200).json({success: "success", transactions: transactions});
+            } catch (e) {
+                console.log(e)
+                return res.status(400).json({error: "error"});
+            }
+        }
+    })
+
 module.exports = router;

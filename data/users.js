@@ -248,6 +248,15 @@ async function updatePassword(id, password) {
     return user
 }
 
+// data functions for settings
+async function setBank(bank) {
+    bank = validation.checkString(bank, 'Bank')
+}
+
+async function setCreditCard(card) {
+    card = validation.checkString(card, 'Credit Card')
+} 
+
 module.exports = {
     getUser,
     getUserByUsername,
@@ -260,5 +269,7 @@ module.exports = {
     createUserByAuth,
     removeUser,
     updateUsername,
-    updatePassword
+    updatePassword,
+    setBank,
+    setCreditCard
 }

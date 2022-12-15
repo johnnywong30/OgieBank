@@ -44,7 +44,7 @@ const Balance = () => {
             justifyContent="space-between">
             <Box
                 w={'full'}
-                bg={useColorModeValue('white', 'gray.800')}
+                bg={useColorModeValue('#cccccc', 'gray.800')}
                 boxShadow={'2xl'}
                 rounded={'md'}
                 overflow={'hidden'}>
@@ -61,7 +61,7 @@ const Balance = () => {
                             bg={useColorModeValue('green.50', 'green.900')}
                             p={2}
                             px={3}
-                            color={'green.500'}
+                            color={'black.500'}
                             rounded={'full'}>
                             {bankName}
                         </Text>
@@ -84,7 +84,7 @@ const Balance = () => {
                             bg={useColorModeValue('red.50', 'red.900')}
                             p={2}
                             px={3}
-                            color={'red.500'}
+                            color={'black.500'}
                             rounded={'full'}>
                             {creditName}
                         </Text>
@@ -93,11 +93,11 @@ const Balance = () => {
                             <Text fontSize={'3xl'} fontWeight={800}>
                                 {creditBalance}
                             </Text>
-                            <Text color={'gray.500'}>/ {creditLimit}</Text>
+                            <Text color={'black.500'}>/ {creditLimit}</Text>
                         </Stack>
                     </Stack>
                 </SimpleGrid>
-                <Box bg={useColorModeValue('gray.50', 'gray.900')} px={6} py={10}>
+                <Box bg={'white'} px={6} py={10}>
                     <Center>
                     <List spacing={3}>
                             <ListItem>
@@ -124,15 +124,15 @@ const Balance = () => {
                         mt={10}
                         mx="25%"
                         w={'50%'}
-                        bg={'green.400'}
+                        bg={'black'}
                         color={'white'}
                         rounded={'xl'}
-                        boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
+                        boxShadow={'0 5px 20px 0px black / 43%)'}
                         _hover={{
-                        bg: 'green.500',
+                        bg: 'black.500',
                         }}
                         _focus={{
-                        bg: 'green.500',
+                        bg: 'black.500',
                         }}>
                         View Budget
                     </Button>

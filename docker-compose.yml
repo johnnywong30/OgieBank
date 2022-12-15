@@ -1,0 +1,42 @@
+# Server Dockerfile (in root directory)
+
+# FROM node:16
+# WORKDIR /server
+# COPY package*.json ./
+# RUN npm install
+# COPY . .
+# EXPOSE 8080
+# CMD [ "npm", "start" ]
+
+# Client Dockerfile (in /client directory)
+
+# FROM node:16
+# WORKDIR /client
+# COPY package*.json ./
+# RUN npm install
+# COPY . .
+# EXPOSE 3000
+# CMD [ "npm", "start" ]
+
+version: '3.8'
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/server
+      - /server/node_modules
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./client:/client
+      - /client/node_modules
+    depends_on:
+      - server

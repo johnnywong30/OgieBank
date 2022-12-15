@@ -47,6 +47,7 @@ const Transactions = (props) => {
         setCurrentPage(currentPage - 1)
     }
 
+<<<<<<< HEAD
     const getData = async (reqBody) => {
         const { data } = await axios.get('/api/calculations/getAllTransactions')
         dispatch(actions.setTransactions(data.transactions))
@@ -55,6 +56,18 @@ const Transactions = (props) => {
     useEffect(() => {
         getData()
     }, [])
+=======
+    // const getData = async (reqBody) => {
+    //     const test = await axios.get('/api/calculations/getAllTransactions')
+    //     console.log('test')
+    //     console.log(test)
+    // }
+
+    // useEffect(() => {
+    //     console.log('hi')
+    //     getData()
+    // }, [])
+>>>>>>> bc89938 (add delete and get transaction routes)
 
     const buildTransactions = (transactionList) => {
         return (

@@ -64,10 +64,11 @@ const Overview = () => {
                     marginTop={{ base: '1', sm: '5' }}
                     display="flex"
                     flexDirection={{ base: 'column', sm: 'row' }}
-                    justifyContent="space-between">
+                    justifyContent="space-between"
+                    height='auto'>
                     <Box
                         w={'full'}
-                        bg={useColorModeValue('white', 'gray.800')}
+                        bg={'#86cf9d'}
                         boxShadow={'2xl'}
                         rounded={'md'}
                         overflow={'hidden'}>
@@ -85,7 +86,7 @@ const Overview = () => {
                                 </Stack>
                             </Stack>
                         </SimpleGrid>
-                        <Box bg={useColorModeValue('gray.50', 'gray.900')} px={6} py={10}>
+                        <Box bg={'white'} px={6} py={10}>
                             <Formik
                                 initialValues={{
                                     name: "",
@@ -188,15 +189,15 @@ const Overview = () => {
                                             mt={10}
                                             mx="25%"
                                             w={'50%'}
-                                            bg={'green.400'}
+                                            bg={'black'}
                                             color={'white'}
                                             rounded={'xl'}
-                                            boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
+                                            boxShadow={'0 5px 20px 0px black / 43%)'}
                                             _hover={{
-                                            bg: 'green.500',
+                                            bg: 'black',
                                             }}
                                             _focus={{
-                                            bg: 'green.500',
+                                            bg: 'black',
                                             }}
                                             type='submit'
                                             >

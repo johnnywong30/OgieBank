@@ -6,7 +6,7 @@ import {
     SimpleGrid, 
 } from '@chakra-ui/react'
 
-const Debt = () => {
+const Overview = () => {
     return (
         <Box
             marginTop={{ base: '1', sm: '5' }}
@@ -29,7 +29,7 @@ const Debt = () => {
                         align={'center'}>
                         <Stack direction={'row'} align={'center'} justify={'center'}>
                             <Text fontSize={'3xl'} fontWeight={800}>
-                                Debt Status
+                                Overview
                             </Text>
                         </Stack>
                     </Stack>
@@ -42,4 +42,4 @@ const Debt = () => {
     )
 }
 
-export default Debt;
+export default Overview;

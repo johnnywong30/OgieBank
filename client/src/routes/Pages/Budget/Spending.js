@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { 
     Box,
     Text,
@@ -53,6 +53,20 @@ const Spending = () => {
     }
 
     const spending = useSelector((state) => state.categories.categories.spending);
+
+    const getData = async (reqBody) => {
+        const { data } = await axios.get('/api/calculations/getAllCategories')
+        dispatch(actions.setCategories(data.categories));
+    }
+
+    useEffect(() => {
+        getData();
+    },[])
+
+    const checkIfUsed = (name) => {
+        let temp = (spending.some(e => e.name.toLowerCase().trim() === name.toLowerCase().trim()))
+        return temp; 
+    }
 
     return (
         <Box
@@ -152,6 +166,7 @@ const Spending = () => {
                                                     validate={(value) => {
                                                         let error;
                                                         if (!value || typeof value != 'string' || value.trim().length < 3) error = "Invalid Name"
+                                                        if (checkIfUsed(value)) error = "Already Used";
                                                         return error;
                                                     }}
                                                 />

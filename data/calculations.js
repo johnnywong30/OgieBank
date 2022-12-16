@@ -59,10 +59,11 @@ async function addCategory(id, categoryId, name, amount, isExpense) {
     let userCategories = userData.categories;
 
     if (isExpense) {
+        if (userCategories.expenses.some(e => e.name.toLowerCase().trim() === temp.name.toLowerCase().trim())) throw 'already used';
         userCategories.expenses.push(temp);
     } else {
+        if (userCategories.spending.some(e => e.name.toLowerCase().trim() === temp.name.toLowerCase().trim())) throw 'already used';
         temp.balance = 0;
-        console.log(isExpense);
         userCategories.spending.push(temp);
     }
 
@@ -137,10 +138,24 @@ async function getAllTransactions(id) {
     return userTransactions;
 }
 
+async function getAllCategories(id) {
+    id = validation.checkId(id);
+
+    const users = db.collection('users');
+    const user = await users.doc(id).get();
+    if (user.empty) throw 'No user found';
+
+    let userData = user.data();
+    let userCategories = userData.categories;
+
+    return userCategories;
+}
+
 module.exports = {
     addTransaction,
     getAllTransactions,
     deleteTransaction,
     addCategory,
     deleteCategory,
+    getAllCategories,
 }

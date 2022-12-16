@@ -41,6 +41,14 @@ router
                 req.body.name = validation.checkName(xss(req.body.name));
                 req.body.amount = validation.checkNum(xss(req.body.amount));
                 req.body.isExpense = validation.checkBool(xss(req.body.isExpense));
+
+                let categories = await calculationData.getAllCategories(req.session.user.id);
+                if (req.body.isExpense){
+                    if (categories.expenses.some(e => e.name.toLowerCase().trim() === req.body.name.toLowerCase().trim())) throw 'already used';
+                } else {
+                    if (categories.spending.some(e => e.name.toLowerCase().trim() === req.body.name.toLowerCase().trim())) throw 'already used';
+                } 
+
                 await calculationData.addCategory(req.session.user.id, xss(req.body.id), xss(req.body.name), xss(req.body.amount), xss(req.body.isExpense));
                 return res.status(200).json({success: "success"});
             } catch (e) {
@@ -100,6 +108,24 @@ router
             try {
                 const transactions = await calculationData.getAllTransactions(req.session.user.id)
                 return res.status(200).json({success: "success", transactions: transactions});
+            } catch (e) {
+                console.log(e)
+                return res.status(400).json({error: "error"});
+            }
+        }
+    })
+
+router
+    .route('/getAllCategories')
+    .get(async (req, res) => {
+        if (!req.session.user) {
+            return res.status(400).json({error: 'User not logged in!'})
+        }
+
+        if (req.session.user.id) {
+            try {
+                const categories = await calculationData.getAllCategories(req.session.user.id)
+                return res.status(200).json({success: "success", categories: categories});
             } catch (e) {
                 console.log(e)
                 return res.status(400).json({error: "error"});

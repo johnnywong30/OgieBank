@@ -20,10 +20,22 @@ const deleteCategory = (id, isExpense) => {
       })
     }
   }
-  
-  const categoryActions = {
-    addCategory,
-    deleteCategory,
+
+const setCategories = (categories) => {
+    return async dispatch => {
+      dispatch({
+        type: "SET_CATEGORIES",
+        payload: {
+          categories: categories,
+        }
+      })
+    }
   }
+  
+const categoryActions = {
+  addCategory,
+  deleteCategory,
+  setCategories,
+}
   
   export default categoryActions;

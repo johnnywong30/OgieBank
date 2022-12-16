@@ -249,7 +249,7 @@ async function updatePassword(id, password) {
 }
 
 // data functions for settings
-async function updateBank(bank, id) {
+async function updateBank(id, bank) {
     bank = validation.checkString(bank, 'Bank')
     id = validation.checkId(id)
     // check if user exists
@@ -263,7 +263,7 @@ async function updateBank(bank, id) {
     return user
 }
 
-async function updateBankBalance(balance, id) {
+async function updateBankBalance(id, balance) {
     balance = validation.checkBankBalance(balance)
     id = validation.checkId(id)
     // check if user exists
@@ -277,7 +277,7 @@ async function updateBankBalance(balance, id) {
     return user
 }
 
-async function updateCreditCard(card, id) {
+async function updateCreditCard(id, card) {
     card = validation.checkString(card, 'Credit')
     id = validation.checkId(id)
     // check if user exists
@@ -291,7 +291,7 @@ async function updateCreditCard(card, id) {
     return user
 } 
 
-async function updateCreditBalance(balance, id) {
+async function updateCreditBalance(id, balance) {
     balance = validation.checkCreditBalance(balance)
     id = validation.checkId(id)
     // check if user exists
@@ -305,7 +305,7 @@ async function updateCreditBalance(balance, id) {
     return user
 }
 
-async function updateCreditLimit(limit, id) {
+async function updateCreditLimit(id, limit) {
     limit = validation.checkCreditLimit(limit)
     id = validation.checkId(id)
     // check if user exists
@@ -319,8 +319,8 @@ async function updateCreditLimit(limit, id) {
     return user
 }
 
-async function updateFirstName(firstName, id) {
-    firstName = validation.checkName(firstName)
+async function updateFirstName(id, firstName) {
+    firstName = validation.checkName(firstName, 'First Name')
     id = validation.checkId(id)
     // check if user exists
     await getUser(id)
@@ -333,8 +333,8 @@ async function updateFirstName(firstName, id) {
     return user
 }
 
-async function updateLastName(lastName, id) {
-    lastName = validation.checkName(lastName)
+async function updateLastName(id, lastName) {
+    lastName = validation.checkName(lastName, 'Last Name')
     id = validation.checkId(id)
     // check if user exists
     await getUser(id)
@@ -347,7 +347,7 @@ async function updateLastName(lastName, id) {
     return user
 }
 
-async function updateEmail(email, id) {
+async function updateEmail(id, email) {
     email = validation.checkEmail(email)
     id = validation.checkId(id)
     // check if user exists

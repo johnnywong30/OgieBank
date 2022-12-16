@@ -1,16 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { 
-    useEditableControls, 
-    Editable, 
-    EditableInput, 
-    EditablePreview, 
-    ButtonGroup, 
-    IconButton, 
-    
-    Flex, 
+    Button,
     Input, 
     HStack,
-    Text
+    Text,
+    FormControl,
+    FormLabel,
+    ButtonGroup,
+    IconButton,
+    Icon
 } from "@chakra-ui/react";
 
 import { 
@@ -19,48 +17,60 @@ import {
     EditIcon, 
 } from '@chakra-ui/icons';
 
-const CustomEditable = ({ label, value, onChange, onSubmit, onCancel }) => {
+const CustomEditable = ({ label, type, value, onChange, onSubmit, onCancel }) => {
+    const [ isEditing, setIsEditing ] = useState(false)
 
-    const EditableControls = () => {
-        const {
-            isEditing,
-            getSubmitButtonProps,
-            getCancelButtonProps,
-            getEditButtonProps,
-        } = useEditableControls()
-
-        return isEditing ? (
-            <ButtonGroup justifyContent='center' size='sm'>
-                <IconButton icon={<CheckIcon />} {...getSubmitButtonProps()} />
-                <IconButton icon={<CloseIcon />} {...getCancelButtonProps()} />
-            </ButtonGroup>
-            ) : (
-            // <Flex justifyContent='center'>
-                
-                <IconButton size='sm' icon={<EditIcon />} {...getEditButtonProps()} />
-            // </Flex>
-        )
+    const startEditing = (event) => {
+        event.preventDefault()
+        setIsEditing(true)
     }
 
+    const cancelEditing = (event) => {
+        event.preventDefault()
+        setIsEditing(false)
+        onCancel()
+    }
+
+    const onSubmitWrapper = async (event) => {
+        try {
+            onSubmit(event)
+            setIsEditing(false)
+        } catch (e) {
+            alert(e)
+        }
+    }
+
+
     return (
-        <HStack spacing={4}>
-            <Text fontSize='xl' color='gray.500'>
-                {label}
-            </Text>
-            <Editable
-                textAlign='center'
-                placeholder={`No ${label} currently.`}
-                value={value}
-                onChange={onChange}
-                onSubmit={onSubmit}
-                onCancel={onCancel}
-                py={'5px'}
-                >
-                <EditablePreview />
-                <Input as={EditableInput} />
-                <EditableControls />
-            </Editable>
-        </HStack>
+        <form onSubmit={onSubmitWrapper}>
+            <FormControl>
+                <HStack spacing={4}>
+                    <FormLabel mt={isEditing ? 0 : 2} id={`${label}-label`} htmlFor={label}>{label}</FormLabel>
+                    {
+                        isEditing ?
+                        (
+                            <>
+                                <Input id={label} type={type} value={value} onChange={onChange}/>  
+                                <ButtonGroup>
+                                    <IconButton icon={<CheckIcon />} type='submit' onSubmit={onSubmitWrapper} />
+                                    <IconButton icon={<CloseIcon />} type='button' onClick={cancelEditing} />
+                                </ButtonGroup>                              
+                            </>
+                            
+                        )
+                        :
+                        (
+                            <>
+                                <Text color='gray.500'>{value}</Text>
+                                <IconButton icon={<EditIcon />} type='button' onClick={startEditing}/>
+                            </>
+
+                        )
+                    }
+                </HStack>
+            </FormControl>
+        </form>
+        
     )
 }
 

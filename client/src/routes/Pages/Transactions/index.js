@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux'
+import axios from 'axios';
+import { CSVLink, CSVDownload } from 'react-csv';
 
 import actions from '../../../redux/actions/transactions'
 
@@ -20,20 +22,41 @@ import { MinusIcon } from '@chakra-ui/icons';
 
 const Transactions = (props) => {
     const transactions = useSelector((state) => state.transactions.transactions)
+    const page = useSelector((state) => state.transactions.currentPage)
     const dispatch = useDispatch();
     const color = useColorModeValue('gray.800', 'white')
     const bg = useColorModeValue('green.50', 'green.900')
 
-    const [selectValue, setSelectValue] = useState('')
+    const [currentPage, setCurrentPage] = useState(0)
+    const [selectValue, setSelectValue] = useState('recent')
 
     const onSelect = (event) => {
         setSelectValue(event.target.value)
         dispatch(actions.sortTransactions(event.target.value))
     }
 
-    const deleteTransaction = (id) => {
+    const deleteTransaction = async (id) => {
+        await axios.post('/api/calculations/deletetransaction', {id: id})
         dispatch(actions.deleteTransaction(id))
     }
+
+    const onNextPage = () => {
+        setCurrentPage(currentPage + 1)
+    }
+
+    const onPrevpage = () => {
+        setCurrentPage(currentPage - 1)
+    }
+
+    const getData = async (reqBody) => {
+        const { data } = await axios.get('/api/calculations/getAllTransactions')
+        dispatch(actions.setTransactions(data.transactions))
+        dispatch(actions.sortTransactions(selectValue))
+    }
+
+    useEffect(() => {
+        getData()
+    }, [])
 
     const buildTransactions = (transactionList) => {
         return (
@@ -91,7 +114,7 @@ const Transactions = (props) => {
                                             {'$' + t.amount}
                                         </Text>
                                     </Stack>
-                                    <Stack>
+                                    <Stack direction={'row'} flexGrow='1' justifyContent={'flex-end'}>
                                         <Button
                                             width={'25%'}
                                             onClick={(event) => {
@@ -132,14 +155,19 @@ const Transactions = (props) => {
                         <Text fontSize={'3xl'} fontWeight={800}>
                             Overall Transactions
                         </Text>
-                        <Select onChange={onSelect}>
-                            <option value='recent'>Recently Added</option>
-                            <option value='date'>Date</option>
+                        <Stack width={'100%'} direction={'row'}>
+                        <Select onChange={onSelect} value={selectValue}>
+                            <option value='recent'>Most Recent</option>
+                            <option value='oldest'>Least Recent</option>
                             <option value='low'>Price Low to High</option>
                             <option value='high'>Price High to Low</option>
-                            <option value='bank'>Bank Only</option>
-                            <option value='credit'>Credit Only</option>
                         </Select>
+                            <Stack>
+                                    <CSVLink data={transactions}>
+                                        <Button>Export</Button>
+                                    </CSVLink>
+                            </Stack>
+                        </Stack>
                 </Stack>
                 <Stack
                     direction={'row'}
@@ -149,21 +177,29 @@ const Transactions = (props) => {
                     py={2}
                     color={useColorModeValue('gray.800', 'white')}
                     align={'center'}>
-                        <Button>
+                        <Button 
+                            onClick={(event) => {
+                                onPrevpage()
+                            }}
+                            disabled={currentPage === 0}>
                             Prev
                         </Button>
-                        <Button>
+                        <Button
+                            disabled={transactions.slice((currentPage+1)*10, ((currentPage+1)*10) + 10).length === 0}
+                            onClick={(event) => {
+                                onNextPage()
+                            }}>
                             Next
                         </Button>
                 </Stack>
             </SimpleGrid>
             <Box bg={useColorModeValue('gray.50', 'gray.900')} px={6} py={10}>
                 <Center>
-                {buildTransactions(transactions)}
+                {buildTransactions(transactions.slice(currentPage*10, (currentPage*10) + 10))}
             </Center>
+            </Box>
         </Box>
     </Box>
-</Box>
   )
 }
 

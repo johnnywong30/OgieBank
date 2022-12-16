@@ -4,6 +4,7 @@ import {
     Text,
     Stack,
     SimpleGrid, 
+    Divider,
 } from '@chakra-ui/react'
 
 const Chart = () => {
@@ -16,7 +17,7 @@ const Chart = () => {
             height='auto'>
             <Box
                 w={'full'}
-                bg={'#86cf9d'}
+                bg={'white'}
                 boxShadow={'2xl'}
                 rounded={'md'}
                 overflow={'hidden'}>
@@ -34,8 +35,9 @@ const Chart = () => {
                         </Stack>
                     </Stack>
                 </SimpleGrid>
+                <Divider/>
                 <Box bg={'white'} px={6} py={10}>
-                    Text Here
+                    Chart Here
                 </Box>
             </Box>
         </Box>

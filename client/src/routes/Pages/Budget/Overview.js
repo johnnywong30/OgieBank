@@ -8,6 +8,7 @@ import {
     List,
     ListItem,
     ListIcon,
+    Divider,
 } from '@chakra-ui/react'
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import {useSelector} from 'react-redux';
@@ -49,14 +50,20 @@ const Overview = () => {
                         align={'center'}>
                         <Stack direction={'row'} align={'center'} justify={'center'}>
                             <Text fontSize={'3xl'} fontWeight={800}>
-                                {monthNames[d.getMonth()]}'s Savings: ${remaining}
+                                {monthNames[d.getMonth()]}
                             </Text>
                         </Stack>
                     </Stack>
                 </SimpleGrid>
+                <Divider/>
                 <Box bg={'white'} px={6} py={10}>
                     <Center>
                         <List spacing={3}>
+                            <ListItem>
+                                <Text fontSize={'xl'} fontWeight={800}>
+                                    Savings: ${remaining}
+                                </Text>
+                            </ListItem>
                             <ListItem>
                                 <ListIcon as={TriangleUpIcon} color="green.400" />
                                 Income: ${monthIncome}

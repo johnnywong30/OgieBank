@@ -36,6 +36,73 @@ async function addTransaction(id, transactionId, name, amount, date, category, p
     return {success: "success"};
 }
 
+async function addCategory(id, categoryId, name, amount, isExpense) {
+    id = validation.checkId(id);
+    categoryId = validation.checkId(categoryId);
+    name = validation.checkName(name);
+    amount = validation.checkNum(amount);
+    isExpense = validation.checkBool(isExpense);
+
+    const temp = {
+        id: categoryId,
+        name: name,
+        amount: amount,
+        isExpense: isExpense,
+    }
+
+    const users = db.collection('users');
+    const user = await users.doc(id).get();
+
+    if (user.empty) throw 'No user found';
+
+    let userData = user.data();
+    let userCategories = userData.categories;
+
+    if (isExpense) {
+        userCategories.expenses.push(temp);
+    } else {
+        temp.balance = 0;
+        console.log(isExpense);
+        userCategories.spending.push(temp);
+    }
+
+    let updatedCategories = await users.doc(id).update({
+        categories: userCategories,
+    })
+
+    if (!updatedCategories) throw 'Could not update category';
+    return {success: "success"};
+}
+
+async function deleteCategory(id, categoryId, isExpense) {
+    id = validation.checkId(id);
+    categoryId = validation.checkId(categoryId);
+    isExpense = validation.checkBool(isExpense);
+
+    const users = db.collection('users');
+    const user = await users.doc(id).get();
+
+    if (user.empty) throw 'No user found';
+
+    let userData = user.data();
+    if (isExpense){
+        let userExpenses = userData.categories.expenses.filter((e) => e.id !== categoryId);
+        let userSpending = userData.categories.spending;
+        let updatedCategories = await users.doc(id).update({
+            categories: {expenses: userExpenses, spending: userSpending},
+        })
+        if (!updatedCategories) throw 'Could not update transaction';
+    } else {
+        let userExpenses = userData.categories.expenses;
+        let userSpending = userData.categories.spending.filter((e) => e.id !== categoryId);
+        let updatedCategories = await users.doc(id).update({
+            categories: {expenses: userExpenses, spending: userSpending},
+        })
+        if (!updatedCategories) throw 'Could not update transaction';
+    }
+    return {success: "success"};
+}
+
 async function deleteTransaction(id, transactionId) {
     id = validation.checkId(id);
     transactionId = validation.checkId(transactionId);
@@ -73,5 +140,7 @@ async function getAllTransactions(id) {
 module.exports = {
     addTransaction,
     getAllTransactions,
-    deleteTransaction
+    deleteTransaction,
+    addCategory,
+    deleteCategory,
 }

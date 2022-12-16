@@ -30,6 +30,46 @@ router
     })
 
 router
+    .route('/addcategory')
+    .post(async (req, res) => {
+        if (!req.session.user) {
+            return res.status(400).json({error: 'User not logged in!'})
+        }
+        if (req.body.id) {
+            try {
+                req.body.id = validation.checkId(xss(req.body.id));
+                req.body.name = validation.checkName(xss(req.body.name));
+                req.body.amount = validation.checkNum(xss(req.body.amount));
+                req.body.isExpense = validation.checkBool(xss(req.body.isExpense));
+                await calculationData.addCategory(req.session.user.id, xss(req.body.id), xss(req.body.name), xss(req.body.amount), xss(req.body.isExpense));
+                return res.status(200).json({success: "success"});
+            } catch (e) {
+                console.log(e)
+                return res.status(400).json({error: "error"});
+            }
+        }
+    })
+
+router
+    .route('/deletecategory')
+    .post(async (req, res) => {
+        if (!req.session.user) {
+            return res.status(400).json({error: 'User not logged in!'})
+        }
+        if (req.body.id) {
+            try {
+                req.body.id = validation.checkId(xss(req.body.id));
+                req.body.isExpense = validation.checkBool(xss(req.body.isExpense));
+                await calculationData.deleteCategory(req.session.user.id, xss(req.body.id), xss(req.body.isExpense));
+                return res.status(200).json({success: "success"});
+            } catch (e) {
+                console.log(e)
+                return res.status(400).json({error: "error"});
+            }
+        }
+    })
+
+router
     .route('/deletetransaction')
     .post(async (req, res) => {
         if (!req.session.user) {

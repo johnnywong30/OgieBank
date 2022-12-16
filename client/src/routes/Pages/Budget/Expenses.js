@@ -28,6 +28,7 @@ import {v4 as uuid} from 'uuid';
 import { useDispatch, useSelector} from 'react-redux';
 import actions from '../../../redux/actions/categories'
 import { MinusIcon } from '@chakra-ui/icons';
+import axios from 'axios';
 
 const Expenses = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -37,14 +38,18 @@ const Expenses = () => {
         values.id = uuid();
         values.isExpense = true;
         const reqBody = values;
-        console.log(reqBody);
         dispatch(actions.addCategory(reqBody));
-        //update firestore
+        await axios.post('/api/calculations/addcategory', reqBody);
         onClose();
     }
 
-    const deleteExpense = (id, isExpense) => {
+    const deleteExpense = async (id, isExpense) => {
+        const reqBody = {
+            id: id,
+            isExpense: isExpense,
+        };
         dispatch(actions.deleteCategory(id, isExpense));
+        await axios.post('/api/calculations/deletecategory', reqBody);
     }
 
     const expenses = useSelector((state) => state.categories.categories.expenses);
@@ -76,6 +81,7 @@ const Expenses = () => {
                         </Stack>
                     </Stack>
                 </SimpleGrid>
+                <Divider/>
                 <Box bg={'white'} px={6} py={10}>
                     <List spacing={3}>
                     {expenses.map((e) => {

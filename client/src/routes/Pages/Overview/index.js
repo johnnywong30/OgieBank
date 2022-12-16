@@ -13,6 +13,7 @@ import { Heading,
     HStack,
     FormErrorMessage,
     Select,
+    Divider,
 } from '@chakra-ui/react'
 
 import Balance from "./Balance";
@@ -86,6 +87,7 @@ const Overview = () => {
                                 </Stack>
                             </Stack>
                         </SimpleGrid>
+                        <Divider/>
                         <Box bg={'white'} px={6} py={10}>
                             <Formik
                                 initialValues={{

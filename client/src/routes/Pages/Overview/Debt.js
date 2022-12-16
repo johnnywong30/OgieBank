@@ -4,6 +4,7 @@ import {
     Text,
     Stack,
     SimpleGrid, 
+    Divider,
 } from '@chakra-ui/react'
 
 const Debt = () => {
@@ -34,6 +35,7 @@ const Debt = () => {
                         </Stack>
                     </Stack>
                 </SimpleGrid>
+                <Divider/>
                 <Box bg={'white'} px={6} py={10}>
                     Text Here
                 </Box>

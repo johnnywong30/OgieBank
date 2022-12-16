@@ -137,6 +137,11 @@ function checkNum(num){
     return num;
 }
 
+function checkBool(bool){
+    if (bool === undefined) {throw 'Error: You must provide a valid bool';}
+    return bool;
+}
+
 module.exports = {
     checkId,
     checkString,
@@ -153,4 +158,5 @@ module.exports = {
     leapYear,
     checkName,
     checkNum,
+    checkBool,
 }

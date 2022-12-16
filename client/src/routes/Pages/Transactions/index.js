@@ -28,7 +28,7 @@ const Transactions = (props) => {
     const bg = useColorModeValue('green.50', 'green.900')
 
     const [currentPage, setCurrentPage] = useState(0)
-    const [selectValue, setSelectValue] = useState('')
+    const [selectValue, setSelectValue] = useState('recent')
 
     const onSelect = (event) => {
         setSelectValue(event.target.value)
@@ -51,6 +51,7 @@ const Transactions = (props) => {
     const getData = async (reqBody) => {
         const { data } = await axios.get('/api/calculations/getAllTransactions')
         dispatch(actions.setTransactions(data.transactions))
+        dispatch(actions.sortTransactions(selectValue))
     }
 
     useEffect(() => {
@@ -155,9 +156,9 @@ const Transactions = (props) => {
                             Overall Transactions
                         </Text>
                         <Stack width={'100%'} direction={'row'}>
-                        <Select onChange={onSelect}>
-                            <option value='recent'>Recently Added</option>
-                            <option value='date'>Date</option>
+                        <Select onChange={onSelect} value={selectValue}>
+                            <option value='recent'>Most Recent</option>
+                            <option value='oldest'>Least Recent</option>
                             <option value='low'>Price Low to High</option>
                             <option value='high'>Price High to Low</option>
                         </Select>

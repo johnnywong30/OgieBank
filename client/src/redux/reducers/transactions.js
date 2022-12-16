@@ -20,7 +20,11 @@ const transactionReducer = (state = initialState, action) => {
         return {...state, transactions: transactions}
       }
 
-      else if (payload.sort === 'date') {
+      else if (payload.sort === 'oldest') {
+        let transactions = state.transactions.sort((a, b) => new Date(a.date) - new Date(b.date))
+        return {...state, transactions: transactions}
+      }
+      else if (payload.sort === 'recent') {
         let transactions = state.transactions.sort((a, b) => new Date(b.date) - new Date(a.date))
         return {...state, transactions: transactions}
       }

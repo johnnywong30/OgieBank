@@ -36,6 +36,42 @@ async function addTransaction(id, transactionId, name, amount, date, category, p
     return {success: "success"};
 }
 
+async function deleteTransaction(id, transactionId) {
+    id = validation.checkId(id);
+    transactionId = validation.checkId(transactionId);
+
+    const users = db.collection('users');
+    const user = await users.doc(id).get();
+
+    if (user.empty) throw 'No user found';
+
+    let userData = user.data();
+    console.log(userData.transactions)
+    let userTransactions = userData.transactions.filter((t) => t.id !== transactionId);
+    console.log(userTransactions)
+    let updatedTransactions = await users.doc(id).update({
+        transactions: userTransactions,
+    })
+    if (!updatedTransactions) throw 'Could not update transaction';
+    return {success: "success"};
+}
+
+async function getAllTransactions(id) {
+    id = validation.checkId(id);
+
+    const users = db.collection('users');
+    const user = await users.doc(id).get();
+    if (user.empty) throw 'No user found';
+
+    let userData = user.data();
+    console.log(userData)
+    let userTransactions = userData.transactions;
+
+    return userTransactions;
+}
+
 module.exports = {
     addTransaction,
+    getAllTransactions,
+    deleteTransaction
 }

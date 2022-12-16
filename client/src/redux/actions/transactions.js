@@ -31,10 +31,22 @@ const addTransaction = (transaction) => {
   }
 }
 
+const setTransactions = (transactions) => {
+  return async dispatch => {
+    dispatch({
+      type: "SET_TRANSACTIONS",
+      payload: {
+        transactions: transactions
+      }
+    })
+  }
+}
+
 const transactionActions = {
   deleteTransaction,
   sortTransactions,
   addTransaction,
+  setTransactions
 }
 
 export default transactionActions

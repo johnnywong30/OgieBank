@@ -35,9 +35,10 @@ const CustomEditable = ({ label, value, onChange, onSubmit, onCancel }) => {
                 <IconButton icon={<CloseIcon />} {...getCancelButtonProps()} />
             </ButtonGroup>
             ) : (
-            <Flex justifyContent='center'>
+            // <Flex justifyContent='center'>
+                
                 <IconButton size='sm' icon={<EditIcon />} {...getEditButtonProps()} />
-            </Flex>
+            // </Flex>
         )
     }
 
@@ -48,10 +49,12 @@ const CustomEditable = ({ label, value, onChange, onSubmit, onCancel }) => {
             </Text>
             <Editable
                 textAlign='center'
+                placeholder={`No ${label} currently.`}
                 value={value}
                 onChange={onChange}
                 onSubmit={onSubmit}
                 onCancel={onCancel}
+                py={'5px'}
                 >
                 <EditablePreview />
                 <Input as={EditableInput} />

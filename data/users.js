@@ -249,15 +249,121 @@ async function updatePassword(id, password) {
 }
 
 // data functions for settings
-async function setBank(bank) {
+async function updateBank(bank, id) {
     bank = validation.checkString(bank, 'Bank')
+    id = validation.checkId(id)
+    // check if user exists
+    await getUser(id)
+    const users = db.collection('users')
+    const updateInfo = await users.doc(id).update({
+        "accountInfo.bankName": bank
+    })
+    console.log(updateInfo)
+    const user = await getUser(id)
+    return user
 }
 
-async function setCreditCard(card) {
+async function updateBankBalance(balance, id) {
+    balance = validation.checkBankBalance(balance)
+    id = validation.checkId(id)
+    // check if user exists
+    await getUser(id)
+    const users = db.collection('users')
+    const updateInfo = await users.doc(id).update({
+        "accountInfo.bankBalance": balance
+    })
+    console.log(updateInfo)
+    const user = await getUser(id)
+    return user
+}
+
+async function updateCreditCard(card, id) {
     card = validation.checkString(card, 'Credit')
+    id = validation.checkId(id)
+    // check if user exists
+    await getUser(id)
+    const users = db.collection('users')
+    const updateInfo = await users.doc(id).update({
+        "accountInfo.creditName": card
+    })
+    console.log(updateInfo)
+    const user = await getUser(id)
+    return user
 } 
 
+async function updateCreditBalance(balance, id) {
+    balance = validation.checkCreditBalance(balance)
+    id = validation.checkId(id)
+    // check if user exists
+    await getUser(id)
+    const users = db.collection('users')
+    const updateInfo = await users.doc(id).update({
+        "accountInfo.creditBalance": balance
+    })
+    console.log(updateInfo)
+    const user = await getUser(id)
+    return user
+}
+
+async function updateCreditLimit(limit, id) {
+    limit = validation.checkCreditLimit(limit)
+    id = validation.checkId(id)
+    // check if user exists
+    await getUser(id)
+    const users = db.collection('users')
+    const updateInfo = await users.doc(id).update({
+        "accountInfo.creditLimit": limit
+    })
+    console.log(updateInfo)
+    const user = await getUser(id)
+    return user
+}
+
+async function updateFirstName(firstName, id) {
+    firstName = validation.checkName(firstName)
+    id = validation.checkId(id)
+    // check if user exists
+    await getUser(id)
+    const users = db.collection('users')
+    const updateInfo = await users.doc(id).update({
+        "firstName": firstName
+    })
+    console.log(updateInfo)
+    const user = await getUser(id)
+    return user
+}
+
+async function updateLastName(lastName, id) {
+    lastName = validation.checkName(lastName)
+    id = validation.checkId(id)
+    // check if user exists
+    await getUser(id)
+    const users = db.collection('users')
+    const updateInfo = await users.doc(id).update({
+        "lastName": lastName
+    })
+    console.log(updateInfo)
+    const user = await getUser(id)
+    return user
+}
+
+async function updateEmail(email, id) {
+    email = validation.checkEmail(email)
+    id = validation.checkId(id)
+    // check if user exists
+    await getUser(id)
+    const users = db.collection('users')
+    const updateInfo = await users.doc(id).update({
+        "email": email
+    })
+    console.log(updateInfo)
+    const user = await getUser(id)
+    return user
+}
+
+
 module.exports = {
+    // GENERAL AUTH
     getUser,
     getUserByUsername,
     getUserByEmail,
@@ -268,8 +374,15 @@ module.exports = {
     createUser,
     createUserByAuth,
     removeUser,
+    // SETTINGS PAGE
+    updateBank,
+    updateBankBalance,
+    updateCreditCard,
+    updateCreditBalance,
+    updateCreditLimit,
+    updateFirstName,
+    updateLastName,
+    updateEmail,
     updateUsername,
     updatePassword,
-    setBank,
-    setCreditCard
 }

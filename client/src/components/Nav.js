@@ -64,7 +64,7 @@ const MenuToggle = ({ toggle, isOpen }) => {
 
 const MenuItem = ({ children, isLast, to = "/", ...rest }) => {
     return (
-        <Link as={RouterLinks} to={to}>{children}</Link>
+        <Link as={RouterLinks} to={to} {...rest} >{children}</Link>
     );
 };
 
@@ -92,15 +92,8 @@ const MenuLinks = ({ isOpen, loading, handleLogout, isAuth }) => {
                     >
                         Logout
                     </Button>
-                ) : (
-                    <Button
-                        color="white"
-                        bg="black"
-                        isLoading={loading}
-                        onClick={() => handleLogout()}
-                    >
-                        <MenuItem to="/login">Login</MenuItem>
-                    </Button>
+                ) : (                    
+                    <MenuItem to="/login">Login</MenuItem>                    
                 ) }
             </Stack>
         </Box>

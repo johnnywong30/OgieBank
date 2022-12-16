@@ -156,4 +156,14 @@ router
         }
     })
 
+router
+    .route('/update/:field')
+    .post(async (req, res) => {
+        if (!req.session.user) {
+            return res.status(400).json({error: 'User not logged in!'})
+        }
+        // TODO
+
+    })
+
 module.exports = router;

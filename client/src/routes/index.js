@@ -10,6 +10,7 @@ import Error from './Pages/Error';
 import Home from './Pages/Home';
 import Overview from './Pages/Overview';
 import Transactions from './Pages/Transactions';
+import Budget from './Pages/Budget';
 
 const RestrictedRoute = ({ children, redirectTo}) => {
     const isAuth = useSelector(({auth}) => auth.auth);
@@ -50,6 +51,11 @@ const AllRoutes = () => {
             <Route path='/transactions' element={
                 <RestrictedRoute redirectTo={'/login'}>
                     <Transactions/>
+                </RestrictedRoute>
+            }/>
+            <Route path='/budget' element={
+                <RestrictedRoute redirectTo={'/login'}>
+                    <Budget/>
                 </RestrictedRoute>
             }/>
             <Route path='/' element={<Home/>}/>

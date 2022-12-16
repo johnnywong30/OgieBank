@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { Heading, 
     Box, 
     Container, 
@@ -13,6 +13,7 @@ import { Heading,
     HStack,
     FormErrorMessage,
     Select,
+    Divider,
 } from '@chakra-ui/react'
 
 import Balance from "./Balance";
@@ -20,7 +21,8 @@ import Debt from "./Debt";
 import { useDispatch, useSelector} from 'react-redux';
 import { Formik, Field } from "formik";
 import validation from '../../../constants/validation';
-import actions from '../../../redux/actions/transactions'
+import actions from '../../../redux/actions/transactions';
+import actions2 from '../../../redux/actions/categories';
 import axios from 'axios';
 import {v4 as uuid} from 'uuid';
 
@@ -31,7 +33,7 @@ const Overview = () => {
     const userName = userData.displayName === '' ? "Change Name In Settings" : userData.displayName;
     const dispatch = useDispatch();
     
-    const [category, setCategory] = useState("Option 1");
+    const [category, setCategory] = useState('Deposit');
     const [payment, setPayment] = useState("Bank");
     
     const handleChange = (event) => {
@@ -49,9 +51,21 @@ const Overview = () => {
         const reqBody = values;
         await axios.post('/api/calculations/addtransaction', reqBody);
         dispatch(actions.addTransaction(values));
-        setCategory("Option1");
+        setCategory('Deposit');
         setPayment("Bank");
     }
+
+    const expenses = useSelector((state) => state.categories.categories.expenses);
+    const spending = useSelector((state) => state.categories.categories.spending);
+
+    const getData = async () => {
+        const { data } = await axios.get('/api/calculations/getAllCategories');
+        dispatch(actions2.setCategories(data.categories));
+    }
+
+    useEffect(() => {
+        getData();
+    },[])
 
     return (
         <Container maxW={'7xl'} px="12" py="6">
@@ -64,10 +78,11 @@ const Overview = () => {
                     marginTop={{ base: '1', sm: '5' }}
                     display="flex"
                     flexDirection={{ base: 'column', sm: 'row' }}
-                    justifyContent="space-between">
+                    justifyContent="space-between"
+                    height='auto'>
                     <Box
                         w={'full'}
-                        bg={useColorModeValue('white', 'gray.800')}
+                        bg={'white'}
                         boxShadow={'2xl'}
                         rounded={'md'}
                         overflow={'hidden'}>
@@ -85,7 +100,8 @@ const Overview = () => {
                                 </Stack>
                             </Stack>
                         </SimpleGrid>
-                        <Box bg={useColorModeValue('gray.50', 'gray.900')} px={6} py={10}>
+                        <Divider/>
+                        <Box bg={'white'} px={6} py={10}>
                             <Formik
                                 initialValues={{
                                     name: "",
@@ -172,31 +188,36 @@ const Overview = () => {
                                             value={category}
                                             onChange={handleChange}
                                         >
-                                            <option value="Option 1">Option 1</option>
-                                            <option value="Option 2">Option 2</option>
-                                            <option value="Option 3">Option 3</option>
+                                            <option value={'Deposit'}>Deposit</option>
+                                            <option value={'Paycheck'}>Paycheck</option>
+                                            {spending.map((s) => {
+                                                return(<option value={s.name}>{s.name}</option>);
+                                            })}
+                                            {expenses.map((e) => {
+                                                return(<option value={e.name}>{e.name}</option>);
+                                            })}
                                         </Select>
                                         <FormLabel my={1} htmlFor="payment">Payment</FormLabel>
                                         <Select
                                             value={payment}
                                             onChange={handleChange2}
                                         >
-                                            <option value="Bank">Bank</option>
-                                            <option value="Credit">Credit</option>
+                                            <option value="Bank">{userData.accountInfo.bankName ? userData.accountInfo.bankName : "Bank"}</option>
+                                            <option value="Credit">{userData.accountInfo.creditName ? userData.accountInfo.creditName : "Credit"}</option>
                                         </Select>
                                         <Button
                                             mt={10}
                                             mx="25%"
                                             w={'50%'}
-                                            bg={'green.400'}
+                                            bg={'black'}
                                             color={'white'}
                                             rounded={'xl'}
-                                            boxShadow={'0 5px 20px 0px rgb(72 187 120 / 43%)'}
+                                            boxShadow={'0 5px 20px 0px black / 43%)'}
                                             _hover={{
-                                            bg: 'green.500',
+                                            bg: 'black',
                                             }}
                                             _focus={{
-                                            bg: 'green.500',
+                                            bg: 'black',
                                             }}
                                             type='submit'
                                             >

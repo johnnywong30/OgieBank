@@ -7,9 +7,8 @@ import {
     ListItem,
     ListIcon,
     Button,
-    useColorModeValue, 
     SimpleGrid, 
-    Center
+    Center,
 } from '@chakra-ui/react'
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom'
@@ -41,10 +40,12 @@ const Balance = () => {
             marginTop={{ base: '1', sm: '5' }}
             display="flex"
             flexDirection={{ base: 'column', sm: 'row' }}
-            justifyContent="space-between">
+            justifyContent="space-between"
+            w={'full'}
+            >
             <Box
                 w={'full'}
-                bg={useColorModeValue('#cccccc', 'gray.800')}
+                bg={'#86cf9d'} //adjust header color here
                 boxShadow={'2xl'}
                 rounded={'md'}
                 overflow={'hidden'}>
@@ -53,15 +54,15 @@ const Balance = () => {
                         textAlign={'center'}
                         px={6}
                         py={2}
-                        color={useColorModeValue('gray.800', 'white')}
+                        color={'black'}
                         align={'center'}>
                         <Text
                             fontSize={'sm'}
                             fontWeight={500}
-                            bg={useColorModeValue('green.50', 'green.900')}
+                            bg={'green.50'}
                             p={2}
                             px={3}
-                            color={'black.500'}
+                            color={'black'}
                             rounded={'full'}>
                             {bankName}
                         </Text>
@@ -76,15 +77,15 @@ const Balance = () => {
                         textAlign={'center'}
                         px={6}
                         py={2}
-                        color={useColorModeValue('gray.800', 'white')}
+                        color={'black'}
                         align={'center'}>
                         <Text
                             fontSize={'sm'}
                             fontWeight={500}
-                            bg={useColorModeValue('red.50', 'red.900')}
+                            bg={'red.50'}
                             p={2}
                             px={3}
-                            color={'black.500'}
+                            color={'black'}
                             rounded={'full'}>
                             {creditName}
                         </Text>
@@ -93,7 +94,7 @@ const Balance = () => {
                             <Text fontSize={'3xl'} fontWeight={800}>
                                 {creditBalance}
                             </Text>
-                            <Text color={'black.500'}>/ {creditLimit}</Text>
+                            <Text color={'black'}>/ {creditLimit}</Text>
                         </Stack>
                     </Stack>
                 </SimpleGrid>
@@ -129,10 +130,10 @@ const Balance = () => {
                         rounded={'xl'}
                         boxShadow={'0 5px 20px 0px black / 43%)'}
                         _hover={{
-                        bg: 'black.500',
+                        bg: 'black',
                         }}
                         _focus={{
-                        bg: 'black.500',
+                        bg: 'black',
                         }}>
                         View Budget
                     </Button>

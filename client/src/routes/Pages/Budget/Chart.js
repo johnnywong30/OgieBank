@@ -7,7 +7,7 @@ import {
     Divider,
 } from '@chakra-ui/react'
 
-const Debt = () => {
+const Chart = () => {
     return (
         <Box
             marginTop={{ base: '1', sm: '5' }}
@@ -30,18 +30,18 @@ const Debt = () => {
                         align={'center'}>
                         <Stack direction={'row'} align={'center'} justify={'center'}>
                             <Text fontSize={'3xl'} fontWeight={800}>
-                                Debt Status
+                                Chart
                             </Text>
                         </Stack>
                     </Stack>
                 </SimpleGrid>
                 <Divider/>
                 <Box bg={'white'} px={6} py={10}>
-                    Text Here
+                    Chart Here
                 </Box>
             </Box>
         </Box>
     )
 }
 
-export default Debt;
+export default Chart;

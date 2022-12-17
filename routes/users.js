@@ -65,9 +65,9 @@ router
                 loggedIn: true,
                 ...authUser
             }
-            console.log('google auth', ret)
+            // console.log('google auth', ret)
             req.session.user = authUser
-            console.log(authUser)
+            // console.log(authUser)
             res.status(200).json(ret)
         } catch (e) {
             console.log(e)
@@ -128,7 +128,7 @@ router
     .route('/session')
     .get(async (req, res) => {
         if (req.session.user) {
-            console.log('session', req.session.user)
+            // console.log('session', req.session.user)
             res.status(200).json(req.session.user)
         }
         else {
@@ -161,13 +161,13 @@ router
 router
     .route('/update/:field')
     .post(async (req, res) => {
-        console.log('HELLO AM I UPDATING')
+        // console.log('HELLO AM I UPDATING')
         if (!req.session.user) {
             return res.status(400).json({error: 'User not logged in!'})
         }
         try {
-            console.log('user sesh', req.session.user)
-            console.log('params', req.params)
+            // console.log('user sesh', req.session.user)
+            // console.log('params', req.params)
             const field = validation.checkString(xss(req.params.field))
             const updateFields = [
                 'firstName', 
@@ -209,12 +209,9 @@ router
             if (!updateFields.includes(field)) throw `No such field ${field} to update`
             const updateValue = updateValidations[field](xss(req.body.value))
             const { id } = req.body
-            console.log('updated val', updateValue)
-            console.log('id', id)
             const userExists = await userData.getUser(id)
             if (!userExists) throw 'User does not exist'
             const user = await updateFunc[field](id, updateValue)
-            console.log('i am here', user)
             req.session.user = user
             return res.status(200).json(user)
         } catch (e) {

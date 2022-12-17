@@ -31,18 +31,12 @@ const CustomEditable = ({ label, type, value, onChange, onSubmit, onCancel }) =>
         onCancel()
     }
 
-    const onSubmitWrapper = async (event) => {
-        try {
-            onSubmit(event)
-            setIsEditing(false)
-        } catch (e) {
-            alert(e)
-        }
-    }
-
-
     return (
-        <form onSubmit={onSubmitWrapper}>
+        <form onSubmit={(event) => {
+                onSubmit(event)
+                setIsEditing(false)
+            }
+        }>
             <FormControl>
                 <HStack spacing={4}>
                     <FormLabel mt={isEditing ? 0 : 2} id={`${label}-label`} htmlFor={label}>{label}</FormLabel>
@@ -50,9 +44,15 @@ const CustomEditable = ({ label, type, value, onChange, onSubmit, onCancel }) =>
                         isEditing ?
                         (
                             <>
-                                <Input id={label} type={type} value={value} onChange={onChange}/>  
+                                <Input 
+                                    id={label} 
+                                    type={type} 
+                                    value={value} 
+                                    onChange={onChange}  
+                                    color='gray.500'
+                                />  
                                 <ButtonGroup>
-                                    <IconButton icon={<CheckIcon />} type='submit' onSubmit={onSubmitWrapper} />
+                                    <IconButton icon={<CheckIcon />} type='submit' />
                                     <IconButton icon={<CloseIcon />} type='button' onClick={cancelEditing} />
                                 </ButtonGroup>                              
                             </>
@@ -61,7 +61,14 @@ const CustomEditable = ({ label, type, value, onChange, onSubmit, onCancel }) =>
                         :
                         (
                             <>
-                                <Text color='gray.500'>{value}</Text>
+                                {
+                                    typeof(value) === 'string' &&
+                                    <Text>{value.trim() ? value.trim() : 'Please fill this out'}</Text>    
+                                }
+                                {
+                                    typeof(value) === 'number' &&
+                                    <Text>{value ? value : 'Please fill this out unless it actually is 0...'}</Text>
+                                }
                                 <IconButton icon={<EditIcon />} type='button' onClick={startEditing}/>
                             </>
 

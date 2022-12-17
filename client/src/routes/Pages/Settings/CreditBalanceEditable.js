@@ -6,23 +6,22 @@ import CustomEditable from "./CustomEditable";
 import validation from "../../../constants/validation";
 
 
-const BankNameEditable = () => {
+const CreditBalanceEditable = () => {
     const dispatch = useDispatch();
     const { accountInfo, id } = useSelector(({ auth }) => auth.user )
-    const { bankName } = accountInfo
+    const { creditBalance } = accountInfo
 
-    const [ bank, setBank ] = useState(bankName ? bankName : '')
+    const [ balance, setBalance ] = useState(creditBalance ? creditBalance : 0)
 
-    const onCancel = () => setBank(bankName ? bankName : '')
-    const onChange = e => setBank(e.target.value)
+    const onCancel = () => setBalance(creditBalance ? creditBalance : 0)
+    const onChange = e => setBalance(e.target.value)
     const onSubmit = async e => {
-        console.log(e)
         e.preventDefault()
         try {
-            const value = await validation.checkName(bank.trim(), 'Bank Name')
+            const value = await validation.checkCreditBalance(balance)
             const uid = await validation.checkId(id)
             const reqBody = { value, id: uid }
-            const { data } = await axios.post('/api/user/update/bank', reqBody)
+            const { data } = await axios.post('/api/user/update/creditBalance', reqBody)
             dispatch(actions.updateUser(data))
         } catch (error) {
             // i got lazy
@@ -31,9 +30,9 @@ const BankNameEditable = () => {
     } 
     return (
         <CustomEditable 
-            label='Bank Name'
-            type='text'
-            value={bank}
+            label='Credit Balance'
+            type='number'
+            value={balance}
             onChange={onChange}
             onCancel={onCancel}
             onSubmit={onSubmit}
@@ -42,4 +41,4 @@ const BankNameEditable = () => {
     
 }
 
-export default BankNameEditable;
+export default CreditBalanceEditable;

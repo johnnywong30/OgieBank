@@ -12,7 +12,10 @@ async function getUser(id) {
     const users = db.collection('users')
     const user = await users.doc(id).get()
     if (user.empty) throw `Error: unable to find user with given id`
-    return user.data()
+    return {
+        id,
+        ...user.data()
+    }
 }
 
 // https://firebase.google.com/docs/firestore/query-data/queries#node.js_1
@@ -252,13 +255,15 @@ async function updatePassword(id, password) {
 async function updateBank(id, bank) {
     bank = validation.checkString(bank, 'Bank')
     id = validation.checkId(id)
+    console.log('in db bank', bank)
+    console.log('in db id', id)
     // check if user exists
     await getUser(id)
     const users = db.collection('users')
     const updateInfo = await users.doc(id).update({
         "accountInfo.bankName": bank
     })
-    console.log(updateInfo)
+    console.log('updated', updateInfo)
     const user = await getUser(id)
     return user
 }

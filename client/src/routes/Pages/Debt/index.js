@@ -3,6 +3,18 @@ import { useDispatch, useSelector } from 'react-redux'
 
 // create pie charts using ApexCharts
 import ReactApexChart from "react-apexcharts";
+import { 
+    Box,
+    Text,
+    Stack,
+    List,
+    ListItem,
+    ListIcon,
+    Button,
+    useColorModeValue, 
+    SimpleGrid, 
+    Center
+} from '@chakra-ui/react'
 
 const Debts = () => {
     // Show spending by Bank/Credit, and by Category and separate by past week, month, year, all time
@@ -32,7 +44,7 @@ const Debts = () => {
                         transactions.push(allTransactions[i])
                     }
                 }
-                console.log("week" + transactions)
+                // console.log("week" + transactions)
                 break;
             case 'month':
                 for (let i = 0; i < allTransactions.length; i++) {
@@ -41,7 +53,7 @@ const Debts = () => {
                         transactions.push(allTransactions[i])
                     }
                 }
-                console.log("month" + transactions)
+                // console.log("month" + transactions)
                 break;
             case 'year':
                 for (let i = 0; i < allTransactions.length; i++) {
@@ -50,7 +62,7 @@ const Debts = () => {
                         transactions.push(allTransactions[i])
                     }
                 }
-                console.log("year" + transactions)
+                // console.log("year" + transactions)
                 break;
             case 'all':
                 transactions = allTransactions
@@ -87,7 +99,6 @@ const Debts = () => {
         return {stats, total}
     }
 
-    // given an array of objects with name and amount, return an array of objects with name and percentage
     const getPercentages = (stats, total) => {
         let percentages = []
         stats.forEach(s => {
@@ -96,17 +107,15 @@ const Debts = () => {
         return percentages
     }
 
-    // given an array of objects with name and percentage, return an array of objects with name and color
     const getColors = (percentages) => {
+        console.log(percentages)
         let colors = []
         percentages.forEach(p => {
             let color = ''
-            if (p.percentage > 0.5) {
-                color = '#FF0000'
-            } else if (p.percentage > 0.25) {
-                color = '#FFA500'
+            if (p.percentage < 0.5) {
+                color = `rgb(${255 * (1 - p.percentage * 2)}, 255, 0)`
             } else {
-                color = '#FFFF00'
+                color = `rgb(255, ${255 * (1 - (p.percentage - 0.5) * 2)}, 0)`
             }
             colors.push({name: p.name,
                 color: color})
@@ -280,10 +289,10 @@ const Debts = () => {
         };
 
     return (
-        <div>
+        <div style={{backgroundColor: '#f5f5f5', padding: '20px'}}>
             <div>
-                {/* create a time period selector with padding between buttons */}
-                <div style={{display: 'flex', justifyContent: 'center'}}>
+                <h1> Debt Breakdown </h1>
+                <div style={{display: 'flex', justifyContent: 'center', backgroundColor: '#e0e0e0', padding: '10px'}}>
                     <button onClick={() => setTimePeriod('week')}>Week</button>
                     <div style={{width: '10px'}}></div>
                     <button onClick={() => setTimePeriod('month')}>Month</button>
@@ -295,7 +304,15 @@ const Debts = () => {
             </div>
             <div>
                 <div style={{display: 'flex', justifyContent: 'center'}}>
-                    <ReactApexChart options={categoryOptions} series={categorySeries} type="donut" width={500} />
+                    {/* use shades of gray for the colors */}
+                    <ReactApexChart 
+                        options={categoryOptions} 
+                        series={categorySeries} 
+                        type="donut" 
+                        width={500}
+                        colors={categoryColors}
+
+                    />
                 </div>
                 <table>
                     <thead>

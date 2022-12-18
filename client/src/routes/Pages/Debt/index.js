@@ -1,21 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 
-import { 
-    Box,
-    Divider,
-    Text,
-    Stack,
-    List,
-    ListItem,
-    Button,
-    useColorModeValue, 
-    SimpleGrid, 
-    Center,
-    Select
-} from '@chakra-ui/react'
-import { MinusIcon } from '@chakra-ui/icons';
-
 // create pie charts using ApexCharts
 import ReactApexChart from "react-apexcharts";
 
@@ -29,19 +14,43 @@ const Debts = () => {
 
     // create an array of all the transactions that are debts
     const [debts, setDebts] = useState([])
+    const now = new Date()
 
     // given 'week', 'month', 'year', 'all', return the transactions that are in that time period
     const getTransactions = (timePeriod) => {
         let transactions = []
+        const lastWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7)
+        const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate())
+        const lastYear = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate())
         switch (timePeriod) {
             case 'week':
-                transactions = allTransactions.filter(t => t.date > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000))
+                // set transactions to all transactions that are within the past week
+                for (let i = 0; i < allTransactions.length; i++) {
+                    // translate date in MM/DD/YYYY format to a date object
+                    let date = new Date(allTransactions[i].date)
+                    if (date > lastWeek) {
+                        transactions.push(allTransactions[i])
+                    }
+                }
+                console.log("week" + transactions)
                 break;
             case 'month':
-                transactions = allTransactions.filter(t => t.date > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000))
+                for (let i = 0; i < allTransactions.length; i++) {
+                    let date = new Date(allTransactions[i].date)
+                    if (date > lastMonth) {
+                        transactions.push(allTransactions[i])
+                    }
+                }
+                console.log("month" + transactions)
                 break;
             case 'year':
-                transactions = allTransactions.filter(t => t.date > new Date(Date.now() - 365 * 24 * 60 * 60 * 1000))
+                for (let i = 0; i < allTransactions.length; i++) {
+                    let date = new Date(allTransactions[i].date)
+                    if (date > lastYear) {
+                        transactions.push(allTransactions[i])
+                    }
+                }
+                console.log("year" + transactions)
                 break;
             case 'all':
                 transactions = allTransactions
@@ -241,7 +250,7 @@ const Debts = () => {
                                 color: undefined,
                                 offsetY: 16,
                                 formatter: function (val) {
-                                    return "$" + val;
+                                    return "$" + (categoryTotal * val).toFixed(2);
                                 }
                             },
                             total: {
@@ -249,7 +258,8 @@ const Debts = () => {
                                 label: "Total",
                                 color: "#373d3f",
                                 formatter: function (w) {
-                                    return "$" + categoryTotal;
+                                    // truncate decimal values to 2 digits
+                                    return "$" + categoryTotal.toFixed(2);
                                 }
                             }
                         }
@@ -293,22 +303,22 @@ const Debts = () => {
                             <th>Category</th>
                             <div style={{width: '10px'}}></div>
                             <th>Amount</th>
-                            <div style={{width: '10px'}}></div>
-                            <th>Percentage</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {categoryStats.map(c => {
+                        {categoryStats ? categoryStats.map(c => {
                             return (
                                 <tr>
-                                    <td>{c.name}</td>
+                                    <td>{c.name ? c.name : 'Uncategorized'}</td>
                                     <div style={{width: '10px'}}></div>
-                                    <td>{c.amount}</td>
-                                    <div style={{width: '10px'}}></div>
-                                    <td>{c.percentage}</td>
+                                    <td>{c.amount ? c.amount : 0}</td>
                                 </tr>
                             )
-                        })}
+                        }) : 
+                        <tr>
+                            <td>No data</td>
+                        </tr>
+                        }
                     </tbody>
                 </table>
             </div>

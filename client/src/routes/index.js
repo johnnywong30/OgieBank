@@ -11,6 +11,7 @@ import Home from './Pages/Home';
 import Overview from './Pages/Overview';
 import Transactions from './Pages/Transactions';
 import Debt from './Pages/Debt';
+import Settings from './Pages/Settings';
 import Budget from './Pages/Budget';
 
 const RestrictedRoute = ({ children, redirectTo}) => {
@@ -54,12 +55,19 @@ const AllRoutes = () => {
                     <Transactions/>
                 </RestrictedRoute>
             }/>
+
             <Route path='/debt' element={
                 <RestrictedRoute redirectTo={'/login'}>
                     <Debt/>
                 </RestrictedRoute>
             }/>
 
+            <Route path='/settings' element={
+                <RestrictedRoute redirectTo={'/login'}>
+                    <Settings />
+                </RestrictedRoute>
+            }/>
+            
             <Route path='/budget' element={
                 <RestrictedRoute redirectTo={'/login'}>
                     <Budget/>

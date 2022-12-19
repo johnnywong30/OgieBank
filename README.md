@@ -2,6 +2,14 @@
 
 CS554 Final Project 22F
 
+## Team Members
+* Jordan Wang - 10452069
+* Johnny Wong - 10446964
+* Maxwell Metzner - 10447997
+* Eric Stazzone - 10445230
+* Sophia Zuo - 10448401
+
+
 ## Project Description
 There are over 48 million people that are student debt borrowers with an average of $28,400 in federal and private debt. It can be difficult keeping up with spreadsheets of information, so instead we want to create an easy space for budget organization and financial planning (especially for paying off debt). 
 

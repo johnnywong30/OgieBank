@@ -43,10 +43,11 @@ const Expenses = () => {
         onClose();
     }
 
-    const deleteExpense = async (id, isExpense) => {
+    const deleteExpense = async (id, isExpense, amount) => {
         const reqBody = {
             id: id,
             isExpense: isExpense,
+            amount: amount,
         };
         dispatch(actions.deleteCategory(id, isExpense));
         await axios.post('/api/calculations/deletecategory', reqBody);
@@ -109,7 +110,7 @@ const Expenses = () => {
                                             width={'25%'}
                                             ml={0}
                                             mr={3}
-                                            onClick={() => deleteExpense(e.id, e.isExpense)}
+                                            onClick={() => deleteExpense(e.id, e.isExpense, e.amount)}
                                         >
                                             <MinusIcon />
                                         </Button>

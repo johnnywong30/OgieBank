@@ -147,7 +147,6 @@ async function createUser(firstName, lastName, username, password, email) {
         },
         budget: {
             monthIncome: 0,
-            monthDeposit: 0,
             monthRecurring: 0,
             monthVariable: 0,
         },
@@ -189,7 +188,6 @@ async function createUserByAuth(uid, displayName, email) {
         },
         budget: {
             monthIncome: 0,
-            monthDeposit: 0,
             monthRecurring: 0,
             monthVariable: 0,
         },

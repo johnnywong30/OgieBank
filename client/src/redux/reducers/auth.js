@@ -28,13 +28,94 @@ const authReducer = (state = initialState, action) => {
             }
         case "ADD_TRANSACTION_USER":
             let userData = state.user;
-            let updatedBalance = userData.accountInfo.bankBalance + payload.amount;
-            userData.accountInfo.bankBalance = updatedBalance;
+
+            let category = payload.category;
+            let payment = payload.payment;
+            let amount = payload.amount; 
+
+            let updatedBalance = userData.accountInfo.bankBalance;
+            let updatedCreditBalance = userData.accountInfo.creditBalance;
+
+            //update Accounts
+            if (payment === "Bank"){
+                if (category === "Deposit") {
+                    updatedBalance = updatedBalance + amount;
+                } else {
+                    updatedBalance = updatedBalance + (-1)*amount;
+                }
+                userData.accountInfo.bankBalance = updatedBalance;
+            } else if (payment === "Credit") {
+                if (category === "Deposit") {
+                    updatedCreditBalance = updatedCreditBalance + (-1)* amount;
+                } else {
+                    updatedCreditBalance = updatedCreditBalance + amount;
+                }
+                userData.accountInfo.creditBalance = updatedCreditBalance;
+            }
+
+            //update Budget
+            if (category === "Deposit"){
+                userData.budget.monthIncome = userData.budget.monthIncome + amount;
+            } else {
+                let findSpending = userData.categories.spending.find(object => {return object.name === category});
+                let findIndex = userData.categories.spending.findIndex(object => {return object.name === category});
+                if (findSpending) {
+                    userData.budget.monthVariable = userData.budget.monthVariable + amount;
+                    userData.categories.spending[findIndex].balance =  userData.categories.spending[findIndex].balance + amount;
+                }
+            }
+
             return {
                 ...state,
-                user: userData,
+                user: new User(userData),
                 auth: true,
             }
+
+        case "DELETE_TRANSACTION_USER":
+            let userData2 = state.user;
+
+            let category2 = payload.category;
+            let payment2 = payload.payment;
+            let amount2 = payload.amount; 
+
+            let updatedBalance2 = userData2.accountInfo.bankBalance;
+            let updatedCreditBalance2 = userData2.accountInfo.creditBalance;
+
+            //update Accounts
+            if (payment2 === "Bank"){
+                if (category2 === "Deposit") {
+                    updatedBalance2 = updatedBalance2 + (-1)*amount2;
+                } else {
+                    updatedBalance2 = updatedBalance2 + amount2;
+                }
+                userData2.accountInfo.bankBalance = updatedBalance2;
+            } else if (payment2 === "Credit") {
+                if (category2 === "Deposit") {
+                    updatedCreditBalance2 = updatedCreditBalance2 + amount2;
+                } else {
+                    updatedCreditBalance2 = updatedCreditBalance2 + (-1)*amount2;
+                }
+                userData2.accountInfo.creditBalance = updatedCreditBalance2;
+            }
+
+            //update Budget
+            if (category2 === "Deposit"){
+                userData2.budget.monthIncome = userData2.budget.monthIncome + (-1)*amount2;
+            } else {
+                let findSpending = userData2.categories.spending.find(object => {return object.name === category});
+                let findIndex = userData2.categories.spending.findIndex(object => {return object.name === category});
+                if (findSpending) {
+                    userData2.budget.monthVariable = userData2.budget.monthVariable + (-1)*amount2;
+                    userData2.categories.spending[findIndex].balance =  userData2.categories.spending[findIndex].balance + amount2;
+                }
+            }
+
+            return {
+                ...state,
+                user: new User(userData2),
+                auth: true,
+            }
+
         default:
             return state
     }

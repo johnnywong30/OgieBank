@@ -34,7 +34,7 @@ const Overview = () => {
     const userName = userData.displayName === undefined ? userData.username : userData.displayName;
     const dispatch = useDispatch();
     
-    const [category, setCategory] = useState('Deposit');
+    const [category, setCategory] = useState("Deposit");
     const [payment, setPayment] = useState("Bank");
     
     const handleChange = (event) => {
@@ -130,6 +130,7 @@ const Overview = () => {
                                         <FormControl isInvalid={!!errors.name}>
                                             <FormLabel my={1} htmlFor="name">Name</FormLabel>
                                                 <Field
+                                                    key={'name'}
                                                     as={Input}
                                                     id="name"
                                                     name="name"
@@ -147,6 +148,7 @@ const Overview = () => {
                                                 <FormLabel my={1} htmlFor="amount">Amount</FormLabel>
                                                 <Field
                                                     as={Input}
+                                                    key={'amount'}
                                                     id="amount"
                                                     name="amount"
                                                     type="number"
@@ -165,6 +167,7 @@ const Overview = () => {
                                             <Field
                                                 as={Input}
                                                 id="date"
+                                                key={'date'}
                                                 name="date"
                                                 type="text"
                                                 variant="filled"
@@ -191,12 +194,11 @@ const Overview = () => {
                                             onChange={handleChange}
                                         >
                                             <option value={'Deposit'}>Deposit</option>
-                                            <option value={'Paycheck'}>Paycheck</option>
                                             {spending.map((s) => {
-                                                return(<option value={s.name}>{s.name}</option>);
+                                                return(<option key={s.name} value={s.name}>{s.name}</option>);
                                             })}
                                             {expenses.map((e) => {
-                                                return(<option value={e.name}>{e.name}</option>);
+                                                return(<option  key={e.name} value={e.name}>{e.name}</option>);
                                             })}
                                         </Select>
                                         <FormLabel my={1} htmlFor="payment">Payment</FormLabel>
@@ -204,8 +206,8 @@ const Overview = () => {
                                             value={payment}
                                             onChange={handleChange2}
                                         >
-                                            <option value="Bank">{userData.accountInfo.bankName ? userData.accountInfo.bankName : "Bank"}</option>
-                                            <option value="Credit">{userData.accountInfo.creditName ? userData.accountInfo.creditName : "Credit"}</option>
+                                            <option key={'bank'} value="Bank">{userData.accountInfo.bankName ? userData.accountInfo.bankName : "Bank"}</option>
+                                            <option key={'credit'} value="Credit">{userData.accountInfo.creditName ? userData.accountInfo.creditName : "Credit"}</option>
                                         </Select>
                                         <Button
                                             mt={10}

@@ -68,7 +68,8 @@ router
             try {
                 req.body.id = validation.checkId(xss(req.body.id));
                 req.body.isExpense = validation.checkBool(xss(req.body.isExpense));
-                await calculationData.deleteCategory(req.session.user.id, xss(req.body.id), xss(req.body.isExpense));
+                req.body.amount = validation.checkNum(xss(req.body.amount));
+                await calculationData.deleteCategory(req.session.user.id, xss(req.body.id), xss(req.body.isExpense), xss(req.body.amount));
                 return res.status(200).json({success: "success"});
             } catch (e) {
                 console.log(e)
@@ -87,8 +88,13 @@ router
         if (req.body.id) {
             try {
                 req.body.id = validation.checkId(xss(req.body.id));
-                
-                await calculationData.deleteTransaction(req.session.user.id, xss(req.body.id));
+
+                console.log(req.body.amount);
+                req.body.amount = validation.checkNum(xss(req.body.amount));
+                req.body.category = validation.checkString(xss(req.body.category));
+                req.body.payment = validation.checkString(xss(req.body.payment));
+                console.log("done");
+                await calculationData.deleteTransaction(req.session.user.id, xss(req.body.id), xss(req.body.amount), xss(req.body.category), xss(req.body.payment));
                 return res.status(200).json({success: "success"});
             } catch (e) {
                 console.log(e)

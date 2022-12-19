@@ -34,11 +34,21 @@ const addTransactionUser = (transaction) => {
     }
 }
 
+const deleteTransactionUser = (transaction) => {
+    return async dispatch => {
+        dispatch({
+            type: "DELETE_TRANSACTION_USER",
+            payload: transaction,
+        })
+    }
+}
+
 const authActions = {
     loginAuthUser,
     logoutAuthUser,
     updateUser,
     addTransactionUser,
+    deleteTransactionUser,
 }
 
 export default authActions;

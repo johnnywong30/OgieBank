@@ -61,13 +61,27 @@ const Overview = () => {
     const spending = useSelector((state) => state.categories.categories.spending);
 
     const getData = async () => {
-        const { data } = await axios.get('/api/calculations/getAllCategories');
-        dispatch(actions2.setCategories(data.categories));
+
+        const getTransactions = async () => {
+            const { data } = await axios.get('/api/calculations/getAllTransactions')
+            return data
+        }
+        const getCategories = async () => {
+            const { data } = await axios.get('/api/calculations/getAllCategories');
+            return data
+
+        }
+
+        const { categories }  = await getCategories();
+        dispatch(actions2.setCategories(categories));
+
+        const { transactions } = await getTransactions(); 
+        dispatch(actions.setTransactions(transactions));
     }
 
     useEffect(() => {
         getData();
-    },[])
+    },[userData])
 
     return (
         <Container maxW={'7xl'} px="12" py="6">

@@ -85,6 +85,7 @@ const MenuLinks = ({ isOpen, loading, handleLogout, isAuth }) => {
                 { isAuth ? <MenuItem to="/overview">Overview</MenuItem> : null }
                 { isAuth ? <MenuItem to="/budget">Budget</MenuItem> : null }
                 { isAuth ? <MenuItem to="/transactions">Transactions</MenuItem> : null }
+                { isAuth ? <MenuItem to="/debt">Debt Calculator</MenuItem> : null}
                 { isAuth ? <MenuItem to="/settings">Settings</MenuItem> : null }
                 { isAuth ? (
                     <Button

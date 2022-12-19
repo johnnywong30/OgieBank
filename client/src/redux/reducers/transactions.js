@@ -42,6 +42,10 @@ const transactionReducer = (state = initialState, action) => {
       let transactions = [newTransaction, ...state.transactions];
       return {...state, transactions: transactions};
     }
+    // case "GET_ALL_TRANSACTIONS": {
+    //   let transactions = payload.transactions;
+    //   return {...state, transactions: transactions};
+    // }
     default: 
       return state
   }

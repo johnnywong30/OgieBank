@@ -61,7 +61,7 @@ const authReducer = (state = initialState, action) => {
                 let findIndex = userData.categories.spending.findIndex(object => {return object.name === category});
                 if (findSpending) {
                     userData.budget.monthVariable = userData.budget.monthVariable + amount;
-                    userData.categories.spending[findIndex].balance =  userData.categories.spending[findIndex].balance + amount;
+                    userData.categories.spending[findIndex].balance = userData.categories.spending[findIndex].balance + amount;
                 }
             }
 
@@ -102,8 +102,8 @@ const authReducer = (state = initialState, action) => {
             if (category2 === "Deposit"){
                 userData2.budget.monthIncome = userData2.budget.monthIncome + (-1)*amount2;
             } else {
-                let findSpending = userData2.categories.spending.find(object => {return object.name === category});
-                let findIndex = userData2.categories.spending.findIndex(object => {return object.name === category});
+                let findSpending = userData2.categories.spending.find(object => {return object.name === category2});
+                let findIndex = userData2.categories.spending.findIndex(object => {return object.name === category2});
                 if (findSpending) {
                     userData2.budget.monthVariable = userData2.budget.monthVariable + (-1)*amount2;
                     userData2.categories.spending[findIndex].balance =  userData2.categories.spending[findIndex].balance + (-1)*amount2;

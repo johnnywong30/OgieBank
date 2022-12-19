@@ -42,6 +42,7 @@ const Login = () => {
     const [loginSuccessful, setLoginSuccessful] = useState('')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+    const [googleLoading, setGoogleLoading] = useState(false);
     
     const handleEmail = (e) => setEmail(e.target.value)
     const handlePassword = (e) => setPassword(e.target.value)
@@ -73,6 +74,7 @@ const Login = () => {
     //ADD REDUX STUFF
     const socialSignOn = async (provider) => {
         try {
+            setGoogleLoading(true);
             const userData = await FirebaseFunctions.doSocialSignIn(provider);
             const reqBody = {
                 displayName: userData.displayName,
@@ -83,10 +85,12 @@ const Login = () => {
             console.log(data)
             dispatch(actions.loginAuthUser(data))
             setLoginSuccessful(true)
+            setGoogleLoading(false);
         } catch (e) {
             console.log(e)
             setError(`Unable to sign in using ${provider}`)
             setLoginSuccessful(false)
+            setGoogleLoading(false);
         }
       };
 
@@ -124,6 +128,7 @@ const Login = () => {
             <Button
                 onClick={() => socialSignOn('google')}
                 leftIcon={<FcGoogle/>}
+                isLoading={googleLoading}
             >
                 Google Sign In
             </Button>

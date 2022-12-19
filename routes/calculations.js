@@ -20,7 +20,9 @@ router
                 req.body.category = validation.checkString(xss(req.body.category));
                 req.body.payment = validation.checkString(xss(req.body.payment));
                 
-                await calculationData.addTransaction(req.session.user.id, xss(req.body.id), xss(req.body.name), xss(req.body.amount), xss(req.body.date), xss(req.body.category), xss(req.body.payment));
+                let userReturn = await calculationData.addTransaction(req.session.user.id, xss(req.body.id), xss(req.body.name), xss(req.body.amount), xss(req.body.date), xss(req.body.category), xss(req.body.payment));
+                req.session.user = userReturn;
+
                 return res.status(200).json({success: "success"});
             } catch (e) {
                 console.log(e)
@@ -43,13 +45,17 @@ router
                 req.body.isExpense = validation.checkBool(xss(req.body.isExpense));
 
                 let categories = await calculationData.getAllCategories(req.session.user.id);
+                categories = categories.categories;
+        
                 if (req.body.isExpense){
                     if (categories.expenses.some(e => e.name.toLowerCase().trim() === req.body.name.toLowerCase().trim())) throw 'already used';
                 } else {
                     if (categories.spending.some(e => e.name.toLowerCase().trim() === req.body.name.toLowerCase().trim())) throw 'already used';
                 } 
 
-                await calculationData.addCategory(req.session.user.id, xss(req.body.id), xss(req.body.name), xss(req.body.amount), xss(req.body.isExpense));
+                let userReturn = await calculationData.addCategory(req.session.user.id, xss(req.body.id), xss(req.body.name), xss(req.body.amount), xss(req.body.isExpense));
+                req.session.user = userReturn;
+
                 return res.status(200).json({success: "success"});
             } catch (e) {
                 console.log(e)
@@ -69,7 +75,9 @@ router
                 req.body.id = validation.checkId(xss(req.body.id));
                 req.body.amount = validation.checkNum(xss(req.body.amount));
                 req.body.isExpense = validation.checkBool(xss(req.body.isExpense));
-                await calculationData.deleteCategory(req.session.user.id, xss(req.body.id), xss(req.body.amount), xss(req.body.isExpense));
+                let userReturn = await calculationData.deleteCategory(req.session.user.id, xss(req.body.id), xss(req.body.amount), xss(req.body.isExpense));
+                req.session.user = userReturn;
+
                 return res.status(200).json({success: "success"});
             } catch (e) {
                 console.log(e)
@@ -93,8 +101,9 @@ router
                 req.body.amount = validation.checkNum(xss(req.body.amount));
                 req.body.category = validation.checkString(xss(req.body.category));
                 req.body.payment = validation.checkString(xss(req.body.payment));
-                console.log("done");
-                await calculationData.deleteTransaction(req.session.user.id, xss(req.body.id), xss(req.body.amount), xss(req.body.category), xss(req.body.payment));
+                let userReturn = await calculationData.deleteTransaction(req.session.user.id, xss(req.body.id), xss(req.body.amount), xss(req.body.category), xss(req.body.payment));
+                req.session.user = userReturn;
+                
                 return res.status(200).json({success: "success"});
             } catch (e) {
                 console.log(e)
@@ -112,8 +121,9 @@ router
 
         if (req.session.user.id) {
             try {
-                const transactions = await calculationData.getAllTransactions(req.session.user.id)
-                return res.status(200).json({success: "success", transactions: transactions});
+                const userReturn = await calculationData.getAllTransactions(req.session.user.id)
+                req.session.user = userReturn.user;
+                return res.status(200).json({success: "success", transactions: userReturn.transactions});
             } catch (e) {
                 console.log(e)
                 return res.status(400).json({error: "error"});
@@ -130,8 +140,9 @@ router
 
         if (req.session.user.id) {
             try {
-                const categories = await calculationData.getAllCategories(req.session.user.id)
-                return res.status(200).json({success: "success", categories: categories});
+                const userReturn = await calculationData.getAllCategories(req.session.user.id)
+                req.session.user = userReturn.user;
+                return res.status(200).json({success: "success", categories: userReturn.categories});
             } catch (e) {
                 console.log(e)
                 return res.status(400).json({error: "error"});

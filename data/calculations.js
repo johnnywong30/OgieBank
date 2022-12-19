@@ -1,6 +1,7 @@
 const dbCollections = require('../config/firebase')
 const db = dbCollections.db;
 const validation = require('../validation');
+const userFunc = require('../data/users');
 
 async function addTransaction(id, transactionId, name, amount, date, category, payment) {
     id = validation.checkId(id);
@@ -84,7 +85,9 @@ async function addTransaction(id, transactionId, name, amount, date, category, p
         transactions: userTransactions,
     })
     if (!updatedTransactions) throw 'Could not update transaction';
-    return {success: "success"};
+
+    let userSession = await userFunc.getUser(id);
+    return userSession;
 }
 
 async function addCategory(id, categoryId, name, amount, isExpense) {
@@ -128,7 +131,8 @@ async function addCategory(id, categoryId, name, amount, isExpense) {
     })
 
     if (!updatedCategories) throw 'Could not update category';
-    return {success: "success"};
+    let userSession = await userFunc.getUser(id);
+    return userSession;
 }
 
 async function deleteCategory(id, categoryId, amount, isExpense) {
@@ -166,7 +170,8 @@ async function deleteCategory(id, categoryId, amount, isExpense) {
         })
         if (!updatedCategories) throw 'Could not update transaction';
     }
-    return {success: "success"};
+    let userSession = await userFunc.getUser(id);
+    return userSession;
 }
 
 async function deleteTransaction(id, transactionId, amount, category, payment) {
@@ -242,7 +247,8 @@ async function deleteTransaction(id, transactionId, amount, category, payment) {
         transactions: userTransactions,
     })
     if (!updatedTransactions) throw 'Could not update transaction';
-    return {success: "success"};
+    let userSession = await userFunc.getUser(id);
+    return userSession;
 }
 
 async function getAllTransactions(id) {
@@ -255,8 +261,8 @@ async function getAllTransactions(id) {
     let userData = user.data();
     console.log(userData)
     let userTransactions = userData.transactions;
-
-    return userTransactions;
+    let userSession = await userFunc.getUser(id);
+    return {user: userSession, transactions:userTransactions};
 }
 
 async function getAllCategories(id) {
@@ -268,8 +274,8 @@ async function getAllCategories(id) {
 
     let userData = user.data();
     let userCategories = userData.categories;
-
-    return userCategories;
+    let userSession = await userFunc.getUser(id);
+    return {user: userSession, categories:userCategories};
 }
 
 module.exports = {

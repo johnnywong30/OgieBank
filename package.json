@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
+    "seed": "node ./config/seed.js",
     "client-install": "npm install --prefix client",
     "server": "nodemon app.js",
     "client": "npm start --prefix client",
@@ -25,6 +26,7 @@
     "firebase": "^9.14.0",
     "firebase-admin": "^11.3.0",
     "nodemon": "^2.0.20",
+    "uuid": "^9.0.0",
     "xss": "^1.0.14"
   },
   "devDependencies": {

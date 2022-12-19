@@ -4,6 +4,7 @@ import axios from 'axios';
 import { CSVLink, CSVDownload } from 'react-csv';
 
 import actions from '../../../redux/actions/transactions'
+import actions3 from '../../../redux/actions/auth';
 
 import { 
     Box,
@@ -35,9 +36,22 @@ const Transactions = (props) => {
         dispatch(actions.sortTransactions(event.target.value))
     }
 
-    const deleteTransaction = async (id) => {
-        await axios.post('/api/calculations/deletetransaction', {id: id})
+    const deleteTransaction = async (id, amount, category, payment) => {
+        let reqBody = {
+            id: id, 
+            amount: amount, 
+            category: category, 
+            payment: payment
+        }
+
+        await axios.post('/api/calculations/deletetransaction', reqBody)
         dispatch(actions.deleteTransaction(id))
+        let transaction = {
+            amount: amount,
+            category: category,
+            payment: payment,
+        }
+        dispatch(actions3.deleteTransactionUser(transaction))
     }
 
     const onNextPage = () => {
@@ -118,7 +132,7 @@ const Transactions = (props) => {
                                         <Button
                                             width={'25%'}
                                             onClick={(event) => {
-                                                deleteTransaction(t.id)
+                                                deleteTransaction(t.id, t.amount, t.category, t.payment)
                                             }}
                                         >
                                             <MinusIcon />

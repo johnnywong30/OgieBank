@@ -25,7 +25,9 @@ const CreditLimitEditable = () => {
             dispatch(actions.updateUser(data))
         } catch (error) {
             // i got lazy
+            console.log(error)
             alert(error)
+            onCancel()
         }
     } 
     return (

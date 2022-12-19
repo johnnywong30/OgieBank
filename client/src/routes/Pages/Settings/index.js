@@ -24,24 +24,31 @@ const Settings = () => {
                 Account Info
             </Heading>
             <VStack>
+                <Text as='h2' fontSize={'2xl'} my={2} color='gray.600'>My Profile</Text>
                 {
                     ACCOUNT_TYPE === 'OGIE'
-                    &&
+                    ?
                     (
                         <>
-                            <Text as='h2' fontSize={'2xl'} my={2} color='gray.500'>My Profile</Text>
                             <FirstNameEditable />
                             <LastNameEditable />
                             <EmailEditable />
                             <UsernameEditable />
                         </>
                     )
+                    :
+                    (
+                        <>
+                            <Text fontSize='lg' color='gray.600'>
+                                We cannot let you change your Google Account Info from here.
+                                Sorry about that!
+                            </Text>
+                        </>
+                    )
                 }
-                <Text as='h2' fontSize={'2xl'} my={2} color='gray.500'>My Banking</Text>
+                <Text as='h2' fontSize={'2xl'} my={2} color='gray.600'>My Banking</Text>
                 <BankNameEditable />
-                <BankBalanceEditable />
                 <CreditNameEditable />
-                <CreditBalanceEditable />
                 <CreditLimitEditable />
             </VStack>                       
          </VStack>

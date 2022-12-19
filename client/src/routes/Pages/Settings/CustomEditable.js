@@ -49,7 +49,7 @@ const CustomEditable = ({ label, type, value, onChange, onSubmit, onCancel }) =>
                                     type={type} 
                                     value={value} 
                                     onChange={onChange}  
-                                    color='gray.500'
+                                    color='gray.600'
                                 />  
                                 <ButtonGroup>
                                     <IconButton icon={<CheckIcon />} type='submit' />

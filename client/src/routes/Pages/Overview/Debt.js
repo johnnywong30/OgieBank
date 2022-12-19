@@ -166,17 +166,17 @@ const Debt = () => {
                         </Stack>
                     </Stack>
                 </SimpleGrid>
-                        {/* if categoryOptions or categorySeries is empty, display a message saying "No transactions found", otherwise render the chart */}
-                        {categoryOptions.labels.length === 0 ? 
-                            <Text fontSize={'l'} fontWeight={800}>No transactions found</Text> :
-                            <ReactApexChart 
-                                options={categoryOptions} 
-                                series={categorySeries} 
-                                type="donut" 
-                                // fit the size of the div 
-                                width="100%"
-                            />
-                        }
+                {/* if categoryOptions or categorySeries is empty, display a message saying "No transactions found", otherwise render the chart */}
+                {categoryOptions.labels.length === 0 ? 
+                    <Text fontSize={'l'} fontWeight={800}>No transactions found</Text> :
+                    <ReactApexChart 
+                        options={categoryOptions} 
+                        series={categorySeries} 
+                        type="donut" 
+                        // fit the size of the div 
+                        width="100%"
+                    />
+                }
             </Box>
         </Box>
     )

@@ -111,7 +111,7 @@ async function addCategory(id, categoryId, name, amount, isExpense) {
 
     if (isExpense) {
         if (userCategories.expenses.some(e => e.name.toLowerCase().trim() === temp.name.toLowerCase().trim())) throw 'already used';
-        userCategories.expenses.push(temp); //add logic from updating budget for expenses
+        userCategories.expenses.push(temp);
         let updatedExpense = userData.budget.monthRecurring + amount;
         let newExpense = await users.doc(id).update({
             "budget.monthRecurring": updatedExpense,
@@ -131,7 +131,7 @@ async function addCategory(id, categoryId, name, amount, isExpense) {
     return {success: "success"};
 }
 
-async function deleteCategory(id, categoryId, isExpense, amount) {
+async function deleteCategory(id, categoryId, amount, isExpense) {
     id = validation.checkId(id);
     categoryId = validation.checkId(categoryId);
     isExpense = validation.checkBool(isExpense);

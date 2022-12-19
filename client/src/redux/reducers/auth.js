@@ -106,7 +106,7 @@ const authReducer = (state = initialState, action) => {
                 let findIndex = userData2.categories.spending.findIndex(object => {return object.name === category});
                 if (findSpending) {
                     userData2.budget.monthVariable = userData2.budget.monthVariable + (-1)*amount2;
-                    userData2.categories.spending[findIndex].balance =  userData2.categories.spending[findIndex].balance + amount2;
+                    userData2.categories.spending[findIndex].balance =  userData2.categories.spending[findIndex].balance + (-1)*amount2;
                 }
             }
 
@@ -115,7 +115,30 @@ const authReducer = (state = initialState, action) => {
                 user: new User(userData2),
                 auth: true,
             }
+        case "ADD_CATEGORY_EXPENSE_USER":
+            let userData3 = state.user
+            let adding = payload.amount;
 
+            let updateMonthlyRecurring = userData3.budget.monthRecurring;
+            userData3.budget.monthRecurring = updateMonthlyRecurring + adding;
+
+            return {
+                ...state,
+                user: new User(userData3),
+                auth: true,
+            }
+        case "DELETE_CATEGORY_EXPENSE_USER":
+            let userData4 = state.user
+            let temp = payload.amount;
+
+            let updateMonthlyRecurring2 = userData4.budget.monthRecurring;
+            userData4.budget.monthRecurring = updateMonthlyRecurring2 + (-1)*temp;
+
+            return {
+                ...state,
+                user: new User(userData4),
+                auth: true,
+            }
         default:
             return state
     }

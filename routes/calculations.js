@@ -67,9 +67,9 @@ router
         if (req.body.id) {
             try {
                 req.body.id = validation.checkId(xss(req.body.id));
-                req.body.isExpense = validation.checkBool(xss(req.body.isExpense));
                 req.body.amount = validation.checkNum(xss(req.body.amount));
-                await calculationData.deleteCategory(req.session.user.id, xss(req.body.id), xss(req.body.isExpense), xss(req.body.amount));
+                req.body.isExpense = validation.checkBool(xss(req.body.isExpense));
+                await calculationData.deleteCategory(req.session.user.id, xss(req.body.id), xss(req.body.amount), xss(req.body.isExpense));
                 return res.status(200).json({success: "success"});
             } catch (e) {
                 console.log(e)

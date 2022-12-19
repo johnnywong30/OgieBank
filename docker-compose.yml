@@ -1,22 +1,5 @@
-# Server Dockerfile (in root directory)
-
-# FROM node:16
-# WORKDIR /server
-# COPY package*.json ./
-# RUN npm install
-# COPY . .
-# EXPOSE 8080
-# CMD [ "npm", "start" ]
-
-# Client Dockerfile (in /client directory)
-
-# FROM node:16
-# WORKDIR /client
-# COPY package*.json ./
-# RUN npm install
-# COPY . .
-# EXPOSE 3000
-# CMD [ "npm", "start" ]
+# Docker compose file for the frontend and backend
+# Run with `docker compose up`
 
 version: '3.8'
 services:

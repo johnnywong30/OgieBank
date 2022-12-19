@@ -21,8 +21,8 @@ import Debt from "./Debt";
 import { useDispatch, useSelector} from 'react-redux';
 import { Formik, Field } from "formik";
 import validation from '../../../constants/validation';
-import actions from '../../../redux/actions/transactions';
-import actions2 from '../../../redux/actions/categories';
+import transactionActions from '../../../redux/actions/transactions';
+import categoryActions from '../../../redux/actions/categories';
 import axios from 'axios';
 import {v4 as uuid} from 'uuid';
 
@@ -50,7 +50,7 @@ const Overview = () => {
         values.payment = payment;
         const reqBody = values;
         await axios.post('/api/calculations/addtransaction', reqBody);
-        dispatch(actions.addTransaction(values));
+        dispatch(transactionActions.addTransaction(values));
         setCategory('Deposit');
         setPayment("Bank");
     }
@@ -59,13 +59,27 @@ const Overview = () => {
     const spending = useSelector((state) => state.categories.categories.spending);
 
     const getData = async () => {
-        const { data } = await axios.get('/api/calculations/getAllCategories');
-        dispatch(actions2.setCategories(data.categories));
+
+        const getTransactions = async () => {
+            const { data } = await axios.get('/api/calculations/getAllTransactions')
+            return data
+        }
+        const getCategories = async () => {
+            const { data } = await axios.get('/api/calculations/getAllCategories');
+            return data
+
+        }
+
+        const { categories }  = await getCategories();
+        dispatch(categoryActions.setCategories(categories));
+
+        const { transactions } = await getTransactions(); 
+        dispatch(transactionActions.setTransactions(transactions));
     }
 
     useEffect(() => {
         getData();
-    },[])
+    },[userData])
 
     return (
         <Container maxW={'7xl'} px="12" py="6">

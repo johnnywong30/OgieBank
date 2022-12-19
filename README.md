@@ -1,6 +1,14 @@
 # OgieBank
 
-CS554 Final Project
+CS554 Final Project 22F
+
+## Project Description
+There are over 48 million people that are student debt borrowers with an average of $28,400 in federal and private debt. It can be difficult keeping up with spreadsheets of information, so instead we want to create an easy space for budget organization and financial planning (especially for paying off debt). 
+
+Users will be able to track their spending, get an overview of their budget and savings status, as well as view and sort their statements. Users will be able to easily and efficiently enter in information as well as export their information. We’ll be able to generate charts and infographics that display their various spending habits by category or amount. We’ll also provide paginated result pages, provide saving recommendations, and overall debt breakdown so users can see how far along they are in paying off loans or towards a savings goal. 
+
+## Technologies Used
+Node.js, Express, React, Redux, Firebase Authentication, Firebase Firestore, Heroku, Docker
 
 ## How to Setup
 

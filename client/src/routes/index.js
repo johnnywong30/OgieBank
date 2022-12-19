@@ -11,6 +11,7 @@ import Home from './Pages/Home';
 import Overview from './Pages/Overview';
 import Transactions from './Pages/Transactions';
 import Debt from './Pages/Debt';
+import Budget from './Pages/Budget';
 
 const RestrictedRoute = ({ children, redirectTo}) => {
     const isAuth = useSelector(({auth}) => auth.auth);
@@ -58,6 +59,13 @@ const AllRoutes = () => {
                     <Debt/>
                 </RestrictedRoute>
             }/>
+
+            <Route path='/budget' element={
+                <RestrictedRoute redirectTo={'/login'}>
+                    <Budget/>
+                </RestrictedRoute>
+            }/>
+            
             <Route path='/' element={<Home/>}/>
             <Route path='*' element={<Error/>}/>
         </Routes>

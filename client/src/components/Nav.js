@@ -83,6 +83,7 @@ const MenuLinks = ({ isOpen, loading, handleLogout, isAuth }) => {
             >
                 { isAuth ? null : <MenuItem to="/register">Register</MenuItem>}
                 { isAuth ? <MenuItem to="/overview">Overview</MenuItem> : null }
+                { isAuth ? <MenuItem to="/budget">Budget</MenuItem> : null }
                 { isAuth ? <MenuItem to="/transactions">Transactions</MenuItem> : null }
                 { isAuth ? <MenuItem to="/debt">Debt Breakdown</MenuItem> : null}
                 { isAuth ? (

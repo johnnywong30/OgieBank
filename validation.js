@@ -121,7 +121,7 @@ function getRounded(number){
     return Math.round(number * 100) / 100;
 }
 
-function checkName(name, parameter) {
+function checkName(name, parameter='name') {
     name = checkString(name, parameter)
     const regEx = new RegExp('[A-zÀ-ú]')
     if (!regEx.test(name)) throw `Error: ${parameter} must only contain letters`

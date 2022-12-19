@@ -17,10 +17,9 @@ import validation from '../../../constants/validation';
 const Overview = () => {
     const userData = useSelector((state) => state.auth.user);
     const monthIncome = validation.getRounded(userData.budget.monthIncome);
-    const monthDeposit = validation.getRounded(userData.budget.monthDeposit);
     const monthRecurring = validation.getRounded(userData.budget.monthRecurring);
     const monthVariable = validation.getRounded(userData.budget.monthVariable);
-    const remaining = validation.getRounded(monthIncome + monthDeposit - monthRecurring - monthVariable);
+    const remaining = validation.getRounded(monthIncome - monthRecurring - monthVariable);
 
     const monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"

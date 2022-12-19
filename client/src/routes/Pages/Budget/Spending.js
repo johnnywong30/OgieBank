@@ -46,6 +46,7 @@ const Spending = () => {
     const deleteSpending = async (id, isExpense) => {
         const reqBody = {
             id: id,
+            amount: 1,
             isExpense: isExpense,
         };
         dispatch(actions.deleteCategory(id, isExpense));

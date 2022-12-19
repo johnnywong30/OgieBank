@@ -27,6 +27,7 @@ import { Formik, Field } from "formik";
 import {v4 as uuid} from 'uuid';
 import { useDispatch, useSelector} from 'react-redux';
 import actions from '../../../redux/actions/categories'
+import actions2 from '../../../redux/actions/auth'
 import { MinusIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 
@@ -39,16 +40,20 @@ const Expenses = () => {
         values.isExpense = true;
         const reqBody = values;
         dispatch(actions.addCategory(reqBody));
+        dispatch(actions2.addCategoryExpenseUser(values.amount));
         await axios.post('/api/calculations/addcategory', reqBody);
+
         onClose();
     }
 
-    const deleteExpense = async (id, isExpense) => {
+    const deleteExpense = async (id, amount, isExpense) => {
+        dispatch(actions.deleteCategory(id, isExpense));
+        dispatch(actions2.deleteCategoryExpenseUser(amount));
         const reqBody = {
             id: id,
+            amount: amount,
             isExpense: isExpense,
         };
-        dispatch(actions.deleteCategory(id, isExpense));
         await axios.post('/api/calculations/deletecategory', reqBody);
     }
 
@@ -109,7 +114,7 @@ const Expenses = () => {
                                             width={'25%'}
                                             ml={0}
                                             mr={3}
-                                            onClick={() => deleteExpense(e.id, e.isExpense)}
+                                            onClick={() => deleteExpense(e.id, e.amount, e.isExpense)}
                                         >
                                             <MinusIcon />
                                         </Button>

@@ -34,11 +34,41 @@ const addTransactionUser = (transaction) => {
     }
 }
 
+const deleteTransactionUser = (transaction) => {
+    return async dispatch => {
+        dispatch({
+            type: "DELETE_TRANSACTION_USER",
+            payload: transaction,
+        })
+    }
+}
+
+const addCategoryExpenseUser = (amount) => {
+    return async dispatch => {
+        dispatch({
+            type: "ADD_CATEGORY_EXPENSE_USER",
+            payload: {amount: amount},
+        })
+    }
+}
+
+const deleteCategoryExpenseUser = (amount) => {
+    return async dispatch => {
+        dispatch({
+            type: "DELETE_CATEGORY_EXPENSE_USER",
+            payload: {amount: amount},
+        })
+    }
+}
+
 const authActions = {
     loginAuthUser,
     logoutAuthUser,
     updateUser,
     addTransactionUser,
+    deleteTransactionUser,
+    addCategoryExpenseUser,
+    deleteCategoryExpenseUser,
 }
 
 export default authActions;

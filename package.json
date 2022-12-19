@@ -25,6 +25,7 @@
     "firebase": "^9.14.0",
     "firebase-admin": "^11.3.0",
     "nodemon": "^2.0.20",
+    "uuid": "^9.0.0",
     "xss": "^1.0.14"
   },
   "devDependencies": {

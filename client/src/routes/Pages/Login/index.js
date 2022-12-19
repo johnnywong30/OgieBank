@@ -46,8 +46,6 @@ const Login = () => {
     
     const handleEmail = (e) => setEmail(e.target.value)
     const handlePassword = (e) => setPassword(e.target.value)
-
-    // ADD REDUX STUFF
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
@@ -71,7 +69,6 @@ const Login = () => {
             setLoading(false)
         }
     }
-    //ADD REDUX STUFF
     const socialSignOn = async (provider) => {
         try {
             setGoogleLoading(true);
@@ -88,7 +85,10 @@ const Login = () => {
             setGoogleLoading(false);
         } catch (e) {
             console.log(e)
-            setError(`Unable to sign in using ${provider}`)
+            if (e.response)
+                setError(e.response.data.error)
+            else
+                setError(`Unable to sign in using ${provider}`)
             setLoginSuccessful(false)
             setGoogleLoading(false);
         }

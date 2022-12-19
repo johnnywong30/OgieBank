@@ -74,6 +74,10 @@ router
                 // query them again
                 authUser = await userData.getUserByEmail(xss(req.body.email))
             }
+            // there's an account already created through ogie
+            if (!authUser.displayName) {
+                return res.status(400).json({error: 'Normal account with this email already exists - log in through the form instead!'})
+            }
             delete authUser['password']
             const ret = {
                 loggedIn: true,

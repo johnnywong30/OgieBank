@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
+    "seed": "node ./config/seed.js",
     "client-install": "npm install --prefix client",
     "server": "nodemon app.js",
     "client": "npm start --prefix client",

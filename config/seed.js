@@ -1,16 +1,11 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 16;
-const validation = require('../validation');
 const { v4: uuidv4 } = require('uuid');
 
 // firestore db
 const dbCollections = require('./firebase');
 const { db } = dbCollections;
 
-const FIRSTNAMES = ['Ogie', 'Bippy', 'Beebo']
-const LASTNAMES = ['Dog', 'Chinners', 'Bibs']
-const USERNAMES = ['ogiedog123', 'bippy123', 'beebo30']
-const EMAILS = ['ogiedog@gmail.com', 'bippy@gmail.com', 'beebo@gmail.com']
 const PASSWORD = 'password'
 
 const ACCOUNT_INFO = {
@@ -66,7 +61,7 @@ const generateExpenseCategory = (name, amount) => {
     }
 }
 
-const generateSpendingCategory = (name, amount) => {
+const generateSpendingCategory = (name, amount, balance=0) => {
     const id = uuidv4()
     const isExpense = ''
     return {
@@ -74,7 +69,7 @@ const generateSpendingCategory = (name, amount) => {
         name,
         amount,
         isExpense,
-        balance: 0
+        balance
     }
 }
 
@@ -107,9 +102,9 @@ const addBippy = async () => {
     const accountInfo = {
         bankBalance: 10000,
         bankName: 'Chase',
-        creditBalannce: 0,
+        creditBalance: 0,
         creditLimit: 1000,
-        creditName: 'Chase'
+        creditName: 'Discover'
     }
     const budget = {
         monthIncome: 10000,
@@ -153,7 +148,6 @@ const addBippy = async () => {
 // Beebo
 // beebo30@gmail.com
 // password
-// TODO: beebo
 const addBeebo = async () => {
     const firstName = 'Beebo'
     const lastName = 'Bibs'
@@ -161,20 +155,37 @@ const addBeebo = async () => {
     const password = await bcrypt.hash(PASSWORD, saltRounds)
     const email = 'beebo30@gmail.com'
     const accountInfo = {
-        bankBalance: 10000,
+        bankBalance: 48450,
         bankName: 'Chase',
-        creditBalannce: 0,
-        creditLimit: 1000,
-        creditName: 'Chase'
+        creditBalance: 250,
+        creditLimit: 20000,
+        creditName: 'Chase Sapphire'
     }
     const budget = {
-        monthIncome: 10000,
-        monthRecurring: 0,
-        monthVariable: 0
+        monthIncome: 50000,
+        monthRecurring: 2200,
+        monthVariable: 150
     }
+
+    const expenses = [
+        {name: 'Rent', amount: 1000},
+        {name: 'Kids', amount: 500},
+        {name: 'Groceries', amount: 500},
+        {name: 'Utilities', amount: 200}
+    ].map(({name, amount}) => {
+        return generateExpenseCategory(name, amount)
+    })
+
+    const spending = [
+        {name: 'Fun Dollars', amount: 500, balance: 0},
+        {name: 'Substances', amount: 500, balance: 150}
+    ].map(({name, amount, balance}) => {
+        return generateSpendingCategory(name, amount, balance)
+    })
+
     const categories = {
-        expenses: [],
-        spending: []
+        expenses,
+        spending
     }
     const payInfo = {
         amount: 0,
@@ -183,15 +194,55 @@ const addBeebo = async () => {
     }
     const transactions = [
         {
-            amount: 10000,
-            category: 'Deposit',
+            amount: 500,
+            category: 'Kids',
+            date: '12/15/2022',
+            id: uuidv4(),
+            name: 'Child Support',
+            payment: 'Bank'
+        },
+        {
+            amount: 50,
+            category: 'Utilities',
+            date: '12/01/2022',
+            id: uuidv4(),
+            name: 'Verizon',
+            payment: 'Bank'
+        },
+        {
+            amount: 100,
+            category: 'Groceries',
             date: '12/19/2022',
             id: uuidv4(),
-            name: 'BEEBO PAID ME',
+            name: 'Shoprite',
+            payment: 'Credit'
+        },
+        {
+            amount: 1000,
+            category: 'Rent',
+            date: '12/19/2022',
+            id: uuidv4(),
+            name: 'December Rent',
+            payment: 'Bank'
+        },
+        {
+            amount: 150,
+            category: 'Substances',
+            date: '12/19/2022',
+            id: uuidv4(),
+            name: 'Cookies',
+            payment: 'Credit'
+        },
+        {
+            amount: 50000,
+            category: 'Deposit',
+            date: '12/15/2022',
+            id: uuidv4(),
+            name: 'Momma',
             payment: 'Bank'
         }
     ]
-    const bippy = {
+    const beebo = {
         accountInfo,
         budget,
         categories,
@@ -203,5 +254,21 @@ const addBeebo = async () => {
         transactions,
         username
     }
-    await users.add(bippy)
+    await users.add(beebo)
 }
+
+const seed = async () => {
+    console.log('...Adding ogiedog123@gmail.com ...')
+    await addCleanUser()
+    console.log('Success!')
+
+    console.log('...Adding bippy123@gmail.com ...')
+    await addBippy() 
+    console.log('Success!')
+
+    console.log('...Adding beebo30@gmail.com ...')
+    await addBeebo()
+    console.log('Success!')
+}
+
+seed()

@@ -108,7 +108,6 @@ const Debts = () => {
     }
 
     const getColors = (percentages) => {
-        console.log(percentages)
         let colors = []
         percentages.forEach(p => {
             let color = ''
@@ -265,7 +264,7 @@ const Debts = () => {
                             total: {
                                 show: true,
                                 label: "Total",
-                                color: "#373d3f",
+                                color: undefined,
                                 formatter: function (w) {
                                     // truncate decimal values to 2 digits
                                     return "$" + categoryTotal.toFixed(2);
@@ -304,14 +303,11 @@ const Debts = () => {
             </div>
             <div>
                 <div style={{display: 'flex', justifyContent: 'center'}}>
-                    {/* use shades of gray for the colors */}
                     <ReactApexChart 
                         options={categoryOptions} 
                         series={categorySeries} 
                         type="donut" 
                         width={500}
-                        colors={categoryColors}
-
                     />
                 </div>
                 <table>

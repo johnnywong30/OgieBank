@@ -14,6 +14,11 @@ Node.js, Express, React, Redux, Firebase Authentication, Firebase Firestore, Her
 
 1. Make sure you're in the root folder of the project
 2. Run `npm run install-all` to install all dependencies for the server and client
+3. Run `npm run seed` to seed the Firebase Firestore
+
+## Pre-made Accounts with Seed
+1. Username: **INSERT USERNAME HERE**, Password: **INSERT PASSWORD HERE**
+1. Username: **INSERT USERNAME HERE**, Password: **INSERT PASSWORD HERE**
 
 ## How to Start Project Locally
 

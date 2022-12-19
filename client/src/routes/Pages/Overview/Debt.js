@@ -44,7 +44,8 @@ const Debt = () => {
     const [categoryTotal, setCategoryTotal] = useState(0)
     
     useEffect(() => {
-        const transactions = allTransactions
+        // Exclude deposits from the donut chart
+        const transactions = allTransactions.filter(t => t.category !== "Deposit")
         const categoryStats = getStats(transactions)
         const categoryPercentages = getPercentages(categoryStats.stats, categoryStats.total)
         setCategoryPercentages(categoryPercentages)

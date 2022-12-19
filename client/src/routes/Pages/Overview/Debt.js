@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 // create pie charts using ApexCharts
 import ReactApexChart from "react-apexcharts";
@@ -7,28 +7,13 @@ import {
     Box,
     Text,
     Stack,
-    List,
-    ListItem,
-    ListIcon,
-    Button,
-    useColorModeValue, 
     SimpleGrid, 
-    Center
 } from '@chakra-ui/react'
 
-const Debt = () => {
-    // Show spending by Bank/Credit, and by Category and separate by past week, month, year, all time
-
-    // display the stats in a table
-    
+const Debt = () => {   
     const allTransactions = useSelector((state) => state.transactions.transactions)
-    const dispatch = useDispatch();
-
-    // create an array of all the transactions that are debts
-    const [debts, setDebts] = useState([])
     const now = new Date()
 
-    // given 'week', 'month', 'year', 'all', return the transactions that are in that time period
     const getTransactions = (timePeriod) => {
         let transactions = []
         const lastWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7)
@@ -44,7 +29,6 @@ const Debt = () => {
                         transactions.push(allTransactions[i])
                     }
                 }
-                // console.log("week" + transactions)
                 break;
             case 'month':
                 for (let i = 0; i < allTransactions.length; i++) {
@@ -53,7 +37,6 @@ const Debt = () => {
                         transactions.push(allTransactions[i])
                     }
                 }
-                // console.log("month" + transactions)
                 break;
             case 'year':
                 for (let i = 0; i < allTransactions.length; i++) {
@@ -62,7 +45,6 @@ const Debt = () => {
                         transactions.push(allTransactions[i])
                     }
                 }
-                // console.log("year" + transactions)
                 break;
             case 'all':
                 transactions = allTransactions
@@ -107,30 +89,10 @@ const Debt = () => {
         return percentages
     }
 
-    const getColors = (percentages) => {
-        let colors = []
-        percentages.forEach(p => {
-            let color = ''
-            if (p.percentage < 0.5) {
-                color = `rgb(${255 * (1 - p.percentage * 2)}, 255, 0)`
-            } else {
-                color = `rgb(255, ${255 * (1 - (p.percentage - 0.5) * 2)}, 0)`
-            }
-            colors.push({name: p.name,
-                color: color})
-        })
-        return colors
-    }
-
     // Display the stats in a table
     const [timePeriod, setTimePeriod] = useState('all')
-    const [sourceStats, setSourceStats] = useState([])
-    const [categoryStats, setCategoryStats] = useState([])
     const [sourcePercentages, setSourcePercentages] = useState([])
     const [categoryPercentages, setCategoryPercentages] = useState([])
-    const [sourceColors, setSourceColors] = useState([])
-    const [categoryColors, setCategoryColors] = useState([])
-    const [sourceTotal, setSourceTotal] = useState(0)
     const [categoryTotal, setCategoryTotal] = useState(0)
     
     useEffect(() => {
@@ -139,24 +101,15 @@ const Debt = () => {
         const categoryStats = getStats(transactions, 'category')
         const sourcePercentages = getPercentages(sourceStats.stats, sourceStats.total)
         const categoryPercentages = getPercentages(categoryStats.stats, categoryStats.total)
-        const sourceColors = getColors(sourcePercentages)
-        const categoryColors = getColors(categoryPercentages)
-        setSourceStats(sourceStats.stats)
-        setCategoryStats(categoryStats.stats)
         setSourcePercentages(sourcePercentages)
         setCategoryPercentages(categoryPercentages)
-        setSourceColors(sourceColors)
-        setCategoryColors(categoryColors)
-        setSourceTotal(sourceStats.total)
         setCategoryTotal(categoryStats.total)
     }
 
     , [timePeriod])
 
     // create the pie charts
-    const [sourceSeries, setSourceSeries] = useState([])
     const [categorySeries, setCategorySeries] = useState([])
-    const [sourceLabels, setSourceLabels] = useState([])
     const [categoryLabels, setCategoryLabels] = useState([])
 
     useEffect(() => {
@@ -172,71 +125,26 @@ const Debt = () => {
             categorySeries.push(c.percentage)
             categoryLabels.push(c.name)
         })
-        setSourceSeries(sourceSeries)
         setCategorySeries(categorySeries)
-        setSourceLabels(sourceLabels)
         setCategoryLabels(categoryLabels)
     }, [sourcePercentages, categoryPercentages])
-
-    const sourceOptions = {
-        chart: {
-          type: "donut",
-        },
-        labels: sourceLabels,
-        plotOptions: {
-          pie: {
-            donut: {
-              labels: {
-                show: true,
-                name: {
-                  show: true,
-                  fontSize: "22px",
-                  fontFamily: "Helvetica, Arial, sans-serif",
-                  fontWeight: 600,
-                  color: undefined,
-                  offsetY: -10
-                },
-                value: {
-                  show: true,
-                  fontSize: "16px",
-                  fontFamily: "Helvetica, Arial, sans-serif",
-                  fontWeight: 400,
-                  color: undefined,
-                  offsetY: 16,
-                  formatter: function (val) {
-                    return "$" + val;
-                  }
-                },
-                total: {
-                  show: true,
-                  label: "Total",
-                  color: "#373d3f",
-                  formatter: function (w) {
-                    return "$" + sourceTotal;
-                  }
-                }
-              }
-            }
-          }
-        },
-        responsive: [{
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200
-            },
-            legend: {
-              position: 'bottom'
-            }
-          }
-        }]
-      };
       
       const categoryOptions = {
         chart: {
           type: "donut",
         },
+        // TWEAK COLORS HERE TO WORK WITH TOTA11Y
+        // Use Dark Blue, Dark Green, Dark Purple, Dark Gray, Dark Red
+        colors: ["#0D47A1", "#1B5E20", "#4A148C", "#212121", "#B71C1C"],
         labels: categoryLabels,
+        // On hover, the percentage should be shown and truncated to 3 decimal places
+        tooltip: {
+            y: {
+                formatter: function (val) {
+                    return (val * 100).toFixed(3) + "%";
+                }
+            }
+        },
         plotOptions: {
             pie: {
                 donut: {
@@ -251,7 +159,7 @@ const Debt = () => {
                                 offsetY: -10
                                 },
                             value: {
-                                                    show: true,
+                                show: true,
                                 fontSize: "16px",
                                 fontFamily: "Helvetica, Arial, sans-serif",
                                 fontWeight: 400,
@@ -287,6 +195,10 @@ const Debt = () => {
         }]
         };
 
+    // On page load, setTimePeriod('week')
+    useEffect(() => {
+        setTimePeriod('all')
+    }, [])
 
     return (
         <Box
@@ -318,6 +230,10 @@ const Debt = () => {
                     <div style={{backgroundColor: '#f5f5f5', padding: '20px'}}>
                     <div>
                         <div style={{display: 'flex', justifyContent: 'center', backgroundColor: '#e0e0e0', padding: '10px'}}>
+                            <Text fontSize={'l'} fontWeight={800}>
+                                Choose a time period: 
+                            </Text>
+                            <div style={{width: '10px'}}></div>
                             <button onClick={() => setTimePeriod('week')}>Week</button>
                             <div style={{width: '10px'}}></div>
                             <button onClick={() => setTimePeriod('month')}>Month</button>
@@ -329,37 +245,17 @@ const Debt = () => {
                     </div>
                     <div>
                         <div style={{display: 'flex', justifyContent: 'center'}}>
-                            <ReactApexChart 
-                                options={categoryOptions} 
-                                series={categorySeries} 
-                                type="donut" 
-                                width={500}
-                            />
+                            {/* if categoryOptions or categorySeries is empty, display a message saying "No transactions found", otherwise render the chart */}
+                            {categoryOptions.labels.length === 0 ? 
+                                <Text fontSize={'l'} fontWeight={800}>No transactions found</Text> :
+                                <ReactApexChart 
+                                    options={categoryOptions} 
+                                    series={categorySeries} 
+                                    type="donut" 
+                                    width={500}
+                                />
+                            }
                         </div>
-                        {/* <table>
-                            <thead>
-                                <tr>
-                                    <th>Category</th>
-                                    <div style={{width: '10px'}}></div>
-                                    <th>Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {categoryStats ? categoryStats.map(c => {
-                                    return (
-                                        <tr>
-                                            <td>{c.name ? c.name : 'Uncategorized'}</td>
-                                            <div style={{width: '10px'}}></div>
-                                            <td>{c.amount ? c.amount : 0}</td>
-                                        </tr>
-                                    )
-                                }) : 
-                                <tr>
-                                    <td>No data</td>
-                                </tr>
-                                }
-                            </tbody>
-                        </table> */}
                     </div>
                 </div>
             </Box>

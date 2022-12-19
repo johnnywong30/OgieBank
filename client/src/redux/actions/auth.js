@@ -25,10 +25,20 @@ const updateUser = (user) => {
     }
 }
 
+const addTransactionUser = (transaction) => {
+    return async dispatch => {
+        dispatch({
+            type: "ADD_TRANSACTION_USER",
+            payload: transaction,
+        })
+    }
+}
+
 const authActions = {
     loginAuthUser,
     logoutAuthUser,
-    updateUser
+    updateUser,
+    addTransactionUser,
 }
 
 export default authActions;

@@ -23,6 +23,7 @@ import { Formik, Field } from "formik";
 import validation from '../../../constants/validation';
 import actions from '../../../redux/actions/transactions';
 import actions2 from '../../../redux/actions/categories';
+import actions3 from '../../../redux/actions/auth';
 import axios from 'axios';
 import {v4 as uuid} from 'uuid';
 
@@ -30,7 +31,7 @@ const Overview = () => {
     const [startDate, setStartDate] = useState(new Date());
     const startDateFormat = (((startDate.getMonth() > 8) ? (startDate.getMonth() + 1) : ('0' + (startDate.getMonth() + 1))) + '/' + ((startDate.getDate() > 9) ? startDate.getDate() : ('0' + startDate.getDate())) + '/' + startDate.getFullYear());
     const userData = useSelector((state) => state.auth.user);
-    const userName = userData.displayName === '' ? "Change Name In Settings" : userData.displayName;
+    const userName = userData.displayName === undefined ? userData.username : userData.displayName;
     const dispatch = useDispatch();
     
     const [category, setCategory] = useState('Deposit');
@@ -51,6 +52,7 @@ const Overview = () => {
         const reqBody = values;
         await axios.post('/api/calculations/addtransaction', reqBody);
         dispatch(actions.addTransaction(values));
+        dispatch(actions3.addTransactionUser(values));
         setCategory('Deposit');
         setPayment("Bank");
     }

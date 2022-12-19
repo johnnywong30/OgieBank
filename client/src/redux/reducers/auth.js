@@ -26,6 +26,15 @@ const authReducer = (state = initialState, action) => {
                 user: new User(payload),
                 auth: true
             }
+        case "ADD_TRANSACTION_USER":
+            let userData = state.user;
+            let updatedBalance = userData.accountInfo.bankBalance + payload.amount;
+            userData.accountInfo.bankBalance = updatedBalance;
+            return {
+                ...state,
+                user: userData,
+                auth: true,
+            }
         default:
             return state
     }

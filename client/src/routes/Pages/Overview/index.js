@@ -55,6 +55,8 @@ const Overview = () => {
         dispatch(actions3.addTransactionUser(values));
         setCategory('Deposit');
         setPayment("Bank");
+        const { data } = await axios.get('/api/user/session');
+        dispatch(actions3.updateUser(data));
     }
 
     const expenses = useSelector((state) => state.categories.categories.expenses);

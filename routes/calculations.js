@@ -4,6 +4,7 @@ const data = require('../data');
 const calculationData = data.calculations;
 const xss = require('xss');
 const validation = require('../validation');
+const userData = data.users;
 
 router
     .route('/addtransaction')
@@ -44,8 +45,11 @@ router
                 req.body.amount = validation.checkNum(xss(req.body.amount));
                 req.body.isExpense = validation.checkBool(xss(req.body.isExpense));
 
-                let categories = await calculationData.getAllCategories(req.session.user.id);
-                categories = categories.categories;
+                let user = await userData.getUser(req.session.user.id);
+                let categories = user.categories;
+
+                // let categories = await calculationData.getAllCategories(req.session.user.id);
+                // categories = categories.categories;
         
                 if (req.body.isExpense){
                     if (categories.expenses.some(e => e.name.toLowerCase().trim() === req.body.name.toLowerCase().trim())) throw 'already used';

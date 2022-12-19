@@ -69,6 +69,17 @@ const Spending = () => {
         return temp; 
     }
 
+    const barWidth = (balance, amount) => {
+        let width = balance / amount * 100;
+        if (width > 100) {
+            width = 100;
+        }
+        if (width < 0) {
+            width = 0;
+        }
+        return width;
+    }
+
     return (
         <Box
             marginTop={{ base: '1', sm: '5' }}
@@ -122,6 +133,22 @@ const Spending = () => {
                                         >
                                         ${s.balance} / {s.amount}
                                     </Box>
+                                </Flex>
+                                <Flex
+                                    width="50%"
+                                    height="20px"
+                                    mx="25%"
+                                    my="2"
+                                    bg="gray.200"
+                                    borderRadius="lg"
+                                    >
+                                    <Flex
+                                        // width can be up to 100% based on the balance, if it is 100% then change the color to red
+                                        width={barWidth(s.balance, s.amount) + "%"}
+                                        height="20px"
+                                        borderRadius="lg"
+                                        bg={barWidth(s.balance, s.amount) === 100 ? "red.500" : "green.500"}
+                                        />
                                 </Flex>
                                 <Divider/>
                             </ListItem>

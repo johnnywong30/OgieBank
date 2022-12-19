@@ -141,9 +141,7 @@ async function createUser(firstName, lastName, username, password, email) {
             creditLimit: 0,
         },
         payInfo: {
-            amount: 0,
-            date: "",
-            month: 0,
+            month: -1,
         },
         budget: {
             monthIncome: 0,
@@ -182,9 +180,7 @@ async function createUserByAuth(uid, displayName, email) {
             creditLimit: 0,
         },
         payInfo: {
-            amount: 0,
-            date: "",
-            month: 0,
+            month: -1,
         },
         budget: {
             monthIncome: 0,
@@ -364,6 +360,58 @@ async function updateEmail(id, email) {
     return user
 }
 
+async function resetMonth(id){
+    let currMonth = new Date();
+    currMonth = currMonth.getMonth();
+
+    const users = db.collection('users');
+    const updateInfo = await users.doc(id).update({
+        "payInfo.month": currMonth,
+    })
+    console.log(updateInfo)
+
+    const user = await getUser(id);
+    return user;
+}
+
+async function resetData(id){
+    let currMonth = new Date();
+    currMonth = currMonth.getMonth();
+
+    const users = db.collection('users');
+    await users.doc(id).update({
+        "payInfo.month": currMonth,
+    })
+
+    console.log("DELETEING INFOOOOOOOOOO");
+    await users.doc(id).update({
+        "budget.monthIncome": 0,
+    })
+    await users.doc(id).update({
+        "budget.monthVariable": 0,
+    })
+    await users.doc(id).update({
+        "transactions": [],
+    })
+
+    let temp = await this.getUser(id);
+    let categories = temp.categories;
+    let spending = [];
+    if (categories.spending.length > 0){
+        for (let i=0; i<categories.spending.length; i++){
+            categories.spending[i].balance = 0;
+        }
+        spending = categories.spending;
+    }
+    console.log(spending);
+    await users.doc(id).update({
+        "categories.spending": spending,
+    })
+    
+    const user = await getUser(id);
+    return user;
+}
+
 
 module.exports = {
     // GENERAL AUTH
@@ -388,4 +436,7 @@ module.exports = {
     updateEmail,
     updateUsername,
     updatePassword,
+    // RESET
+    resetMonth,
+    resetData,
 }

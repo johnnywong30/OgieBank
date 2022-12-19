@@ -29,7 +29,21 @@ router
         }
         // validate the user
         try {
-            const user = await userData.checkUserByEmail(xss(req.body.email), xss(req.body.password))
+            let user = await userData.checkUserByEmail(xss(req.body.email), xss(req.body.password))
+            req.session.user = user
+
+            let currMonth = new Date();
+            currMonth = currMonth.getMonth();
+
+            if (user.payInfo.month === -1) {
+                user = await userData.resetMonth(req.session.user.id);
+            } else if (user.payInfo.month !== currMonth) {
+                user = await userData.resetData(req.session.user.id);
+            }
+
+            //if payInfo.month == 0 then make payInfo.month == to current month
+            //if payInfo.month !== current month then reset all data, monthIncome, monthSpending, transactions, balances for Spending
+
             req.session.user = user
             console.log(' validating', req.session.user)
             res.status(200).json(user)
@@ -66,6 +80,18 @@ router
                 ...authUser
             }
             // console.log('google auth', ret)
+
+            req.session.user = authUser
+
+            let currMonth = new Date();
+            currMonth = currMonth.getMonth();
+
+            if (authUser.payInfo.month === -1) {
+                authUser = await userData.resetMonth(req.session.user.id);
+            } else if (authUser.payInfo.month !== currMonth) {
+                authUser = await userData.resetData(req.session.user.id);
+            }
+
             req.session.user = authUser
             // console.log(authUser)
             res.status(200).json(ret)

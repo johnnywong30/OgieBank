@@ -222,7 +222,7 @@ const Debt = () => {
                         align={'center'}>
                         <Stack direction={'row'} align={'center'} justify={'center'}>
                             <Text fontSize={'3xl'} fontWeight={800}>
-                                Debt Status
+                                Spending Summary
                             </Text>
                         </Stack>
                     </Stack>

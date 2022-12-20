@@ -131,6 +131,7 @@ function checkName(name, parameter='name') {
 function checkNum(num){
     if (!num) {throw 'Error: You must provide a valid num';}
     if (isNaN(num)) {throw 'Error: You must provide a valid num';}
+    if (num < 0 || num >= 1000000000000000000) {throw 'Error: You must provide a valid num';}
     num = Number(num);
     num = Math.round(num * 100) / 100;
     if (num <= 0) {throw 'Error: You must provide a valid num';}

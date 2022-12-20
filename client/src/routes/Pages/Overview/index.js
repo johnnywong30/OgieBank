@@ -154,7 +154,7 @@ const Overview = () => {
                                                     variant="filled"
                                                     validate={(value) => {
                                                         let error;
-                                                        if (!value || typeof value != 'string' || value.trim().length < 3) error = "Invalid Name"
+                                                        if (!value || typeof value != 'string' || value.trim().length < 3 || value.trim().length > 50) error = "Invalid Name"
                                                         return error;
                                                     }}
                                                 />
@@ -171,7 +171,7 @@ const Overview = () => {
                                                     variant="filled"
                                                     validate={(value) => {
                                                         let error;
-                                                        if (!value || value <= 0 || !Number(value)) error = "Invalid Amount"
+                                                        if (!value || value <= 0 || !Number(value) || value >= 1000000000000000000) error = "Invalid Amount"
                                                         return error;
                                                     }}
                                                 />

@@ -8,7 +8,8 @@ import {
     Text,
     Stack,
     SimpleGrid, 
-    Button
+    Center,
+    Button,
 } from '@chakra-ui/react'
 
 const Debt = () => {   

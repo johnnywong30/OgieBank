@@ -56,38 +56,43 @@ const Debt = () => {
         <Box>
             <Text fontSize="4xl" fontWeight="bold" textAlign="center" mt="10">Debt Calculator</Text>
             <Center>
-                <SimpleGrid columns={2} spacing={10} mt="10" background="gray.100" p="10" borderRadius="10px">
+                <SimpleGrid columns={[1, null, 2]} spacing={10} mt="10" background="gray.100" p="10" borderRadius="10px">
                     <Box>
-                        <Text fontSize="2xl" fontWeight="bold" textAlign="center">Principal</Text>
+                        <Text fontSize="2xl" fontWeight="bold">Principal</Text>
                         <input id="principal" type="number" value={principal} onChange={e => setPrincipal(e.target.value)} />
                         <label htmlFor="principal"></label>
                     </Box>
                     <Box>
-                        <Text fontSize="2xl" fontWeight="bold" textAlign="center">Interest Rate (%)</Text>
+                        <Text fontSize="2xl" fontWeight="bold">Interest Rate (%)</Text>
                         <input id="interestRate" type="number" value={interestRate} onChange={e => setInterestRate(e.target.value)} />
                         <label htmlFor="interestRate"></label>
                     </Box>
                     <Box>
-                        <Text fontSize="2xl" fontWeight="bold" textAlign="center">Months of Payments</Text>
+                        <Text fontSize="2xl" fontWeight="bold">Months of Payments</Text>
                         <input id="payments" type="number" value={numPayments} onChange={e => setNumPayments(e.target.value)} />
                         <label htmlFor="payments"></label>
                     </Box>
                     <Box>
-                        <Text fontSize="2xl" fontWeight="bold" textAlign="center">Monthly Payment</Text>
-                        {/* input is disabled */}
-                        <input type="text" value={"$" + monthlyPayment.toFixed(2)} onChange={e => setMonthlyPayment(e.target.value)} disabled />
                     </Box>
                     <Box>
-                        <Text fontSize="2xl" fontWeight="bold" textAlign="center">Total Interest</Text>
+                        <Text fontSize="2xl" fontWeight="bold">Total Interest</Text>
                         {/* input is disabled */}
                         <input type="text" value={"$" + totalInterest.toFixed(2)} onChange={e => setTotalInterest(e.target.value)} disabled />
                     </Box>
                     <Box>
-                        <Text fontSize="2xl" fontWeight="bold" textAlign="center">Total Paid</Text>
+                        <Text fontSize="2xl" fontWeight="bold">Total Paid</Text>
                         {/* input is disabled */}
                         <input type="text" value={"$" + (monthlyPayment * numPayments).toFixed(2)} onChange={e => setTotalInterest(e.target.value)} disabled />
                     </Box>
                 </SimpleGrid>
+            </Center>
+            <Center>
+                <Box my="6" borderRadius="10px">
+                    <Text fontSize="2xl" fontWeight="bold">Estimated Monthly Expense</Text>
+                    {/* input is disabled */}
+                    <Center>
+                    <input type="text" value={"$" + monthlyPayment.toFixed(2)} onChange={e => setMonthlyPayment(e.target.value)} disabled /></Center>
+                </Box>
             </Center>
             <Center>
                 <Button onClick={calculate} mt="10">Calculate</Button>

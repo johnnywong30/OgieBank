@@ -49,11 +49,13 @@ const Debt = () => {
 
     useEffect(() => {
         // When the transactions are updated, update the graph
-        // TODO: 
-        // This breaks when adding transactions to the same category
-        // Simply having another category triggers an update
 
-        // Exclude deposits from the category pie chart
+        // TODO: 
+        // Breaks under these conditions:
+        // There are no transactions
+        // The first transaction is successfully added
+        // The second transaction is added successfully but does not show up in the graph until the page is refreshed
+
         const transactions = allTransactions.filter(t => t.category !== "Deposit")
         const categoryStats = getStats(transactions)
         const categoryPercentages = getPercentages(categoryStats.stats, categoryStats.total)
@@ -67,16 +69,15 @@ const Debt = () => {
         setCategorySeries(categorySeries)
         setCategoryLabels(categoryLabels)
     }, [updateGraphs, allTransactions])
+
+    // The code below works as intended, displaying categoryStats, categorySeries, and categoryLabels that were calculated in the useEffect hook above
       
       const categoryOptions = {
         chart: {
           type: "donut",
         },
-        // TWEAK COLORS HERE TO WORK WITH TOTA11Y
-        // Use Dark Blue, Dark Green, Dark Purple, Dark Gray, Dark Red, etc
         colors: ["#0D47A1", "#1B5E20", "#4A148C", "#212121", "#B71C1C", "#F57F17", "#737d00", "#008b00", "#009688", "#00BCD4", "#007aca", "#3F51B5", "#b26200", "#673AB7", "#E91E63", "#9C27B0", "#795548", "#607D8B"],
         labels: categoryLabels,
-        // On hover, the percentage should be shown and truncated to 3 decimal places
         tooltip: {
             y: {
                 formatter: function (val) {
@@ -134,8 +135,6 @@ const Debt = () => {
         }]
         };
 
- 
-
     return (
         <Box
             marginTop={{ base: '1', sm: '5' }}
@@ -158,7 +157,6 @@ const Debt = () => {
                     </Flex>
                 </SimpleGrid>
                 <Divider/>
-                {/* if categoryOptions or categorySeries is empty, display a message saying "No transactions found", otherwise render the chart */}
                 {categoryOptions.labels.length === 0 ? 
                     <Text fontSize={'l'} fontWeight={800} textAlign={'center'} marginTop={'5'}>
                         No transactions found
@@ -167,7 +165,6 @@ const Debt = () => {
                         options={categoryOptions} 
                         series={categorySeries} 
                         type="donut" 
-                        // fit the size of the div 
                         width="100%"
                     />
                 }

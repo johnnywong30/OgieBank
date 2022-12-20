@@ -188,7 +188,7 @@ const Expenses = () => {
                                                         let error;
                                                         const stringifiedValue = value.toString()
                                                         const strAfterDecimal = stringifiedValue.split('.', 2)[1]
-                                                        if (!value || typeof value != 'string' || value.trim().length < 3 || value.trim().length > 50) error = "Invalid Name"
+                                                        if (!value || value <= 0 || !Number(value) || value >= 1000000000000000000) error = 'Invalid Amount'
                                                         if (strAfterDecimal && strAfterDecimal.length > 2) error = 'Amount cannot have more than 2 decimals'
                                                         return error;
                                                     }}

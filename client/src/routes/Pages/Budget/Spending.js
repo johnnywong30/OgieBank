@@ -117,7 +117,9 @@ const Spending = () => {
                                     <Box
                                         fontSize="xl"
                                         fontWeight="bold">
+                                        <label for={s.name}></label>
                                         <Button
+                                            id={s.name}
                                             width={'25%'}
                                             ml={0}
                                             mr={3}

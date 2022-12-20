@@ -112,9 +112,9 @@ const Login = () => {
             <form onSubmit={handleSubmit}>
                 <FormControl isRequired>
                     <Stack>
-                        <FormLabel id='labelForEmail' htmlFor='email'>Email</FormLabel>
+                        <FormLabel id='labelForEmail' htmlFor='email' fontSize={'2xl'}>Email</FormLabel>
                         <Input type='email' value={email} onChange={handleEmail} placeholder='Enter Email' id='email'/>
-                        <FormLabel id='labelForPassword' htmlFor='password'>Password</FormLabel>
+                        <FormLabel id='labelForPassword' htmlFor='password' fontSize={'2xl'}>Password</FormLabel>
                         <Input type='password' value={password} onChange={handlePassword} placeholder='Enter Password' id='password'/>
                         <HStack>
                             <Button type='submit' isLoading={loading}>Sign In</Button>

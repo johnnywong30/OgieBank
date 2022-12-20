@@ -57,7 +57,7 @@ const Overview = () => {
                 <ModalHeader>Budget Guide</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody mb="4">
-                    Welcome to budgeting! The top panel describes the current month, the amount of income you generated (any deposit), the sum of your monthly expenses,
+                    Welcome to budgeting! The top panel describes the current month, the amount of income you generated (any deposits), the sum of your monthly expenses,
                     and a running balance of your spending. 
                 </ModalBody>
                 <ModalBody mb="4">

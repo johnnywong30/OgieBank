@@ -31,7 +31,8 @@ const authReducer = (state = initialState, action) => {
 
             let category = payload.category;
             let payment = payload.payment;
-            let amount = payload.amount; 
+            let amount = payload.amount;
+            let date = payload.date; 
 
             let updatedBalance = userData.accountInfo.bankBalance;
             let updatedCreditBalance = userData.accountInfo.creditBalance;
@@ -54,14 +55,30 @@ const authReducer = (state = initialState, action) => {
             }
 
             //update Budget
-            if (category === "Deposit"){
-                userData.budget.monthIncome = userData.budget.monthIncome + amount;
-            } else {
-                let findSpending = userData.categories.spending.find(object => {return object.name === category});
-                let findIndex = userData.categories.spending.findIndex(object => {return object.name === category});
-                if (findSpending) {
-                    userData.budget.monthVariable = userData.budget.monthVariable + amount;
-                    userData.categories.spending[findIndex].balance = userData.categories.spending[findIndex].balance + amount;
+            //strip month and compare to current month
+
+            let splitSearchTerm = date.split("/");
+            let month = splitSearchTerm[0];
+            let year = splitSearchTerm[2];
+            month = Number(month)-1;
+            year = Number(year);
+            let currDate = new Date();
+            let currMonth = currDate.getMonth();
+            let currYear = currDate.getFullYear();
+            currMonth = Number(currMonth);
+            currYear = Number(currYear);
+            console.log(currYear);
+
+            if (month === currMonth && year === currYear) {
+                if (category === "Deposit"){
+                    userData.budget.monthIncome = userData.budget.monthIncome + amount;
+                } else {
+                    let findSpending = userData.categories.spending.find(object => {return object.name === category});
+                    let findIndex = userData.categories.spending.findIndex(object => {return object.name === category});
+                    if (findSpending) {
+                        userData.budget.monthVariable = userData.budget.monthVariable + amount;
+                        userData.categories.spending[findIndex].balance = userData.categories.spending[findIndex].balance + amount;
+                    }
                 }
             }
 
@@ -77,6 +94,7 @@ const authReducer = (state = initialState, action) => {
             let category2 = payload.category;
             let payment2 = payload.payment;
             let amount2 = payload.amount; 
+            let date2 = payload.date;
 
             let updatedBalance2 = userData2.accountInfo.bankBalance;
             let updatedCreditBalance2 = userData2.accountInfo.creditBalance;
@@ -99,14 +117,27 @@ const authReducer = (state = initialState, action) => {
             }
 
             //update Budget
-            if (category2 === "Deposit"){
-                userData2.budget.monthIncome = userData2.budget.monthIncome + (-1)*amount2;
-            } else {
-                let findSpending = userData2.categories.spending.find(object => {return object.name === category2});
-                let findIndex = userData2.categories.spending.findIndex(object => {return object.name === category2});
-                if (findSpending) {
-                    userData2.budget.monthVariable = userData2.budget.monthVariable + (-1)*amount2;
-                    userData2.categories.spending[findIndex].balance =  userData2.categories.spending[findIndex].balance + (-1)*amount2;
+            let splitSearchTerm2 = date2.split("/");
+            let month2 = splitSearchTerm2[0];
+            let year2 = splitSearchTerm2[2];
+            month2 = Number(month2)-1;
+            year2 = Number(year2);
+            let currDate2 = new Date();
+            let currMonth2 = currDate2.getMonth();
+            let currYear2 = currDate2.getFullYear();
+            currMonth2 = Number(currMonth2);
+            currYear2 = Number(currYear2);
+
+            if (month2 === currMonth2 && year2 === currYear2){
+                if (category2 === "Deposit"){
+                    userData2.budget.monthIncome = userData2.budget.monthIncome + (-1)*amount2;
+                } else {
+                    let findSpending = userData2.categories.spending.find(object => {return object.name === category2});
+                    let findIndex = userData2.categories.spending.findIndex(object => {return object.name === category2});
+                    if (findSpending) {
+                        userData2.budget.monthVariable = userData2.budget.monthVariable + (-1)*amount2;
+                        userData2.categories.spending[findIndex].balance =  userData2.categories.spending[findIndex].balance + (-1)*amount2;
+                    }
                 }
             }
 

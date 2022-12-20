@@ -115,7 +115,7 @@ const Overview = () => {
                     You can either 'Deposit' a transaction (adding it to your bank balance or accruing your credit balance), or you can select your budgeted categories. 
                 </ModalBody>
                 <ModalBody mb="4">
-                    Selecting one of your monthly recurring expense will not effect your budget and will just update your account balances. Selecting a spending category will effect your budget and update your account balances.
+                    Selecting one of your monthly recurring expenses will not effect your budget and will just update your account balances. Selecting a spending category will effect your budget and update your account balances.
                 </ModalBody>
                 <ModalBody mb="4">
                     Lastly, select the payment method.
@@ -229,7 +229,9 @@ const Overview = () => {
                                                 placeholder={startDateFormat}
                                                 validate={(value) => {
                                                     let error;
-                                                    if (!value || typeof value != 'string' || value.trim().length === 0){
+                                                    let splitSearchTerm = value.split("/");
+                                                    let year = splitSearchTerm[2];
+                                                    if (!value || typeof value != 'string' || value.trim().length === 0 || Number(year) < 2000){
                                                         error = "Invalid Date (format: mm/dd/yyyy)";
                                                         return error;
                                                     }

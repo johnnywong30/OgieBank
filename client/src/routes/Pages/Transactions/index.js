@@ -47,10 +47,11 @@ const Transactions = (props) => {
         dispatch(actions.sortTransactions(event.target.value))
     }
 
-    const deleteTransaction = async (id, amount, category, payment) => {
+    const deleteTransaction = async (id, amount, date, category, payment) => {
         let reqBody = {
             id: id, 
             amount: amount, 
+            date: date,
             category: category, 
             payment: payment
         }
@@ -59,6 +60,7 @@ const Transactions = (props) => {
         dispatch(actions.deleteTransaction(id))
         let transaction = {
             amount: amount,
+            date: date,
             category: category,
             payment: payment,
         }
@@ -145,7 +147,7 @@ const Transactions = (props) => {
                                             id={t.id}
                                             width={'25%'}
                                             onClick={(event) => {
-                                                deleteTransaction(t.id, t.amount, t.category, t.payment)
+                                                deleteTransaction(t.id, t.amount, t.date, t.category, t.payment)
                                             }}
                                         >
                                             <MinusIcon />

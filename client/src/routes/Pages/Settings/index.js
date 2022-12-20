@@ -48,7 +48,9 @@ const Settings = () => {
                 }
                 <Text as='h2' fontSize={'2xl'} my={2} color='gray.600'>My Banking</Text>
                 <BankNameEditable />
+                <BankBalanceEditable/>
                 <CreditNameEditable />
+                <CreditBalanceEditable/>
                 <CreditLimitEditable />
             </VStack>                       
          </VStack>

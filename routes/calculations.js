@@ -103,9 +103,10 @@ router
 
                 console.log(req.body.amount);
                 req.body.amount = validation.checkNum(xss(req.body.amount));
+                req.body.date = validation.checkString(xss(req.body.date));
                 req.body.category = validation.checkString(xss(req.body.category));
                 req.body.payment = validation.checkString(xss(req.body.payment));
-                let userReturn = await calculationData.deleteTransaction(req.session.user.id, xss(req.body.id), xss(req.body.amount), xss(req.body.category), xss(req.body.payment));
+                let userReturn = await calculationData.deleteTransaction(req.session.user.id, xss(req.body.id), xss(req.body.amount), xss(req.body.date), xss(req.body.category), xss(req.body.payment));
                 req.session.user = userReturn;
                 
                 return res.status(200).json({success: "success"});

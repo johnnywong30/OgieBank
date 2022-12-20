@@ -55,27 +55,42 @@ async function addTransaction(id, transactionId, name, amount, date, category, p
     }
 
     //update Budget
-    if (category === "Deposit"){
-        let updatedIncome = userData.budget.monthIncome + amount;
-        let newIncome = await users.doc(id).update({
-            "budget.monthIncome": updatedIncome,
-        })
-        if (!newIncome) throw 'Could not update monthly income';
-    } else {
-        let findSpending = userData.categories.spending.find(object => {return object.name === category});
-        let findIndex = userData.categories.spending.findIndex(object => {return object.name === category});
-        if (findSpending) {
-            let updatedVariable = userData.budget.monthVariable + amount;
-            let newVariable = await users.doc(id).update({
-                "budget.monthVariable": updatedVariable,
+    let splitSearchTerm = date.split("/");
+    if(splitSearchTerm.length != 3){throw "Date should be in the form of MM/DD/YYYY (ex. 01/30/2001)";}
+    let month = splitSearchTerm[0];
+    let year = splitSearchTerm[2];
+    month = Number(month)-1;
+    year = Number(year);
+    let currDate = new Date();
+    let currMonth = currDate.getMonth();
+    let currYear = currDate.getFullYear();
+    currMonth = Number(currMonth);
+    currYear = Number(currYear);
+
+    //strip month and compare to current month
+    if (month === currMonth && year === currYear) {
+        if (category === "Deposit"){
+            let updatedIncome = userData.budget.monthIncome + amount;
+            let newIncome = await users.doc(id).update({
+                "budget.monthIncome": updatedIncome,
             })
-            if (!newVariable) throw 'Could not update monthly income';
-            let tempCategories = userData.categories.spending;
-            tempCategories[findIndex].balance = tempCategories[findIndex].balance + amount;
-            let newCategory = await users.doc(id).update({
-                "categories.spending": tempCategories,
-            })
-            if (!newCategory) throw 'Could not update spending';
+            if (!newIncome) throw 'Could not update monthly income';
+        } else {
+            let findSpending = userData.categories.spending.find(object => {return object.name === category});
+            let findIndex = userData.categories.spending.findIndex(object => {return object.name === category});
+            if (findSpending) {
+                let updatedVariable = userData.budget.monthVariable + amount;
+                let newVariable = await users.doc(id).update({
+                    "budget.monthVariable": updatedVariable,
+                })
+                if (!newVariable) throw 'Could not update monthly income';
+                let tempCategories = userData.categories.spending;
+                tempCategories[findIndex].balance = tempCategories[findIndex].balance + amount;
+                let newCategory = await users.doc(id).update({
+                    "categories.spending": tempCategories,
+                })
+                if (!newCategory) throw 'Could not update spending';
+            }
         }
     }
 
@@ -147,6 +162,7 @@ async function deleteCategory(id, categoryId, amount, isExpense) {
     if (user.empty) throw 'No user found';
 
     let userData = user.data();
+    
     if (isExpense){
         let userExpenses = userData.categories.expenses.filter((e) => e.id !== categoryId);
         let userSpending = userData.categories.spending;
@@ -174,10 +190,11 @@ async function deleteCategory(id, categoryId, amount, isExpense) {
     return userSession;
 }
 
-async function deleteTransaction(id, transactionId, amount, category, payment) {
+async function deleteTransaction(id, transactionId, amount, date, category, payment) {
     id = validation.checkId(id);
     transactionId = validation.checkId(transactionId);
     amount = validation.checkNum(amount);
+    date = validation.checkString(date);
     category = validation.checkString(category);
     payment = validation.checkString(payment);
 
@@ -191,8 +208,6 @@ async function deleteTransaction(id, transactionId, amount, category, payment) {
     let userData = user.data();
     let updatedBalance = userData.accountInfo.bankBalance;
     let updatedCreditBalance = userData.accountInfo.creditBalance;
-
-    console.log("here");
 
     if (payment === "Bank"){
         if (category === "Deposit") {
@@ -217,27 +232,41 @@ async function deleteTransaction(id, transactionId, amount, category, payment) {
     }
 
     //update Budget
-    if (category === "Deposit"){
-        let updatedIncome = userData.budget.monthIncome + (-1)*amount;
-        let newIncome = await users.doc(id).update({
-            "budget.monthIncome": updatedIncome,
-        })
-        if (!newIncome) throw 'Could not update monthly income';
-    } else {
-        let findSpending = userData.categories.spending.find(object => {return object.name === category});
-        let findIndex = userData.categories.spending.findIndex(object => {return object.name === category});
-        if (findSpending) {
-            let updatedVariable = userData.budget.monthVariable + (-1)*amount;
-            let newVariable = await users.doc(id).update({
-                "budget.monthVariable": updatedVariable,
+    let splitSearchTerm = date.split("/");
+    if(splitSearchTerm.length != 3){throw "Date should be in the form of MM/DD/YYYY (ex. 01/30/2001)";}
+    let month = splitSearchTerm[0];
+    let year = splitSearchTerm[2];
+    month = Number(month)-1;
+    year = Number(year);
+    let currDate = new Date();
+    let currMonth = currDate.getMonth();
+    let currYear = currDate.getFullYear();
+    currMonth = Number(currMonth);
+    currYear = Number(currYear);
+
+    if (month === currMonth && year === currYear) {
+        if (category === "Deposit"){
+            let updatedIncome = userData.budget.monthIncome + (-1)*amount;
+            let newIncome = await users.doc(id).update({
+                "budget.monthIncome": updatedIncome,
             })
-            if (!newVariable) throw 'Could not update monthly income';
-            let tempCategories = userData.categories.spending;
-            tempCategories[findIndex].balance = tempCategories[findIndex].balance + (-1)*amount;
-            let newCategory = await users.doc(id).update({
-                "categories.spending": tempCategories,
-            })
-            if (!newCategory) throw 'Could not update spending';
+            if (!newIncome) throw 'Could not update monthly income';
+        } else {
+            let findSpending = userData.categories.spending.find(object => {return object.name === category});
+            let findIndex = userData.categories.spending.findIndex(object => {return object.name === category});
+            if (findSpending) {
+                let updatedVariable = userData.budget.monthVariable + (-1)*amount;
+                let newVariable = await users.doc(id).update({
+                    "budget.monthVariable": updatedVariable,
+                })
+                if (!newVariable) throw 'Could not update monthly income';
+                let tempCategories = userData.categories.spending;
+                tempCategories[findIndex].balance = tempCategories[findIndex].balance + (-1)*amount;
+                let newCategory = await users.doc(id).update({
+                    "categories.spending": tempCategories,
+                })
+                if (!newCategory) throw 'Could not update spending';
+            }
         }
     }
 

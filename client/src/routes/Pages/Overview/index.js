@@ -106,7 +106,19 @@ const Overview = () => {
                 <ModalHeader>Adding A Transaction</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody mb="4">
-                    Sample Text.
+                    Adding a transaction is easy! Simply label your transaction with the 'name' field. Next in 'amount' field, input the amount transacted.
+                </ModalBody>
+                <ModalBody mb="4">
+                    By entering a date, the transaction will either apply to your current month's budget or just update your balances.
+                </ModalBody>
+                <ModalBody mb="4">
+                    You can either 'Deposit' a transaction (adding it to your bank balance or accruing your credit balance), or you can select your budgeted categories. 
+                </ModalBody>
+                <ModalBody mb="4">
+                    Selecting one of your monthly recurring expenses will not effect your budget and will just update your account balances. Selecting a spending category will effect your budget and update your account balances.
+                </ModalBody>
+                <ModalBody mb="4">
+                    Lastly, select the payment method.
                 </ModalBody>
                 </ModalContent>
             </Modal>
@@ -133,7 +145,9 @@ const Overview = () => {
                                         Add Transaction
                                 </Text>
                                 <Spacer />
+                                <label htmlFor={'transactionHelp'}></label>
                                 <Button
+                                    id={'transactionHelp'}
                                     width={'10%'}
                                     ml={0}
                                     mr={3}
@@ -196,7 +210,10 @@ const Overview = () => {
                                                     variant="filled"
                                                     validate={(value) => {
                                                         let error;
-                                                        if (!value || value <= 0 || !Number(value) || value >= 1000000000000000000) error = "Invalid Amount"
+                                                        const stringifiedValue = value.toString()
+                                                        const strAfterDecimal = stringifiedValue.split('.', 2)[1]
+                                                        if (!value || typeof value != 'string' || value.trim().length < 3 || value.trim().length > 50) error = "Invalid Name"
+                                                        if (strAfterDecimal && strAfterDecimal.length > 2) error = 'Amount cannot have more than 2 decimals'
                                                         return error;
                                                     }}
                                                 />
@@ -215,14 +232,16 @@ const Overview = () => {
                                                 placeholder={startDateFormat}
                                                 validate={(value) => {
                                                     let error;
-                                                    if (!value || typeof value != 'string' || value.trim().length === 0){
-                                                        error = "Invalid Date (format: mm/dd/year)";
+                                                    let splitSearchTerm = value.split("/");
+                                                    let year = splitSearchTerm[2];
+                                                    if (!value || typeof value != 'string' || value.trim().length === 0 || Number(year) < 2000){
+                                                        error = "Invalid Date (format: mm/dd/yyyy)";
                                                         return error;
                                                     }
                                                     try {
                                                         validation.checkValidDate(value);
                                                     } catch {
-                                                        error = "Invalid Date (format: mm/dd/year)";
+                                                        error = "Invalid Date (format: mm/dd/yyyy)";
                                                     }
                                                     return error;
                                                 }}

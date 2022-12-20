@@ -94,7 +94,6 @@ function checkSearchTerm(searchTerm,keyword){
 }
 
 function checkBankBalance(balance){
-    if (!balance) {throw 'Error: You must provide a valid balance';}
     balance = Number(balance);
     balance = Math.round(balance * 100) / 100;
     if (balance < 0) {throw 'Error: You must provide a valid balance';}
@@ -102,7 +101,6 @@ function checkBankBalance(balance){
 }
 
 function checkCreditBalance(balance){
-    if (!balance) {throw 'Error: You must provide a valid balance';}
     balance = Number(balance);
     balance = Math.round(balance * 100) / 100;
     if (balance < 0) {throw 'Error: You must provide a valid balance';}

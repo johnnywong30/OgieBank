@@ -113,7 +113,7 @@ const Spending = () => {
                                     <Box
                                         fontSize="xl"
                                         fontWeight="bold">
-                                        <label for={s.name}></label>
+                                        <label htmlFor={s.name}></label>
                                         <Button
                                             id={s.name}
                                             width={'25%'}
@@ -208,7 +208,10 @@ const Spending = () => {
                                                     variant="filled"
                                                     validate={(value) => {
                                                         let error;
-                                                        if (!value || value <= 0 || !Number(value) || value >= 1000000000000000000) error = "Invalid Amount"
+                                                        const stringifiedValue = value.toString()
+                                                        const strAfterDecimal = stringifiedValue.split('.', 2)[1]
+                                                        if (!value || typeof value != 'string' || value.trim().length < 3 || value.trim().length > 50) error = "Invalid Name"
+                                                        if (strAfterDecimal && strAfterDecimal.length > 2) error = 'Amount cannot have more than 2 decimals'
                                                         return error;
                                                     }}
                                                 />

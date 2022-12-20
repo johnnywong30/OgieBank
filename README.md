@@ -56,6 +56,8 @@ Password: password
 
 This account has data in it.
 It is meant to be used as if you've been using the app for a month already.
+It provides an example of pagination in transactions.
+Each page shows at most 10 transactions.
 ```
 
 ## How to Start Project Locally

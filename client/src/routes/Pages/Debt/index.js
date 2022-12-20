@@ -75,7 +75,17 @@ const Debt = () => {
                 <ModalHeader>Debt Breakdown Guide</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody mb="4">
-                    Sample Text.
+                    Our debt breaking provides a simple understanding in providing a monthly expense for a large loan or sum.
+                </ModalBody>
+                <ModalBody mb="4">
+                    You input the total amount of the principal, the interest rate as a percent (ex. 10), and the number of months you will be paying that amount
+                    (ex. 60 months = 5 years).
+                </ModalBody>
+                <ModalBody mb="4">
+                    We will provide you the generated interest with a total principal plus the interest.
+                </ModalBody>
+                <ModalBody mb="4">
+                    Lastly, we will give you an estimated monthly expense. Which you can add later as a monthly expense in the budget!
                 </ModalBody>
                 </ModalContent>
             </Modal>
@@ -84,7 +94,9 @@ const Debt = () => {
                     Debt Breakdown
                 </Text>
                 <Spacer />
+                <label htmlFor={'debtHelp'}></label>
                 <Button
+                    id={'debtHelp'}
                     width={'10%'}
                     ml={0}
                     mr={3}

@@ -47,10 +47,11 @@ const Transactions = (props) => {
         dispatch(actions.sortTransactions(event.target.value))
     }
 
-    const deleteTransaction = async (id, amount, category, payment) => {
+    const deleteTransaction = async (id, amount, date, category, payment) => {
         let reqBody = {
             id: id, 
             amount: amount, 
+            date: date,
             category: category, 
             payment: payment
         }
@@ -59,6 +60,7 @@ const Transactions = (props) => {
         dispatch(actions.deleteTransaction(id))
         let transaction = {
             amount: amount,
+            date: date,
             category: category,
             payment: payment,
         }
@@ -140,12 +142,12 @@ const Transactions = (props) => {
                                         </Text>
                                     </Stack>
                                     <Stack direction={'row'} flexGrow='1' justifyContent={'flex-end'}>
-                                        <label for={t.id}></label>
+                                        <label htmlFor={t.id}></label>
                                         <Button
                                             id={t.id}
                                             width={'25%'}
                                             onClick={(event) => {
-                                                deleteTransaction(t.id, t.amount, t.category, t.payment)
+                                                deleteTransaction(t.id, t.amount, t.date, t.category, t.payment)
                                             }}
                                         >
                                             <MinusIcon />
@@ -176,7 +178,16 @@ const Transactions = (props) => {
             <ModalHeader>Transaction Guide</ModalHeader>
             <ModalCloseButton />
             <ModalBody mb="4">
-                Sample Text.
+                Here you can view all of your transactions!
+            </ModalBody>
+            <ModalBody mb="4">
+                You can also delete a transaction, which will revert any change that transaction did to your balances or budget.
+            </ModalBody>
+            <ModalBody mb="4">
+                You can also sort by 'Most Recent', 'Least Recent', 'Price Low To High', and 'Price High To Low'.
+            </ModalBody>
+            <ModalBody mb="4">
+                Lastly, you can export your transactions, located in the right corner.
             </ModalBody>
             </ModalContent>
         </Modal>
@@ -198,7 +209,9 @@ const Transactions = (props) => {
                                 Monthly Transactions
                             </Text>
                             <Spacer />
+                            <label htmlFor={'transactionHelp'}></label>
                             <Button
+                                id={'transactionHelp'}
                                 width={'10%'}
                                 ml={0}
                                 mr={3}

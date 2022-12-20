@@ -37,7 +37,8 @@ const CreditLimitEditable = () => {
         } catch (error) {
             // i got lazy
             const { response } = error
-            const msg = response?.data?.error ? response?.data?.error : error.message 
+            console.log(error)
+            const msg = response?.data?.error ? response?.data?.error : error 
             console.log(msg)
             alert(msg)
             onCancel()

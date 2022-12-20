@@ -9,10 +9,21 @@ import {
     ListItem,
     ListIcon,
     Divider,
+    Flex,
+    Spacer,
+    Button,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalCloseButton,
+    ModalBody,
+    useDisclosure,
 } from '@chakra-ui/react'
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import {useSelector} from 'react-redux';
 import validation from '../../../constants/validation';
+import { QuestionOutlineIcon } from '@chakra-ui/icons';
 
 const Overview = () => {
     const userData = useSelector((state) => state.auth.user);
@@ -20,6 +31,8 @@ const Overview = () => {
     const monthRecurring = validation.getRounded(userData.budget.monthRecurring);
     const monthVariable = validation.getRounded(userData.budget.monthVariable);
     const remaining = validation.getRounded(monthIncome - monthRecurring - monthVariable);
+
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
@@ -34,6 +47,20 @@ const Overview = () => {
             flexDirection={{ base: 'column', sm: 'row' }}
             justifyContent="space-between"
             height='auto'>
+            <Modal
+                onClose={onClose}
+                isOpen={isOpen}
+                motionPreset='slideInBottom'
+            >
+                <ModalOverlay />
+                <ModalContent>
+                <ModalHeader>Budget Guide</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody mb="4">
+                    Sample Text.
+                </ModalBody>
+                </ModalContent>
+            </Modal>
             <Box
                 w={'full'}
                 bg={'white'}
@@ -41,7 +68,7 @@ const Overview = () => {
                 rounded={'md'}
                 overflow={'hidden'}>
                 <SimpleGrid columns={[1]} spacingX="0" spacingY="0">
-                    <Stack
+                    {/* <Stack
                         textAlign={'center'}
                         px={6}
                         py={2}
@@ -52,7 +79,21 @@ const Overview = () => {
                                 {monthNames[d.getMonth()]}
                             </Text>
                         </Stack>
-                    </Stack>
+                    </Stack> */}
+                    <Flex minWidth='max-content' alignItems='center' gap='2'>
+                        <Text px='6' py='2' fontSize={'3xl'} fontWeight={800}>
+                            {monthNames[d.getMonth()]}
+                        </Text>
+                        <Spacer />
+                        <Button
+                            width={'10%'}
+                            ml={0}
+                            mr={3}
+                            onClick={onOpen}
+                        >
+                            <QuestionOutlineIcon />
+                        </Button>
+                    </Flex>
                 </SimpleGrid>
                 <Divider/>
                 <Box bg={'white'} px={6} py={10}>

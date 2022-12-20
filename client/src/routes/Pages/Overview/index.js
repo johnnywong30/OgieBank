@@ -3,9 +3,7 @@ import { Heading,
     Box, 
     Container, 
     Text,
-    Stack,
     Button,
-    useColorModeValue, 
     SimpleGrid, 
     FormControl,
     FormLabel,
@@ -14,6 +12,15 @@ import { Heading,
     FormErrorMessage,
     Select,
     Divider,
+    Flex,
+    Spacer,
+    useDisclosure,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalCloseButton,
+    ModalBody,
 } from '@chakra-ui/react'
 
 import Balance from "./Balance";
@@ -26,6 +33,7 @@ import actions2 from '../../../redux/actions/categories';
 import actions3 from '../../../redux/actions/auth';
 import axios from 'axios';
 import {v4 as uuid} from 'uuid';
+import { QuestionOutlineIcon } from '@chakra-ui/icons';
 
 const Overview = () => {
     const [startDate, setStartDate] = useState(new Date());
@@ -33,6 +41,7 @@ const Overview = () => {
     const userData = useSelector((state) => state.auth.user);
     const userName = userData.displayName === undefined ? userData.username : userData.displayName;
     const dispatch = useDispatch();
+    const { isOpen, onOpen, onClose } = useDisclosure()
     
     const [category, setCategory] = useState("Deposit");
     const [payment, setPayment] = useState("Bank");
@@ -87,6 +96,20 @@ const Overview = () => {
 
     return (
         <Container maxW={'7xl'} px="12" py="6">
+            <Modal
+                onClose={onClose}
+                isOpen={isOpen}
+                motionPreset='slideInBottom'
+            >
+                <ModalOverlay />
+                <ModalContent>
+                <ModalHeader>Adding A Transaction</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody mb="4">
+                    Sample Text.
+                </ModalBody>
+                </ModalContent>
+            </Modal>
             <Heading as="h1">Hello {userName}!</Heading>
             <SimpleGrid columns={[1]} my="3">
                 <Balance/>
@@ -105,18 +128,20 @@ const Overview = () => {
                         rounded={'md'}
                         overflow={'hidden'}>
                         <SimpleGrid columns={[1]} spacingX="0" spacingY="0">
-                            <Stack
-                                textAlign={'center'}
-                                px={6}
-                                py={2}
-                                color={useColorModeValue('gray.800', 'white')}
-                                align={'center'}>
-                                <Stack direction={'row'} align={'center'} justify={'center'}>
-                                    <Text fontSize={'3xl'} fontWeight={800}>
+                            <Flex minWidth='max-content' alignItems='center' gap='2'>
+                                <Text px='6' py='2' fontSize={'3xl'} fontWeight={800}>
                                         Add Transaction
-                                    </Text>
-                                </Stack>
-                            </Stack>
+                                </Text>
+                                <Spacer />
+                                <Button
+                                    width={'10%'}
+                                    ml={0}
+                                    mr={3}
+                                    onClick={onOpen}
+                                >
+                                    <QuestionOutlineIcon />
+                                </Button>
+                            </Flex>
                         </SimpleGrid>
                         <Divider/>
                         <Box bg={'white'} px={6} py={10}>

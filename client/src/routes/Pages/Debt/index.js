@@ -7,8 +7,18 @@ import {
     Text,
     Button,
     SimpleGrid, 
-    Center
+    Center,
+    Flex,
+    Spacer,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalCloseButton,
+    ModalBody,
+    useDisclosure,
 } from '@chakra-ui/react'
+import { QuestionOutlineIcon } from '@chakra-ui/icons';
 
 const Debt = () => {
     const [principal, setPrincipal] = useState(0);
@@ -16,6 +26,7 @@ const Debt = () => {
     const [numPayments, setNumPayments] = useState(0);
     const [monthlyPayment, setMonthlyPayment] = useState(0);
     const [totalInterest, setTotalInterest] = useState(0);
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const calculate = () => {
         // Perform input validation for all inputs
@@ -54,9 +65,36 @@ const Debt = () => {
     // make the calculator look nice
     return (
         <Box>
-            <Text fontSize="4xl" fontWeight="bold" textAlign="center" mt="10">Debt Calculator</Text>
+            <Modal
+                onClose={onClose}
+                isOpen={isOpen}
+                motionPreset='slideInBottom'
+            >
+                <ModalOverlay />
+                <ModalContent>
+                <ModalHeader>Debt Breakdown Guide</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody mb="4">
+                    Sample Text.
+                </ModalBody>
+                </ModalContent>
+            </Modal>
+            <Flex minWidth='max-content' alignItems='center' gap='2'>
+                <Text px='6' py='2' fontSize={'3xl'} fontWeight={800}>
+                    Debt Breakdown
+                </Text>
+                <Spacer />
+                <Button
+                    width={'10%'}
+                    ml={0}
+                    mr={3}
+                    onClick={onOpen}
+                >
+                    <QuestionOutlineIcon />
+                </Button>
+            </Flex>
             <Center>
-                <SimpleGrid columns={[1, null, 2]} spacing={10} mt="10" background="gray.100" p="10" borderRadius="10px">
+                <SimpleGrid columns={[1, null, 2]} spacing={10} mt="2" background="gray.100" p="10" borderRadius="10px">
                     <Box>
                         <Text fontSize="2xl" fontWeight="bold">Principal</Text>
                         <input id="principal" type="number" value={principal} onChange={e => setPrincipal(e.target.value)} />

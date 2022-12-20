@@ -14,7 +14,18 @@ const CreditBalanceEditable = () => {
     const [ balance, setBalance ] = useState(creditBalance ? creditBalance : 0)
 
     const onCancel = () => setBalance(creditBalance ? creditBalance : 0)
-    const onChange = e => setBalance(e.target.value)
+    const onChange = e => {
+        const stringifiedValue = e.target.value.toString()
+        const strAfterDecimal = stringifiedValue.split('.', 2)[1]
+        if (strAfterDecimal && strAfterDecimal.length > 2) {
+            const decimalLocation = stringifiedValue.indexOf('.')
+            const value = stringifiedValue.substring(0, decimalLocation + 3)
+            setBalance(value)
+        } 
+        else {
+            setBalance(e.target.value)
+        }
+    }
     const onSubmit = async e => {
         e.preventDefault()
         try {

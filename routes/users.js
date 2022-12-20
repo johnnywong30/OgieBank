@@ -240,11 +240,11 @@ router
             if (!userExists) throw 'User does not exist'
             if (field === 'email') {
                 const emailExists = await userData.getUserByEmail(updateValue)
-                if (emailExists) throw 'Email already exists - try a different one'
+                if (!emailExists.empty) throw 'Email already exists - try a different one'
             }
             if (field === 'username') {
                 const usernameExists = await userData.getUserByUsername(updateValue)
-                if (usernameExists) throw 'Username already exists - try a different one'
+                if (!usernameExists.empty) throw 'Username already exists - try a different one'
             }
             const user = await updateFunc[field](id, updateValue)
             req.session.user = user

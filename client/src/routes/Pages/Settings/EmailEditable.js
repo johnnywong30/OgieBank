@@ -25,9 +25,11 @@ const EmailEditable = () => {
             dispatch(actions.updateUser(data))
         } catch (error) {
             // i got lazy
-            console.log(error)
-            alert(error)
-            onCancel()            
+            const { response } = error
+            const msg = response?.data?.error ? response?.data?.error : error.message 
+            console.log(msg)
+            alert(msg)
+            onCancel()         
         }
     } 
     return (

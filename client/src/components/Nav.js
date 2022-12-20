@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link as RouterLinks } from 'react-router-dom'
+import { Link as RouterLinks, useNavigate } from 'react-router-dom'
 import { Link, Box, Flex, Button, Stack, Text } from "@chakra-ui/react";
 import { useSelector, useDispatch } from "react-redux";
 import actions from '../../src/redux/actions/auth'
@@ -8,6 +8,7 @@ import axios from 'axios'
 const Nav = (props) => {
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
+    const navigate = useNavigate()
 
     const isAuth = useSelector(({auth}) => auth.auth);
     const [loading, setLoading] = useState(false)
@@ -20,6 +21,7 @@ const Nav = (props) => {
             dispatch(actions.logoutAuthUser())
             setLoading(false);
             console.log('Logged Out!')
+            navigate('/login')
         }
     }
 

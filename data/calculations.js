@@ -127,8 +127,10 @@ async function addCategory(id, categoryId, name, amount, isExpense) {
     let userData = user.data();
     let userCategories = userData.categories;
 
+    if (userCategories.expenses.some(e => e.name.toLowerCase().trim() === temp.name.toLowerCase().trim())) throw 'already used';
+    if (userCategories.spending.some(e => e.name.toLowerCase().trim() === temp.name.toLowerCase().trim())) throw 'already used';
+
     if (isExpense) {
-        if (userCategories.expenses.some(e => e.name.toLowerCase().trim() === temp.name.toLowerCase().trim())) throw 'already used';
         userCategories.expenses.push(temp);
         let updatedExpense = userData.budget.monthRecurring + amount;
         let newExpense = await users.doc(id).update({
@@ -136,7 +138,6 @@ async function addCategory(id, categoryId, name, amount, isExpense) {
         })
         if (!newExpense) throw 'Could not update monthly recurring';
     } else {
-        if (userCategories.spending.some(e => e.name.toLowerCase().trim() === temp.name.toLowerCase().trim())) throw 'already used';
         temp.balance = 0;
         userCategories.spending.push(temp);
     }

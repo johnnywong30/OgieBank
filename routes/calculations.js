@@ -51,11 +51,8 @@ router
                 // let categories = await calculationData.getAllCategories(req.session.user.id);
                 // categories = categories.categories;
         
-                if (req.body.isExpense){
-                    if (categories.expenses.some(e => e.name.toLowerCase().trim() === req.body.name.toLowerCase().trim())) throw 'already used';
-                } else {
-                    if (categories.spending.some(e => e.name.toLowerCase().trim() === req.body.name.toLowerCase().trim())) throw 'already used';
-                } 
+                if (categories.expenses.some(e => e.name.toLowerCase().trim() === req.body.name.toLowerCase().trim())) throw 'already used';
+                if (categories.spending.some(e => e.name.toLowerCase().trim() === req.body.name.toLowerCase().trim())) throw 'already used';
 
                 let userReturn = await calculationData.addCategory(req.session.user.id, xss(req.body.id), xss(req.body.name), xss(req.body.amount), xss(req.body.isExpense));
                 req.session.user = userReturn;

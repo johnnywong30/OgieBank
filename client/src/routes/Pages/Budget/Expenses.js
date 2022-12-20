@@ -2,7 +2,6 @@ import React, {useEffect} from "react";
 import { 
     Box,
     Text,
-    Stack,
     SimpleGrid,
     Modal,
     ModalOverlay,
@@ -31,7 +30,6 @@ import actions from '../../../redux/actions/categories'
 import actions2 from '../../../redux/actions/auth'
 import { MinusIcon } from '@chakra-ui/icons';
 import axios from 'axios';
-import { QuestionOutlineIcon } from '@chakra-ui/icons';
 
 const Expenses = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -60,6 +58,7 @@ const Expenses = () => {
     }
 
     const expenses = useSelector((state) => state.categories.categories.expenses);
+    const spending = useSelector((state) => state.categories.categories.spending);
 
     const getData = async (reqBody) => {
         const { data } = await axios.get('/api/calculations/getAllCategories')
@@ -72,7 +71,9 @@ const Expenses = () => {
 
     const checkIfUsed = (name) => {
         let temp = (expenses.some(e => e.name.toLowerCase().trim() === name.toLowerCase().trim()))
-        return temp; 
+        let temp2 = (spending.some(e => e.name.toLowerCase().trim() === name.toLowerCase().trim()))
+        if (temp || temp2) return true;
+        return false; 
     }
 
     return (

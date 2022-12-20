@@ -176,7 +176,16 @@ const Transactions = (props) => {
             <ModalHeader>Transaction Guide</ModalHeader>
             <ModalCloseButton />
             <ModalBody mb="4">
-                Sample Text.
+                Here you can view all of your transactions!
+            </ModalBody>
+            <ModalBody mb="4">
+                You can also delete a transaction, which will revert any change that transaction did to your balances or budget.
+            </ModalBody>
+            <ModalBody mb="4">
+                You can also sort by 'Most Recent', 'Least Recent', 'Price Low To High', and 'Price High To Low'.
+            </ModalBody>
+            <ModalBody mb="4">
+                Lastly, you can export your transactions, located in the right corner.
             </ModalBody>
             </ModalContent>
         </Modal>
@@ -198,7 +207,9 @@ const Transactions = (props) => {
                                 Monthly Transactions
                             </Text>
                             <Spacer />
+                            <label for={'transactionHelp'}></label>
                             <Button
+                                id={'transactionHelp'}
                                 width={'10%'}
                                 ml={0}
                                 mr={3}

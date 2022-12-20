@@ -57,7 +57,18 @@ const Overview = () => {
                 <ModalHeader>Budget Guide</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody mb="4">
-                    Sample Text.
+                    Welcome to budgeting! The top panel describes the current month, the amount of income you generated (any deposit), the sum of your monthly expenses,
+                    and a running balance of your spending. 
+                </ModalBody>
+                <ModalBody mb="4">
+                    Monthly expenses are allocations for your budget to see how much that expense will effect your savings. Adding a transaction from respective expenses will only effect
+                    your balances and not your budget, as the expense is already accounted for.
+                </ModalBody>
+                <ModalBody mb="4">
+                    The estimated savings is the sum of your income, expenses, and spending throughout the month.
+                </ModalBody>
+                <ModalBody mb="4">
+                    You can also export your budget, located in the top right corner.
                 </ModalBody>
                 </ModalContent>
             </Modal>
@@ -68,24 +79,14 @@ const Overview = () => {
                 rounded={'md'}
                 overflow={'hidden'}>
                 <SimpleGrid columns={[1]} spacingX="0" spacingY="0">
-                    {/* <Stack
-                        textAlign={'center'}
-                        px={6}
-                        py={2}
-                        color={'black'}
-                        align={'center'}>
-                        <Stack direction={'row'} align={'center'} justify={'center'}>
-                            <Text fontSize={'3xl'} fontWeight={800}>
-                                {monthNames[d.getMonth()]}
-                            </Text>
-                        </Stack>
-                    </Stack> */}
                     <Flex minWidth='max-content' alignItems='center' gap='2'>
                         <Text px='6' py='2' fontSize={'3xl'} fontWeight={800}>
                             {monthNames[d.getMonth()]}
                         </Text>
                         <Spacer />
+                        <label for={'budgetHelp'}></label>
                         <Button
+                            id={'budgetHelp'}
                             width={'10%'}
                             ml={0}
                             mr={3}
@@ -101,7 +102,7 @@ const Overview = () => {
                         <List spacing={3}>
                             <ListItem>
                                 <Text fontSize={'xl'} fontWeight={800}>
-                                    Savings: ${remaining}
+                                    Estimated Savings: ${remaining}
                                 </Text>
                             </ListItem>
                             <ListItem>

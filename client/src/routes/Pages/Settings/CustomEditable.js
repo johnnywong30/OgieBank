@@ -52,8 +52,10 @@ const CustomEditable = ({ label, type, value, onChange, onSubmit, onCancel }) =>
                                     color='gray.600'
                                 />  
                                 <ButtonGroup>
-                                    <IconButton icon={<CheckIcon />} type='submit' />
-                                    <IconButton icon={<CloseIcon />} type='button' onClick={cancelEditing} />
+                                    <label for={`${label}-CheckIcon`}></label>
+                                    <IconButton icon={<CheckIcon />} type='submit' id={`${label}-CheckIcon`}/>
+                                    <label for={`${label}-closeIcon`}></label>
+                                    <IconButton icon={<CloseIcon />} type='button' onClick={cancelEditing} id={`${label}-closeIcon`}/>
                                 </ButtonGroup>                              
                             </>
                             
@@ -69,7 +71,8 @@ const CustomEditable = ({ label, type, value, onChange, onSubmit, onCancel }) =>
                                     typeof(value) === 'number' &&
                                     <Text>{value ? value : 'Please fill this out unless it actually is 0...'}</Text>
                                 }
-                                <IconButton icon={<EditIcon />} type='button' onClick={startEditing}/>
+                                <label for={`${label}-EditIcon`}></label>
+                                <IconButton icon={<EditIcon />} type='button' onClick={startEditing} id={`${label}-EditIcon`}/>
                             </>
 
                         )

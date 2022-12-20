@@ -74,6 +74,10 @@ router
                 // query them again
                 authUser = await userData.getUserByEmail(xss(req.body.email))
             }
+            // there's an account already created through ogie
+            if (!authUser.displayName) {
+                return res.status(400).json({error: 'Normal account with this email already exists - log in through the form instead!'})
+            }
             delete authUser['password']
             const ret = {
                 loggedIn: true,
@@ -187,13 +191,10 @@ router
 router
     .route('/update/:field')
     .post(async (req, res) => {
-        // console.log('HELLO AM I UPDATING')
         if (!req.session.user) {
             return res.status(400).json({error: 'User not logged in!'})
         }
         try {
-            // console.log('user sesh', req.session.user)
-            // console.log('params', req.params)
             const field = validation.checkString(xss(req.params.field))
             const updateFields = [
                 'firstName', 
@@ -237,6 +238,14 @@ router
             const { id } = req.body
             const userExists = await userData.getUser(id)
             if (!userExists) throw 'User does not exist'
+            if (field === 'email') {
+                const emailExists = await userData.getUserByEmail(updateValue)
+                if (emailExists) throw 'Email already exists - try a different one'
+            }
+            if (field === 'username') {
+                const usernameExists = await userData.getUserByUsername(updateValue)
+                if (usernameExists) throw 'Username already exists - try a different one'
+            }
             const user = await updateFunc[field](id, updateValue)
             req.session.user = user
             return res.status(200).json(user)

@@ -19,11 +19,6 @@ const Debt = () => {
     const [updateGraphs, setUpdateGraphs] = useState(false)
     const allTransactions = useSelector((state) => state.transactions.transactions)
 
-    // On page load, refresh the graphs
-    useEffect(() => {
-        setUpdateGraphs(!updateGraphs)
-    }, [])
-
     const getStats = (transactions) => {
         let stats = []
         let total = 0
@@ -50,11 +45,11 @@ const Debt = () => {
     useEffect(() => {
         // When the transactions are updated, update the graph
 
-        // TODO: 
         // Breaks under these conditions:
         // There are no transactions
         // The first transaction is successfully added
-        // The second transaction is added successfully but does not show up in the graph until the page is refreshed
+        // The second transaction is added to the same category successfully 
+        // The graph does not update until the page is refreshed
 
         const transactions = allTransactions.filter(t => t.category !== "Deposit")
         const categoryStats = getStats(transactions)
@@ -65,6 +60,11 @@ const Debt = () => {
             categorySeries.push(c.percentage)
             categoryLabels.push(c.name)
         })
+        // if there is only one category, empty the array so that the graph doesn't display
+        if (categorySeries.length === 1) {
+            categorySeries.pop()
+            categoryLabels.pop()
+        }
         setCategoryTotal(categoryStats.total)
         setCategorySeries(categorySeries)
         setCategoryLabels(categoryLabels)
@@ -159,7 +159,7 @@ const Debt = () => {
                 <Divider/>
                 {categoryOptions.labels.length === 0 ? 
                     <Text fontSize={'l'} fontWeight={800} textAlign={'center'} marginTop={'5'}>
-                        No transactions found
+                        Need transactions from two different categories to display a graph
                     </Text> :
                     <ReactApexChart 
                         options={categoryOptions} 

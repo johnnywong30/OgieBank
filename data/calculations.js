@@ -278,6 +278,18 @@ async function getAllCategories(id) {
     return {user: userSession, categories:userCategories};
 }
 
+async function getBudget(id) {
+    id = validation.checkId(id)
+
+    const users = db.collection('users');
+    const user = await users.doc(id).get();
+    if (user.empty) throw 'No user found';
+
+    let userData = user.data();
+    let budget = userData.budget;
+    return {budget: budget };
+}
+
 module.exports = {
     addTransaction,
     getAllTransactions,
@@ -285,4 +297,5 @@ module.exports = {
     addCategory,
     deleteCategory,
     getAllCategories,
+    getBudget
 }

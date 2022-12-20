@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios';
-import { CSVLink, CSVDownload } from 'react-csv';
+import { CSVLink } from 'react-csv';
 
 import actions from '../../../redux/actions/transactions'
 import actions3 from '../../../redux/actions/auth';
@@ -95,7 +95,7 @@ const Transactions = (props) => {
                                             bg={bg}
                                             p={2}
                                             px={3}
-                                            color={'green.500'}
+                                            color={'green.900'}
                                             rounded={'full'}>
                                             {t.category + ' - ' + t.payment}
                                         </Text>
@@ -129,7 +129,9 @@ const Transactions = (props) => {
                                         </Text>
                                     </Stack>
                                     <Stack direction={'row'} flexGrow='1' justifyContent={'flex-end'}>
+                                        <label for={t.id}></label>
                                         <Button
+                                            id={t.id}
                                             width={'25%'}
                                             onClick={(event) => {
                                                 deleteTransaction(t.id, t.amount, t.category, t.payment)
@@ -177,7 +179,7 @@ const Transactions = (props) => {
                             <option value='high'>Price High to Low</option>
                         </Select>
                             <Stack>
-                                    <CSVLink data={transactions}>
+                                    <CSVLink filename={'transactions'} data={transactions}>
                                         <Button>Export</Button>
                                     </CSVLink>
                             </Stack>
@@ -191,20 +193,29 @@ const Transactions = (props) => {
                     py={2}
                     color={useColorModeValue('gray.800', 'white')}
                     align={'center'}>
-                        <Button 
+                        { currentPage === 0
+                        ? ''
+                        : <Button 
                             onClick={(event) => {
                                 onPrevpage()
                             }}
                             disabled={currentPage === 0}>
                             Prev
                         </Button>
-                        <Button
+                        }
+
+                        {transactions.slice((currentPage+1)*10, ((currentPage+1)*10) + 10).length === 0
+                        ? ''
+                        : <Button
                             disabled={transactions.slice((currentPage+1)*10, ((currentPage+1)*10) + 10).length === 0}
                             onClick={(event) => {
                                 onNextPage()
                             }}>
                             Next
                         </Button>
+                        }
+                        
+                        
                 </Stack>
             </SimpleGrid>
             <Box bg={useColorModeValue('gray.50', 'gray.900')} px={6} py={10}>

@@ -106,7 +106,7 @@ const Expenses = () => {
                                     <Box
                                         fontSize="xl"
                                         fontWeight="bold">
-                                        <label for={e.name}></label>
+                                        <label htmlFor={e.name}></label>
                                         <Button
                                             id={e.name}
                                             width={'25%'}

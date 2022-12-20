@@ -84,7 +84,7 @@ const Overview = () => {
                             {monthNames[d.getMonth()]}
                         </Text>
                         <Spacer />
-                        <label for={'budgetHelp'}></label>
+                        <label htmlFor={'budgetHelp'}></label>
                         <Button
                             id={'budgetHelp'}
                             width={'10%'}

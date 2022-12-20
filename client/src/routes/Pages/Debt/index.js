@@ -94,7 +94,7 @@ const Debt = () => {
                     Debt Breakdown
                 </Text>
                 <Spacer />
-                <label for={'debtHelp'}></label>
+                <label htmlFor={'debtHelp'}></label>
                 <Button
                     id={'debtHelp'}
                     width={'10%'}

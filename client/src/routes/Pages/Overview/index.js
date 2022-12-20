@@ -145,7 +145,7 @@ const Overview = () => {
                                         Add Transaction
                                 </Text>
                                 <Spacer />
-                                <label for={'transactionHelp'}></label>
+                                <label htmlFor={'transactionHelp'}></label>
                                 <Button
                                     id={'transactionHelp'}
                                     width={'10%'}

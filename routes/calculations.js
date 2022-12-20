@@ -154,4 +154,22 @@ router
         }
     })
 
+router
+    .route('/getUserBudget')
+    .get(async (req, res) => {
+        if (!req.session.user) {
+            return res.status(400).json({error: 'User not logged in!'})
+        }
+
+        if (req.session.user.id) {
+            try {
+                const budget = await calculationData.getBudget(req.session.user.id)
+                return res.status(200).json({success: "success", budget: budget})
+            } catch (e) {
+                console.log(e)
+                return res.status(400).json({error: "error"});
+            }
+        }
+    })
+
 module.exports = router;

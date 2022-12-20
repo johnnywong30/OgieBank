@@ -17,8 +17,7 @@ import {
 import { QuestionOutlineIcon } from '@chakra-ui/icons';
 
 const Debt = () => {   
-    const allTransactions = useSelector((state) => state.transactions.transactions)
-    const now = new Date()
+    let allTransactions = useSelector((state) => state.transactions.transactions)
 
     const getStats = (transactions) => {
         let stats = []
@@ -55,8 +54,8 @@ const Debt = () => {
         const categoryPercentages = getPercentages(categoryStats.stats, categoryStats.total)
         setCategoryPercentages(categoryPercentages)
         setCategoryTotal(categoryStats.total)
-    }
-    , [updateGraphs, allTransactions])
+        setUpdateGraphs(!updateGraphs)
+    }, [allTransactions])
 
     // create the pie charts
     const [categorySeries, setCategorySeries] = useState([])

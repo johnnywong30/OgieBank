@@ -26,6 +26,9 @@ Node.js, Express, React, Redux, Firebase Authentication, Firebase Firestore, Her
 2. Run `npm run install-all` to install all dependencies for the server and client
 3. Run `npm run seed` to seed the Firebase Firestore
 
+## Heroku App
+[Click me to go to our Heroku App!](https://ogiebank.herokuapp.com/)
+
 ## Docker Setup
 
 1. Download Docker desktop from `https://www.docker.com/products/docker-desktop/`

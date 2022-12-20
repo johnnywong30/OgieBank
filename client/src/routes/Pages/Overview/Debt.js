@@ -73,8 +73,8 @@ const Debt = () => {
           type: "donut",
         },
         // TWEAK COLORS HERE TO WORK WITH TOTA11Y
-        // Use Dark Blue, Dark Green, Dark Purple, Dark Gray, Dark Red
-        colors: ["#0D47A1", "#1B5E20", "#4A148C", "#212121", "#B71C1C"],
+        // Use Dark Blue, Dark Green, Dark Purple, Dark Gray, Dark Red, etc
+        colors: ["#0D47A1", "#1B5E20", "#4A148C", "#212121", "#B71C1C", "#F57F17", "#737d00", "#008b00", "#009688", "#00BCD4", "#007aca", "#3F51B5", "#b26200", "#673AB7", "#E91E63", "#9C27B0", "#795548", "#607D8B"],
         labels: categoryLabels,
         // On hover, the percentage should be shown and truncated to 3 decimal places
         tooltip: {
@@ -168,7 +168,9 @@ const Debt = () => {
                 </SimpleGrid>
                 {/* if categoryOptions or categorySeries is empty, display a message saying "No transactions found", otherwise render the chart */}
                 {categoryOptions.labels.length === 0 ? 
-                    <Text fontSize={'l'} fontWeight={800}>No transactions found</Text> :
+                    <Text fontSize={'l'} fontWeight={800} textAlign={'center'} marginTop={'5'}>
+                        No transactions found
+                    </Text> :
                     <ReactApexChart 
                         options={categoryOptions} 
                         series={categorySeries} 

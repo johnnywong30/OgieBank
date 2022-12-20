@@ -6,19 +6,18 @@ import ReactApexChart from "react-apexcharts";
 import { 
     Box,
     Text,
-    Stack,
     SimpleGrid, 
-    Center,
-    Button,
     Flex,
     Spacer,
     Divider,
 } from '@chakra-ui/react'
-import { QuestionOutlineIcon } from '@chakra-ui/icons';
 
 const Debt = () => {   
+    const [categoryTotal, setCategoryTotal] = useState(0)
+    const [categorySeries, setCategorySeries] = useState([])
+    const [categoryLabels, setCategoryLabels] = useState([])
+    const [updateGraphs, setUpdateGraphs] = useState(false)
     const allTransactions = useSelector((state) => state.transactions.transactions)
-    const now = new Date()
 
     const getStats = (transactions) => {
         let stats = []
@@ -43,45 +42,42 @@ const Debt = () => {
         return percentages
     }
 
-    // Display the stats in a table
-    const [updateGraphs, setUpdateGraphs] = useState(false)
-    const [categoryPercentages, setCategoryPercentages] = useState([])
-    const [categoryTotal, setCategoryTotal] = useState(0)
-    
     useEffect(() => {
-        // Exclude deposits from the donut chart
+        // When the transactions are updated, update the graph
+
+        // Breaks under these conditions:
+        // There are no transactions
+        // The first transaction is successfully added
+        // The second transaction is added to the same category successfully 
+        // The graph does not update until the page is refreshed
+
         const transactions = allTransactions.filter(t => t.category !== "Deposit")
         const categoryStats = getStats(transactions)
         const categoryPercentages = getPercentages(categoryStats.stats, categoryStats.total)
-        setCategoryPercentages(categoryPercentages)
-        setCategoryTotal(categoryStats.total)
-    }
-    , [updateGraphs, allTransactions])
-
-    // create the pie charts
-    const [categorySeries, setCategorySeries] = useState([])
-    const [categoryLabels, setCategoryLabels] = useState([])
-
-    useEffect(() => {
         const categorySeries = []
         const categoryLabels = []
         categoryPercentages.forEach(c => {
             categorySeries.push(c.percentage)
             categoryLabels.push(c.name)
         })
+        // if there is only one category, empty the array so that the graph doesn't display
+        if (categorySeries.length === 1) {
+            categorySeries.pop()
+            categoryLabels.pop()
+        }
+        setCategoryTotal(categoryStats.total)
         setCategorySeries(categorySeries)
         setCategoryLabels(categoryLabels)
-    }, [categoryPercentages])
+    }, [updateGraphs, allTransactions])
+
+    // The code below works as intended, displaying categoryStats, categorySeries, and categoryLabels that were calculated in the useEffect hook above
       
       const categoryOptions = {
         chart: {
           type: "donut",
         },
-        // TWEAK COLORS HERE TO WORK WITH TOTA11Y
-        // Use Dark Blue, Dark Green, Dark Purple, Dark Gray, Dark Red, etc
         colors: ["#0D47A1", "#1B5E20", "#4A148C", "#212121", "#B71C1C", "#F57F17", "#737d00", "#008b00", "#009688", "#00BCD4", "#007aca", "#3F51B5", "#b26200", "#673AB7", "#E91E63", "#9C27B0", "#795548", "#607D8B"],
         labels: categoryLabels,
-        // On hover, the percentage should be shown and truncated to 3 decimal places
         tooltip: {
             y: {
                 formatter: function (val) {
@@ -139,11 +135,6 @@ const Debt = () => {
         }]
         };
 
-    // On page load, refresh the graphs
-    useEffect(() => {
-        setUpdateGraphs(!updateGraphs)
-    }, [])
-
     return (
         <Box
             marginTop={{ base: '1', sm: '5' }}
@@ -166,16 +157,14 @@ const Debt = () => {
                     </Flex>
                 </SimpleGrid>
                 <Divider/>
-                {/* if categoryOptions or categorySeries is empty, display a message saying "No transactions found", otherwise render the chart */}
                 {categoryOptions.labels.length === 0 ? 
                     <Text fontSize={'l'} fontWeight={800} textAlign={'center'} marginTop={'5'}>
-                        No transactions found
+                        Need transactions from two different categories to display a graph
                     </Text> :
                     <ReactApexChart 
                         options={categoryOptions} 
                         series={categorySeries} 
                         type="donut" 
-                        // fit the size of the div 
                         width="100%"
                     />
                 }

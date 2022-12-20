@@ -2,7 +2,6 @@ import React, {useEffect} from "react";
 import { 
     Box,
     Text,
-    Stack,
     SimpleGrid,
     Modal,
     ModalOverlay,
@@ -30,7 +29,6 @@ import { useDispatch, useSelector} from 'react-redux';
 import actions from '../../../redux/actions/categories'
 import { MinusIcon } from '@chakra-ui/icons';
 import axios from 'axios';
-import { QuestionOutlineIcon } from '@chakra-ui/icons';
 
 const Spending = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -56,6 +54,7 @@ const Spending = () => {
     }
 
     const spending = useSelector((state) => state.categories.categories.spending);
+    const expenses = useSelector((state) => state.categories.categories.expenses);
 
     const getData = async (reqBody) => {
         const { data } = await axios.get('/api/calculations/getAllCategories')
@@ -67,8 +66,10 @@ const Spending = () => {
     },[])
 
     const checkIfUsed = (name) => {
-        let temp = (spending.some(e => e.name.toLowerCase().trim() === name.toLowerCase().trim()))
-        return temp; 
+        let temp = (expenses.some(e => e.name.toLowerCase().trim() === name.toLowerCase().trim()))
+        let temp2 = (spending.some(e => e.name.toLowerCase().trim() === name.toLowerCase().trim()))
+        if (temp || temp2) return true;
+        return false; 
     }
 
     const barWidth = (balance, amount) => {
@@ -210,7 +211,7 @@ const Spending = () => {
                                                         let error;
                                                         const stringifiedValue = value.toString()
                                                         const strAfterDecimal = stringifiedValue.split('.', 2)[1]
-                                                        if (!value || typeof value != 'string' || value.trim().length < 3 || value.trim().length > 50) error = "Invalid Name"
+                                                        if (!value || typeof value != 'string' || value.trim().length < 3 || value.trim().length > 50) error = "Invalid Amount"
                                                         if (strAfterDecimal && strAfterDecimal.length > 2) error = 'Amount cannot have more than 2 decimals'
                                                         return error;
                                                     }}

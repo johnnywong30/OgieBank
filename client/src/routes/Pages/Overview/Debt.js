@@ -6,18 +6,23 @@ import ReactApexChart from "react-apexcharts";
 import { 
     Box,
     Text,
-    Stack,
     SimpleGrid, 
-    Center,
-    Button,
     Flex,
     Spacer,
     Divider,
 } from '@chakra-ui/react'
-import { QuestionOutlineIcon } from '@chakra-ui/icons';
 
 const Debt = () => {   
-    let allTransactions = useSelector((state) => state.transactions.transactions)
+    const [categoryTotal, setCategoryTotal] = useState(0)
+    const [categorySeries, setCategorySeries] = useState([])
+    const [categoryLabels, setCategoryLabels] = useState([])
+    const [updateGraphs, setUpdateGraphs] = useState(false)
+    const allTransactions = useSelector((state) => state.transactions.transactions)
+
+    // On page load, refresh the graphs
+    useEffect(() => {
+        setUpdateGraphs(!updateGraphs)
+    }, [])
 
     const getStats = (transactions) => {
         let stats = []
@@ -42,35 +47,26 @@ const Debt = () => {
         return percentages
     }
 
-    // Display the stats in a table
-    const [updateGraphs, setUpdateGraphs] = useState(false)
-    const [categoryPercentages, setCategoryPercentages] = useState([])
-    const [categoryTotal, setCategoryTotal] = useState(0)
-    
     useEffect(() => {
-        // Exclude deposits from the donut chart
+        // When the transactions are updated, update the graph
+        // TODO: 
+        // This breaks when adding transactions to the same category
+        // Simply having another category triggers an update
+
+        // Exclude deposits from the category pie chart
         const transactions = allTransactions.filter(t => t.category !== "Deposit")
         const categoryStats = getStats(transactions)
         const categoryPercentages = getPercentages(categoryStats.stats, categoryStats.total)
-        setCategoryPercentages(categoryPercentages)
-        setCategoryTotal(categoryStats.total)
-        setUpdateGraphs(!updateGraphs)
-    }, [allTransactions])
-
-    // create the pie charts
-    const [categorySeries, setCategorySeries] = useState([])
-    const [categoryLabels, setCategoryLabels] = useState([])
-
-    useEffect(() => {
         const categorySeries = []
         const categoryLabels = []
         categoryPercentages.forEach(c => {
             categorySeries.push(c.percentage)
             categoryLabels.push(c.name)
         })
+        setCategoryTotal(categoryStats.total)
         setCategorySeries(categorySeries)
         setCategoryLabels(categoryLabels)
-    }, [categoryPercentages])
+    }, [updateGraphs, allTransactions])
       
       const categoryOptions = {
         chart: {
@@ -138,10 +134,7 @@ const Debt = () => {
         }]
         };
 
-    // On page load, refresh the graphs
-    useEffect(() => {
-        setUpdateGraphs(!updateGraphs)
-    }, [])
+ 
 
     return (
         <Box

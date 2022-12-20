@@ -11,7 +11,7 @@ const PASSWORD = 'password'
 const ACCOUNT_INFO = {
     bankName: 'Chase',
     bankBalance: 0,
-    creditName: 'Chase',
+    creditName: 'Chase Sapphire',
     creditBalance: 0,
     creditLimit: 0
 }
@@ -19,7 +19,7 @@ const ACCOUNT_INFO = {
 const PAY_INFO = {
     amount: 0,
     date: '',
-    month: 0
+    month: 11
 }
 
 const BUDGET = {
@@ -46,7 +46,8 @@ const generateUser = async (firstName, lastName, username, email, categories, tr
         payInfo: PAY_INFO,
         budget: BUDGET,
         categories,
-        transactions
+        transactions,
+        id: uuidv4()
     }
 }
 
@@ -76,6 +77,18 @@ const generateSpendingCategory = (name, amount, balance=0) => {
 // Start Adding Users
 const users = db.collection('users')
 
+// Check if exists already -> if does, delete them and replace
+const deleteIfExists = async (user) => {
+    const { email } = user
+    const userList = await users.where('email', '==', email).get()
+    userList.forEach(async doc => {
+        const id = doc.id
+        const deletionInfo = await users.doc(id).delete()
+        if (deletionInfo) console.log(`able to deleted previous account with ${email}`)
+    })
+    return true
+}
+
 // Clean User
 const addCleanUser = async () => {
     // const generateUser = async (firstName, lastName, username, email, categories, transactions, password=PASSWORD) => {
@@ -86,6 +99,7 @@ const addCleanUser = async () => {
     const categories = CATEGORIES
     const transactions = TRANSACTIONS
     const cleanUser = await generateUser(firstName, lastName, username, email, categories, transactions)
+    await deleteIfExists(cleanUser)
     await users.add(cleanUser)
 }
 
@@ -118,7 +132,7 @@ const addBippy = async () => {
     const payInfo = {
         amount: 0,
         date: '',
-        month: 0
+        month: 11
     }
     const transactions = [
         {
@@ -140,8 +154,9 @@ const addBippy = async () => {
         password,
         payInfo,
         transactions,
-        username
+        username,
     }
+    await deleteIfExists(bippy)
     await users.add(bippy)
 }
 
@@ -155,7 +170,7 @@ const addBeebo = async () => {
     const password = await bcrypt.hash(PASSWORD, saltRounds)
     const email = 'beebo30@gmail.com'
     const accountInfo = {
-        bankBalance: 48450,
+        bankBalance: 48425,
         bankName: 'Chase',
         creditBalance: 250,
         creditLimit: 20000,
@@ -178,7 +193,7 @@ const addBeebo = async () => {
 
     const spending = [
         {name: 'Fun Dollars', amount: 500, balance: 0},
-        {name: 'Substances', amount: 500, balance: 150}
+        {name: 'Substances', amount: 500, balance: 175}
     ].map(({name, amount, balance}) => {
         return generateSpendingCategory(name, amount, balance)
     })
@@ -190,7 +205,7 @@ const addBeebo = async () => {
     const payInfo = {
         amount: 0,
         date: '',
-        month: 0
+        month: 11
     }
     const transactions = [
         {
@@ -242,6 +257,19 @@ const addBeebo = async () => {
             payment: 'Bank'
         }
     ]
+    const NUM_FAKE = 25
+
+    const createFakeTransaction = () => ({
+        amount: 1,
+        category: 'Substances',
+        date: '12/15/2022',
+        id: uuidv4(),
+        name: 'Cheap Drug',
+        payment: 'Bank'
+    })
+
+    const fakeTransactions = [...Array(NUM_FAKE).keys()].map(createFakeTransaction)
+    const allTransactions = [...transactions, ...fakeTransactions]
     const beebo = {
         accountInfo,
         budget,
@@ -251,9 +279,10 @@ const addBeebo = async () => {
         lastName,
         password,
         payInfo,
-        transactions,
-        username
+        transactions: allTransactions,
+        username,
     }
+    await deleteIfExists(beebo)
     await users.add(beebo)
 }
 

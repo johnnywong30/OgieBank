@@ -140,7 +140,7 @@ const Transactions = (props) => {
                                         </Text>
                                     </Stack>
                                     <Stack direction={'row'} flexGrow='1' justifyContent={'flex-end'}>
-                                        <label for={t.id}></label>
+                                        <label htmlFor={t.id}></label>
                                         <Button
                                             id={t.id}
                                             width={'25%'}
@@ -207,7 +207,7 @@ const Transactions = (props) => {
                                 Monthly Transactions
                             </Text>
                             <Spacer />
-                            <label for={'transactionHelp'}></label>
+                            <label htmlFor={'transactionHelp'}></label>
                             <Button
                                 id={'transactionHelp'}
                                 width={'10%'}

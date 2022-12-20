@@ -22,6 +22,7 @@ import {
     ListItem, 
     Divider,
     Flex,
+    Spacer,
 } from '@chakra-ui/react'
 import { Formik, Field } from "formik";
 import {v4 as uuid} from 'uuid';
@@ -30,6 +31,7 @@ import actions from '../../../redux/actions/categories'
 import actions2 from '../../../redux/actions/auth'
 import { MinusIcon } from '@chakra-ui/icons';
 import axios from 'axios';
+import { QuestionOutlineIcon } from '@chakra-ui/icons';
 
 const Expenses = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -87,18 +89,12 @@ const Expenses = () => {
                 rounded={'md'}
                 overflow={'hidden'}>
                 <SimpleGrid columns={[1]} spacingX="0" spacingY="0">
-                    <Stack
-                        textAlign={'center'}
-                        px={6}
-                        py={2}
-                        color={'black'}
-                        align={'center'}>
-                        <Stack direction={'row'} align={'center'} justify={'center'}>
-                            <Text fontSize={'3xl'} fontWeight={800}>
-                                Expenses
-                            </Text>
-                        </Stack>
-                    </Stack>
+                <Flex minWidth='max-content' alignItems='center' gap='2'>
+                        <Text px='6' py='2' fontSize={'3xl'} fontWeight={800}>
+                            Monthly Expenses
+                        </Text>
+                        <Spacer />
+                    </Flex>
                 </SimpleGrid>
                 <Divider/>
                 <Box bg={'white'} px={6} py={10}>
@@ -110,7 +106,9 @@ const Expenses = () => {
                                     <Box
                                         fontSize="xl"
                                         fontWeight="bold">
+                                        <label for={e.name}></label>
                                         <Button
+                                            id={e.name}
                                             width={'25%'}
                                             ml={0}
                                             mr={3}
@@ -170,7 +168,7 @@ const Expenses = () => {
                                                     variant="filled"
                                                     validate={(value) => {
                                                         let error;
-                                                        if (!value || typeof value != 'string' || value.trim().length < 3) error = "Invalid Name"
+                                                        if (!value || typeof value != 'string' || value.trim().length < 3 || value.trim().length > 50) error = "Invalid Name"
                                                         if (checkIfUsed(value)) error = "Already Used";
                                                         return error;
                                                     }}
@@ -187,7 +185,7 @@ const Expenses = () => {
                                                     variant="filled"
                                                     validate={(value) => {
                                                         let error;
-                                                        if (!value || value <= 0 || !Number(value)) error = "Invalid Amount"
+                                                        if (!value || value <= 0 || !Number(value) || value >= 1000000000000000000) error = "Invalid Amount"
                                                         return error;
                                                     }}
                                                 />

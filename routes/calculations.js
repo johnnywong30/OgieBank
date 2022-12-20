@@ -144,7 +144,7 @@ router
 
         if (req.session.user.id) {
             try {
-                const userReturn = await calculationData.getAllCategories(req.session.user.id)
+                const userReturn = await calculationData.getAllCategories(req.session.user.id);
                 req.session.user = userReturn.user;
                 return res.status(200).json({success: "success", categories: userReturn.categories});
             } catch (e) {

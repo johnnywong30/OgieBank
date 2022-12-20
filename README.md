@@ -30,7 +30,7 @@ Node.js, Express, React, Redux, Firebase Authentication, Firebase Firestore, Her
 
 1. Download Docker desktop from `https://www.docker.com/products/docker-desktop/`
 2. Run `docker compose up`
-3. To stop the containers, run docker-compose stop or press Ctrl-C to stop a docker-compose process running in the foreground then run docker-compose stop to ensure the project containers have stopped.
+3. To stop the containers, run `docker-compose stop` or press `Ctrl-C` to stop a docker-compose process running in the foreground then run `docker-compose stop` to ensure the project containers have stopped.
 
 ## Pre-made Accounts with Seed
 
